@@ -3,11 +3,20 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "build": "ng build",
+    "build:de": "ng build --configuration=de",
+    "build:fr": "ng build --configuration=fr",
+    "build:prod": "ng build --prod",
+    "build:prod:de": "ng build --prod --configuration=de",
+    "build:prod:fr": "ng build --prod --configuration=fr",
+    "build:ci": "npm run build:prod",
+    "int:extract": "ng xi18n --output-path src/locale --format=xlf2",
+    "start": "ng serve",
+    "start:de": "ng serve --configuration=de --open -- --port=4201",
+    "start:fr": "ng serve --configuration=fr --open -- --port=4202"
   },
   "private": true,
   "dependencies": {
@@ -16,6 +25,7 @@
     "@angular/compiler": "~10.1.2",
     "@angular/core": "~10.1.2",
     "@angular/forms": "~10.1.2",
+    "@angular/localize": "^10.1.3",
     "@angular/platform-browser": "~10.1.2",
     "@angular/platform-browser-dynamic": "~10.1.2",
     "@angular/router": "~10.1.2",
