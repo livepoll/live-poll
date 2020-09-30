@@ -4,7 +4,7 @@ name: Angular Deploy
 
 on:
   push:
-    branches: [ main ]
+    branches: [ develop ]
 
 jobs:
   build:
@@ -21,13 +21,13 @@ jobs:
         npm run build:prod
     - name: Build Docker image
       run: | 
-        docker build . --file Dockerfile -t docker.pkg.github.com/livepoll/live-poll/live-poll:latest
+        docker build . --file Dockerfile -t docker.pkg.github.com/livepoll/live-poll/live-poll-dev:latest
         echo "Build completed"
         
         echo ${GITHUB_TOKEN} | docker login docker.pkg.github.com -u ${GITHUB_REPOSITORY_OWNER} --password-stdin
         echo "Login successful"
         
-        docker push docker.pkg.github.com/livepoll/live-poll/live-poll:latest    
+        docker push docker.pkg.github.com/livepoll/live-poll/live-poll-dev:latest    
         echo "Push successful"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
