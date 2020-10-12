@@ -7,8 +7,18 @@ import { MainComponent } from './_pages/main/main.component';
 import { SignInComponent } from './_pages/sign-in/sign-in.component';
 import { SignUpComponent } from './_pages/sign-up/sign-up.component';
 import { SignSurveyComponent } from './_pages/sign-survey/sign-survey.component';
-import { ToolbarComponent } from './_component/toolbar/toolbar.component';
-import { ButtonComponent } from './_component/button/button.component';
+import { IconsProviderModule } from './icons-provider.module';
+import { NzLayoutModule } from 'ng-zorro-antd/layout';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NZ_I18N } from 'ng-zorro-antd/i18n';
+import { en_US } from 'ng-zorro-antd/i18n';
+import { registerLocaleData } from '@angular/common';
+import en from '@angular/common/locales/en';
+
+registerLocaleData(en);
 
 @NgModule({
   declarations: [
@@ -16,15 +26,19 @@ import { ButtonComponent } from './_component/button/button.component';
     MainComponent,
     SignInComponent,
     SignUpComponent,
-    SignSurveyComponent,
-    ToolbarComponent,
-    ButtonComponent
+    SignSurveyComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    IconsProviderModule,
+    NzLayoutModule,
+    NzMenuModule,
+    FormsModule,
+    HttpClientModule,
+    BrowserAnimationsModule
   ],
-  providers: [],
+  providers: [{ provide: NZ_I18N, useValue: en_US }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
