@@ -3,10 +3,6 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { MainComponent } from './_pages/main/main.component';
-import { SignInComponent } from './_pages/sign-in/sign-in.component';
-import { SignUpComponent } from './_pages/sign-up/sign-up.component';
-import { SignSurveyComponent } from './_pages/sign-survey/sign-survey.component';
 import { IconsProviderModule } from './icons-provider.module';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
@@ -22,11 +18,7 @@ registerLocaleData(en);
 
 @NgModule({
   declarations: [
-    AppComponent,
-    MainComponent,
-    SignInComponent,
-    SignUpComponent,
-    SignSurveyComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
