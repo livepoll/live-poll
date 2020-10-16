@@ -1,13 +1,14 @@
 <nz-layout class="app-layout">
-  <nz-sider class="menu-sidebar" nzCollapsible nzWidth="256px" nzBreakpoint="md" [(nzCollapsed)]="isCollapsed"
-            [nzTrigger]="null" nzTheme="light">
+  <!-- Side bar -->
+  <nz-sider class="menu-sidebar" nzCollapsible nzWidth="256px" nzBreakpoint="md"
+            [(nzCollapsed)]="isCollapsed" [nzTrigger]="null" nzTheme="light">
     <div class="sidebar-logo">
       <a href="https://www.live-poll.de" target="_blank">
         <img src="https://ng.ant.design/assets/img/logo.svg" alt="logo">
         <h1>Live-Poll</h1>
       </a>
     </div>
-    <ul nz-menu nzMode="inline" nzOpen [nzInlineCollapsed]="isCollapsed">
+    <ul nz-menu nzMode="inline" [nzInlineCollapsed]="isCollapsed">
       <li class="no-select" nz-submenu nzOpen nzTitle="Dashboard" nzIcon="dashboard">
         <ul>
           <li nz-menu-item nzMatchRouter>
@@ -17,7 +18,7 @@
             <a routerLink="/my-polls">My Polls</a>
           </li>
           <li nz-menu-item nzMatchRouter>
-            <a>Workplace</a>
+            <a routerLink="/analytics">Analytics</a>
           </li>
         </ul>
       </li>
@@ -34,18 +35,38 @@
     </ul>
   </nz-sider>
   <nz-layout>
+    <!-- Main toolbar -->
     <nz-header>
       <div class="app-header">
         <span class="header-trigger" (click)="isCollapsed = !isCollapsed">
-            <i class="trigger" nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
-            ></i>
+          <i class="trigger" nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></i>
         </span>
       </div>
     </nz-header>
-    <nz-content>
-      <div class="inner-content">
-        <router-outlet></router-outlet>
-      </div>
-    </nz-content>
+
+    <nz-layout class="inner-layout">
+      <!-- Navigation bread crumbs -->
+      <nz-breadcrumb>
+        <nz-breadcrumb-item>
+          <a routerLink="/home" nz-icon nzType="home"></a>
+        </nz-breadcrumb-item>
+        <nz-breadcrumb-item>
+          <a routerLink="/my-polls"><i>My Polls</i></a>
+        </nz-breadcrumb-item>
+        <nz-breadcrumb-item>
+          <a routerLink="/polls/test-poll"><i>Test Poll</i></a>
+        </nz-breadcrumb-item>
+        <nz-breadcrumb-item>
+          <a routerLink="/polls/test-poll/1"><b>Question 1</b></a>
+        </nz-breadcrumb-item>
+      </nz-breadcrumb>
+
+      <!-- Page content, flipped by router -->
+      <nz-content>
+        <div class="inner-content">
+          <router-outlet></router-outlet>
+        </div>
+      </nz-content>
+    </nz-layout>
   </nz-layout>
 </nz-layout>
