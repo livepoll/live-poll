@@ -1,5 +1,8 @@
-<nz-modal [(nzVisible)]="isVisible" nzTitle="New Poll" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()"
+<nz-modal [(nzVisible)]="isVisible" nzTitle="New Poll" (nzOnCancel)="isVisible = false" (nzOnOk)="createPoll()"
           [nzOkLoading]="loading" nzAutofocus="ok" [nzCancelDisabled]="loading" nzOkText="Create">
-  <p>To create a new poll, please enter a name for it:</p>
-  <input nz-input placeholder="Name of your new poll" [(ngModel)]="name" />
+  <label>
+    <span class="input-label">Name of the poll:</span>
+    <input nz-input placeholder="Name of your new poll" [(ngModel)]="name" (input)="name = $event.target.value" />
+  </label>
+  <nz-alert *ngIf="errorMessage?.length > 0" nzType="error" nzMessage={{errorMessage}} nzCloseText="Okay" (nzOnClose)="errorMessage = ''"></nz-alert>
 </nz-modal>

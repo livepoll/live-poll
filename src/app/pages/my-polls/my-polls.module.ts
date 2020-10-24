@@ -7,14 +7,19 @@ import { NewPollDialogComponent } from '../../dialogs/new-poll-dialog/new-poll-d
 
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzAlertModule } from 'ng-zorro-antd/alert';
+import { NewPollItemDialogComponent } from '../../dialogs/new-poll-item-dialog/new-poll-item-dialog.component';
+import {CommonModule} from '@angular/common';
 
 @NgModule({
-  declarations: [MyPollsComponent, NewPollDialogComponent],
+  declarations: [MyPollsComponent, NewPollDialogComponent, NewPollItemDialogComponent],
   imports: [
     MyPollsRoutingModule,
     NzModalModule,
     NzInputModule,
+    NzAlertModule,
     FormsModule,
+    CommonModule,
   ],
   providers: [],
   exports: [MyPollsComponent]

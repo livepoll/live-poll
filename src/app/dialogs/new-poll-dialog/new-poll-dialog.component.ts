@@ -9,7 +9,8 @@ export class NewPollDialogComponent implements OnInit {
 
   isVisible = true;
   loading = false;
-  name = '';
+  name?: string;
+  errorMessage?: string;
 
   ngOnInit(): void {}
 
@@ -17,14 +18,11 @@ export class NewPollDialogComponent implements OnInit {
     this.isVisible = true;
   }
 
-  handleOk(): void {
-    this.loading = true;
-    // Create poll on the server
-
-    //this.isVisible = false;
-  }
-
-  handleCancel(): void {
-    this.isVisible = false;
+  createPoll(): void {
+    if (this.name?.length > 0) {
+      this.loading = true;
+    } else {
+      this.errorMessage = 'Please enter a name.';
+    }
   }
 }

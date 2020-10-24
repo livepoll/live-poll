@@ -1,1 +1,12 @@
-<p>Hello World</p>
+<div>
+  <nz-empty *ngIf="polls.length == 0"
+            nzNotFoundImage="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+            [nzNotFoundContent]="contentTpl" [nzNotFoundFooter]="footerTpl">
+    <ng-template #contentTpl>
+      <span>You do not have any polls yet.</span>
+    </ng-template>
+    <ng-template #footerTpl>
+      <button nz-button nzType="primary" (click)="onEmptyButtonClick()">Go to 'My polls' page</button>
+    </ng-template>
+  </nz-empty>
+</div>
