@@ -1,5 +1,5 @@
 <nz-modal [(nzVisible)]="isVisible" nzTitle="New Poll" (nzOnCancel)="isVisible = false" (nzOnOk)="createPoll()"
-          [nzOkLoading]="loading" nzAutofocus="ok" [nzCancelDisabled]="loading" nzOkText="Create">
+          [nzOkLoading]="loading" nzAutofocus="ok" [nzCancelDisabled]="loading" nzOkText="Create Poll" (close)="isVisible = false">
   <label>
     <span class="input-label">Name of the poll:</span>
     <input nz-input placeholder="Name of your new poll" [(ngModel)]="name" (input)="name = $event.target.value" />

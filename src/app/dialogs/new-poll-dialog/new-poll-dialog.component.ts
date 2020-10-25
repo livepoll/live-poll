@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-new-poll-dialog',
@@ -7,16 +7,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NewPollDialogComponent implements OnInit {
 
-  isVisible = true;
+  @Input('visible') isVisible: boolean;
   loading = false;
   name?: string;
   errorMessage?: string;
 
   ngOnInit(): void {}
-
-  showModal(): void {
-    this.isVisible = true;
-  }
 
   createPoll(): void {
     if (this.name?.length > 0) {

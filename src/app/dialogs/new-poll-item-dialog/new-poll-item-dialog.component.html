@@ -1,5 +1,29 @@
-<nz-modal [(nzVisible)]="isVisible" nzTitle="New Poll Item" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()"
-          [nzOkLoading]="loading" nzAutofocus="ok" [nzCancelDisabled]="loading" nzOkText="Create">
-  <p>To create a new poll, please enter a name for it:</p>
-  <input nz-input placeholder="Name of your new poll" [(ngModel)]="name" />
+<nz-modal [(nzVisible)]="isVisible" nzTitle="New Poll Item" (nzOnCancel)="handleBack()" (nzOnOk)="handleNext()"
+          [nzOkLoading]="loading" nzAutofocus="ok" [nzCancelDisabled]="loading || step == 1" nzCancelText="Back"
+          nzOkText="Next" nzWidth="850px">
+  <nz-layout style="margin: -24px">
+    <nz-sider nzWidth="300px">
+      <nz-timeline>
+        <nz-timeline-item>Select item type</nz-timeline-item>
+        <nz-timeline-item>Enter question / answers</nz-timeline-item>
+        <nz-timeline-item>Options</nz-timeline-item>
+      </nz-timeline>
+    </nz-sider>
+    <nz-content>
+      <div class="step1">
+        <nz-radio-group>
+          <label *ngFor="let type of itemTypes" nz-radio nzValue='{{type.id}}'>
+            <b>{{type.name}}</b>
+            <p class="radio-description"><i>{{type.description}}</i></p>
+          </label>
+        </nz-radio-group>
+      </div>
+      <div class="step2">
+
+      </div>
+      <div class="step3">
+
+      </div>
+    </nz-content>
+  </nz-layout>
 </nz-modal>
