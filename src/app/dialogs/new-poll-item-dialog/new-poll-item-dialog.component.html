@@ -1,29 +1,40 @@
-<nz-modal [(nzVisible)]="isVisible" nzTitle="New Poll Item" (nzOnCancel)="handleBack()" (nzOnOk)="handleNext()"
-          [nzOkLoading]="loading" nzAutofocus="ok" [nzCancelDisabled]="loading || step == 1" nzCancelText="Back"
-          nzOkText="Next" nzWidth="850px">
+<nz-modal [(nzVisible)]="isVisible" [nzTitle]="'Create Poll Item - ' + stepLabels[step -1]" (nzOnCancel)="handleBack()"
+          (nzOnOk)="handleNext()" [nzOkLoading]="loading" nzAutofocus="ok" [nzCancelDisabled]="loading || step === 1"
+          nzCancelText="Back" nzOkText="Next" nzWidth="850px">
   <nz-layout style="margin: -24px">
+    <!-- Side bar with timeline -->
     <nz-sider nzWidth="300px">
       <nz-timeline>
-        <nz-timeline-item>Select item type</nz-timeline-item>
-        <nz-timeline-item>Enter question / answers</nz-timeline-item>
-        <nz-timeline-item>Options</nz-timeline-item>
+        <nz-timeline-item [nzDot]="" *ngFor="let name of stepLabels">{{name}}</nz-timeline-item>
       </nz-timeline>
     </nz-sider>
+
+    <!-- Main content -->
     <nz-content>
-      <div class="step1">
-        <nz-radio-group>
+      <!-- Step 1 - Select item type -->
+      <div *ngIf="step === 1">
+        <nz-radio-group [(ngModel)]="itemType">
           <label *ngFor="let type of itemTypes" nz-radio nzValue='{{type.id}}'>
             <b>{{type.name}}</b>
             <p class="radio-description"><i>{{type.description}}</i></p>
           </label>
         </nz-radio-group>
       </div>
-      <div class="step2">
+      <!-- Step 2 - Enter question / answers -->
+      <div *ngIf="step === 2">
+        <label>
+          <span class="input-label">Question:</span>
+          <input nz-input [(ngModel)]="question" (input)="question = $event.target.value" />
+        </label>
+        <nz-divider></nz-divider>
 
       </div>
-      <div class="step3">
+      <!-- Step 3 - Options -->
+      <div *ngIf="step === 3">
 
       </div>
+
+      <nz-alert *ngIf="errorMessage?.length > 0" nzType="error" nzMessage={{errorMessage}} nzCloseText="Okay" (nzOnClose)="errorMessage = ''"></nz-alert>
     </nz-content>
   </nz-layout>
 </nz-modal>

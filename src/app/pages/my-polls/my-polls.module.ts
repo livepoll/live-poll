@@ -9,6 +9,7 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzAlertModule } from 'ng-zorro-antd/alert';
 import { NzTimelineModule } from 'ng-zorro-antd/timeline';
+import { NzDividerModule} from 'ng-zorro-antd/divider';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NewPollItemDialogComponent } from '../../dialogs/new-poll-item-dialog/new-poll-item-dialog.component';
 import { CommonModule } from '@angular/common';
@@ -22,6 +23,7 @@ import { NzLayoutModule } from 'ng-zorro-antd/layout';
     NzInputModule,
     NzAlertModule,
     NzTimelineModule,
+    NzDividerModule,
     FormsModule,
     CommonModule,
     NzLayoutModule,
