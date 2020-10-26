@@ -1,0 +1,37 @@
+# Workflow for Angular Docs build
+
+name: Docs Build & Deploy
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Node 12.x
+      uses: actions/setup-node@v1
+    - uses: actions/cache@v2
+      with:
+        path: '**/node_modules'
+        key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+    - name: Install Compodoc
+      run: |
+        yarn add @compodoc/compodoc
+        yarn global add @compodoc/compodoc
+    - name: Build docs
+      run: |
+        yarn run build:docs
+        git reset --hard HEAD
+    - name: Deploy docs
+      uses: SamKirkland/FTP-Deploy-Action@3.1.1
+      with:
+        ftp-server: ${{ secrets.FTP_SERVER }}/frontend
+        ftp-username: ${{ secrets.FTP_USERNAME }}
+        ftp-password: ${{ secrets.FTP_PASSWORD }}
+        git-ftp-args: --insecure
+

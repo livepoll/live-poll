@@ -16,7 +16,8 @@
     "int:extract": "ng xi18n --output-path src/locale --format=xlf2",
     "start": "ng serve",
     "start:de": "ng serve --configuration=de --open -- --port=4201",
-    "start:fr": "ng serve --configuration=fr --open -- --port=4202"
+    "start:fr": "ng serve --configuration=fr --open -- --port=4202",
+    "build:docs": "compodoc -p tsconfig.app.json src"
   },
   "private": true,
   "dependencies": {
