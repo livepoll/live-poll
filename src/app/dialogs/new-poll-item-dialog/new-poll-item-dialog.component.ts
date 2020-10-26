@@ -14,6 +14,10 @@ const ITEM_TYPES = [
   { id: 5, name: 'Rating Question', description: 'Star rating.' },
 ];
 
+/**
+ * Wizard dialog, which lets the user create a new poll item.
+ * The dialog consists of three pages, whose appearance differ based on the selected item type.
+ */
 @Component({
   selector: 'app-new-poll-item-dialog',
   templateUrl: './new-poll-item-dialog.component.html',
@@ -34,6 +38,11 @@ export class NewPollItemDialogComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  /**
+   * User clicked on 'Next' button.
+   * It handles the validity check of the entries on the current page and throws an
+   * error message or redirects the use to the next page if the user input is valid
+   */
   handleNext(): void {
     if (this.step === STEP_LABELS.length) {
       this.loading = true;
@@ -59,10 +68,18 @@ export class NewPollItemDialogComponent implements OnInit {
     }
   }
 
+  /**
+   * User clicked on the 'Back' button.
+   * Method redirects the user to the previous wizard page.
+   */
   handleBack(): void {
     this.step--;
   }
 
+  /**
+   * User clicked on the 'Cancel' button.
+   * Method closes the dialog to cancel the creation operation.
+   */
   handleCancel(): void {
     if (!this.loading) {
       this.isVisible = false;
