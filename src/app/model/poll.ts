@@ -1,4 +1,4 @@
-export interface Poll {
+export class Poll {
   userId: number;
   name: string;
   startDate: Date;

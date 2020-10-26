@@ -1,40 +1,54 @@
-<nz-modal [(nzVisible)]="isVisible" [nzTitle]="'Create Poll Item - ' + stepLabels[step -1]" (nzOnCancel)="handleBack()"
-          (nzOnOk)="handleNext()" [nzOkLoading]="loading" nzAutofocus="ok" [nzCancelDisabled]="loading || step === 1"
-          nzCancelText="Back" nzOkText="Next" nzWidth="850px">
-  <nz-layout style="margin: -24px">
-    <!-- Side bar with timeline -->
-    <nz-sider nzWidth="300px">
-      <nz-timeline>
-        <nz-timeline-item [nzDot]="" *ngFor="let name of stepLabels">{{name}}</nz-timeline-item>
-      </nz-timeline>
-    </nz-sider>
+<nz-modal [(nzVisible)]="isVisible" (nzOnCancel)="handleCancel()" nzWidth="850px"
+          [nzTitle]="dialogTitle" [nzContent]="dialogContent" [nzFooter]="dialogFooter">
+  <!-- Header -->
+  <ng-template #dialogTitle>
+    New Poll Item - {{stepLabels[step -1]}}
+  </ng-template>
 
-    <!-- Main content -->
-    <nz-content>
-      <!-- Step 1 - Select item type -->
-      <div *ngIf="step === 1">
-        <nz-radio-group [(ngModel)]="itemType">
-          <label *ngFor="let type of itemTypes" nz-radio nzValue='{{type.id}}'>
-            <b>{{type.name}}</b>
-            <p class="radio-description"><i>{{type.description}}</i></p>
+  <!-- Content -->
+  <ng-template #dialogContent>
+    <nz-layout style="margin: -24px">
+      <!-- Side bar with timeline -->
+      <nz-sider nzWidth="300px">
+        <nz-timeline>
+          <nz-timeline-item [nzDot]="" *ngFor="let name of stepLabels">{{name}}</nz-timeline-item>
+        </nz-timeline>
+      </nz-sider>
+
+      <!-- Main content -->
+      <nz-content>
+        <!-- Step 1 - Select item type -->
+        <div *ngIf="step === 1">
+          <nz-radio-group [(ngModel)]="itemType">
+            <label *ngFor="let type of itemTypes" nz-radio nzValue='{{type.id}}'>
+              <b>{{type.name}}</b><br>
+              <span class="radio-description"><i>{{type.description}}</i></span>
+            </label>
+          </nz-radio-group>
+        </div>
+        <!-- Step 2 - Enter question / answers -->
+        <div *ngIf="step === 2">
+          <label>
+            <span class="input-label">Question:</span>
+            <input nz-input [(ngModel)]="question" (input)="question = $event.target.value" />
           </label>
-        </nz-radio-group>
-      </div>
-      <!-- Step 2 - Enter question / answers -->
-      <div *ngIf="step === 2">
-        <label>
-          <span class="input-label">Question:</span>
-          <input nz-input [(ngModel)]="question" (input)="question = $event.target.value" />
-        </label>
-        <nz-divider></nz-divider>
+          <nz-divider></nz-divider>
 
-      </div>
-      <!-- Step 3 - Options -->
-      <div *ngIf="step === 3">
+        </div>
+        <!-- Step 3 - Options -->
+        <div *ngIf="step === 3">
 
-      </div>
+        </div>
 
-      <nz-alert *ngIf="errorMessage?.length > 0" nzType="error" nzMessage={{errorMessage}} nzCloseText="Okay" (nzOnClose)="errorMessage = ''"></nz-alert>
-    </nz-content>
-  </nz-layout>
+        <nz-alert *ngIf="errorMessage?.length > 0" nzType="error" nzMessage={{errorMessage}} nzCloseText="Okay" (nzOnClose)="errorMessage = ''"></nz-alert>
+      </nz-content>
+    </nz-layout>
+  </ng-template>
+
+  <!-- Footer -->
+  <ng-template #dialogFooter>
+    <button nz-button nzType="default" (click)="handleCancel()" [disabled]="loading">Cancel</button>
+    <button nz-button nzType="default" (click)="handleBack()" [disabled]="loading || step === 1">Back</button>
+    <button nz-button nzType="primary" (click)="handleNext()" [nzLoading]="loading">Next</button>
+  </ng-template>
 </nz-modal>

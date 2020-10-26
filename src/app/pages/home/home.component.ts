@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import {Poll} from '../../interfaces/poll';
+import { Poll } from '../../model/poll';
 
 @Component({
   selector: 'app-home',

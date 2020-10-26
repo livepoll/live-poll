@@ -45,12 +45,27 @@ export class NewPollItemDialogComponent implements OnInit {
             this.errorMessage = 'Please select an item type.';
             return;
           }
+          break;
+        case 2:
+          if (this.question === '') {
+            this.errorMessage = 'Please enter a question.';
+            return;
+          }
+          break;
       }
+      // Valid input, can go to next step
       this.step++;
+      this.errorMessage = '';
     }
   }
 
   handleBack(): void {
     this.step--;
+  }
+
+  handleCancel(): void {
+    if (!this.loading) {
+      this.isVisible = false;
+    }
   }
 }
