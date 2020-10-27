@@ -32,7 +32,7 @@
         <div *ngIf="step === 2">
           <label>
             <span class="input-label">Question:</span>
-            <input nz-input placeholder="Enter your question ..." [(ngModel)]="question" (input)="question = $event.target.value" />
+            <input nz-input placeholder="Enter your question ..." [(ngModel)]="question" />
           </label>
           <nz-divider></nz-divider>
 
@@ -91,16 +91,19 @@
         <div *ngIf="step >= 3">
           <div *ngFor="let option of options">
             <!-- Type boolean -->
-            <span *ngIf="option.type === optionTypes.BOOLEAN">{{option.name}}: <nz-switch [(ngModel)]="option.value"></nz-switch></span>
+            <span *ngIf="option.type === optionTypes.BOOLEAN">
+              <span class="switch-label">{{option.name}}:</span>
+              <nz-switch [(ngModel)]="option.value"></nz-switch>
+            </span>
             <!-- Type int -->
             <label *ngIf="option.type === optionTypes.INT">
-              <span class="input-label">{{option.name}}:</span>
-              <input nz-input nzOverlayClassName="numeric-input" [ngModel]="option.value"/>
+              <span class="input-label">{{option.name}}:</span><br>
+              <input nz-input type="number" [min]="option.min" [max]="option.max" style="width: 100px" [(ngModel)]="option.value"/>
             </label>
             <!-- Type string -->
             <label *ngIf="option.type === optionTypes.STRING">
-              <span class="input-label">{{option.name}}:</span>
-              <input nz-input [ngModel]="option.value"/>
+              <span class="input-label">{{option.name}}:</span><br>
+              <input nz-input style="width: 200px" [(ngModel)]="option.value"/>
             </label>
           </div>
         </div>

@@ -23,6 +23,7 @@ export const OPTIONS_DATA = [
 
   ],
   [ // Rating question
-
+    { name: 'Stars min', type: OptionType.INT, value: 0, min: 0, max: 10, visibleAtCreation: true },
+    { name: 'Stars max', type: OptionType.INT, value: 5, min: 0, max: 10, visibleAtCreation: true }
   ],
 ];
