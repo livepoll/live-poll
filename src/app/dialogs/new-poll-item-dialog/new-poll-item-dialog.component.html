@@ -2,7 +2,7 @@
           [nzTitle]="dialogTitle" [nzContent]="dialogContent" [nzFooter]="dialogFooter">
   <!-- Header -->
   <ng-template #dialogTitle>
-    New Poll Item - {{stepLabels[step -1]}}
+    New Poll Item - {{step > stepLabels.length ? 'Creating ...' : stepLabels[step -1]}}
   </ng-template>
 
   <!-- Content -->
@@ -10,9 +10,10 @@
     <nz-layout style="margin: -24px">
       <!-- Side bar with timeline -->
       <nz-sider nzWidth="300px">
-        <nz-timeline>
-          <nz-timeline-item [nzDot]="" *ngFor="let name of stepLabels">{{name}}</nz-timeline-item>
-        </nz-timeline>
+        <nz-steps [nzCurrent]="step -1" nzDirection="vertical" nzSize="small">
+          <nz-step *ngFor="let name of stepLabels" nzTitle="{{name}}"></nz-step>
+          <nz-step *ngIf="step === 4" nzTitle="Creating ..." nzStatus="process" nzIcon="loading"></nz-step>
+        </nz-steps>
       </nz-sider>
 
       <!-- Main content -->
@@ -26,17 +27,76 @@
             </label>
           </nz-radio-group>
         </div>
+
         <!-- Step 2 - Enter question / answers -->
         <div *ngIf="step === 2">
           <label>
             <span class="input-label">Question:</span>
-            <input nz-input [(ngModel)]="question" (input)="question = $event.target.value" />
+            <input nz-input placeholder="Enter your question ..." [(ngModel)]="question" (input)="question = $event.target.value" />
           </label>
           <nz-divider></nz-divider>
 
+          <!-- Open Text question -->
+          <div *ngIf="itemType == 1">
+            <i>Open text questions do not have pre-defined answers.</i>
+          </div>
+
+          <!-- Multiple choice question -->
+          <div *ngIf="itemType == 2">
+            <!-- Answers -->
+            <label *ngFor="let answer of answers; let i = index; trackBy:trackByFn">
+              <span class="input-label">Answer {{i +1}}:</span>
+              <nz-input-group [nzSuffix]="i < 2 ? null : suffixTemplate">
+                <input nz-input [(ngModel)]="answers[i]" />
+              </nz-input-group>
+              <ng-template #suffixTemplate>
+                <i nz-icon [nzType]="'delete'" style="cursor: pointer" (click)="answers.splice(i, 1)"></i>
+              </ng-template>
+            </label>
+            <!-- Add answer button -->
+            <div style="padding-top: 10px; float: right;">
+              <button [disabled]="answers.length >= 10" nz-button nzType="default" (click)="answers.push('')">
+                <i nz-icon nzType="plus-circle" nzTheme="outline"></i> Answer
+              </button>
+            </div>
+          </div>
+
+          <!-- Quiz question -->
+          <div *ngIf="itemType == 3">
+            <!-- Answers -->
+            <label *ngFor="let answer of answers; let i = index; trackBy:trackByFn">
+              <span class="input-label" [style]="i === 0 ? 'color: #4ca857;' : 'color: #ff194f;'">
+                {{i === 0 ? 'Right answer' : 'Wrong answer ' + i}}:
+              </span>
+              <nz-input-group [nzSuffix]="i < 2 ? null : suffixTemplate">
+                <input nz-input [(ngModel)]="answers[i]" [placeholder]="i === 0 ? 'Enter right answer ...' : 'Enter wrong answer ...'"/>
+              </nz-input-group>
+              <ng-template #suffixTemplate>
+                <i nz-icon [nzType]="'delete'" style="cursor: pointer" (click)="answers.splice(i, 1)"></i>
+              </ng-template>
+            </label>
+            <!-- Add answer button -->
+            <div style="padding-top: 10px; float: right;">
+              <i style="margin-inline-end: 20px;">The answers are going to be randomized for each user.</i>
+              <button [disabled]="answers.length >= 5" nz-button nzType="default" (click)="answers.push('')">
+                <i nz-icon nzType="plus-circle" nzTheme="outline"></i> Answer
+              </button>
+            </div>
+          </div>
+
+          <!-- Word cloud question -->
+          <div *ngIf="itemType == 4">
+            <p>Item type 4</p>
+          </div>
+
+          <!-- Rating question -->
+          <div *ngIf="itemType == 5">
+            <p>Item type 5</p>
+          </div>
         </div>
+
         <!-- Step 3 - Options -->
-        <div *ngIf="step === 3">
+        <div *ngIf="step >= 3">
 
         </div>
 
@@ -49,6 +109,6 @@
   <ng-template #dialogFooter>
     <button nz-button nzType="default" (click)="handleCancel()" [disabled]="loading">Cancel</button>
     <button nz-button nzType="default" (click)="handleBack()" [disabled]="loading || step === 1">Back</button>
-    <button nz-button nzType="primary" (click)="handleNext()" [nzLoading]="loading">Next</button>
+    <button nz-button nzType="primary" (click)="handleNext()" [nzLoading]="loading">{{step === 3 ? 'Finish' : 'Next'}}</button>
   </ng-template>
 </nz-modal>

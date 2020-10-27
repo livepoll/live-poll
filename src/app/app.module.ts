@@ -15,22 +15,24 @@ import { en_US } from 'ng-zorro-antd/i18n';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
+import {NzRadioModule} from 'ng-zorro-antd/radio';
 
 registerLocaleData(en);
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    IconsProviderModule,
-    NzLayoutModule,
-    NzMenuModule,
-    FormsModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    NzBreadCrumbModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        IconsProviderModule,
+        NzLayoutModule,
+        NzMenuModule,
+        FormsModule,
+        HttpClientModule,
+        BrowserAnimationsModule,
+        NzBreadCrumbModule,
+        NzRadioModule
+    ],
   providers: [{provide: NZ_I18N, useValue: en_US}],
   exports: [],
   bootstrap: [AppComponent]

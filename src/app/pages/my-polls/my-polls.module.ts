@@ -8,13 +8,14 @@ import { NewPollDialogComponent } from '../../dialogs/new-poll-dialog/new-poll-d
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzAlertModule } from 'ng-zorro-antd/alert';
-import { NzTimelineModule } from 'ng-zorro-antd/timeline';
+import { NzStepsModule } from 'ng-zorro-antd/steps';
 import { NzDividerModule} from 'ng-zorro-antd/divider';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NewPollItemDialogComponent } from '../../dialogs/new-poll-item-dialog/new-poll-item-dialog.component';
 import { CommonModule } from '@angular/common';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import {NzButtonModule} from 'ng-zorro-antd/button';
+import {NzIconModule} from 'ng-zorro-antd/icon';
 
 @NgModule({
   declarations: [MyPollsComponent, NewPollDialogComponent, NewPollItemDialogComponent],
@@ -23,13 +24,14 @@ import {NzButtonModule} from 'ng-zorro-antd/button';
     NzModalModule,
     NzInputModule,
     NzAlertModule,
-    NzTimelineModule,
+    NzStepsModule,
     NzDividerModule,
     FormsModule,
     CommonModule,
     NzLayoutModule,
     NzRadioModule,
     NzButtonModule,
+    NzIconModule,
   ],
   providers: [],
   exports: [MyPollsComponent]

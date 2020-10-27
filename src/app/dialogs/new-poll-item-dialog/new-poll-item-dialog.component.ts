@@ -35,6 +35,7 @@ export class NewPollItemDialogComponent implements OnInit {
   errorMessage = '';
   itemType = 0;
   question = '';
+  answers = ['', ''];
 
   ngOnInit(): void {}
 
@@ -45,6 +46,7 @@ export class NewPollItemDialogComponent implements OnInit {
    */
   handleNext(): void {
     if (this.step === STEP_LABELS.length) {
+      this.step++;
       this.loading = true;
     } else {
       // Validity check
@@ -56,8 +58,16 @@ export class NewPollItemDialogComponent implements OnInit {
           }
           break;
         case 2:
+          this.answers = this.trimAnswers();
+
           if (this.question === '') {
             this.errorMessage = 'Please enter a question.';
+            return;
+          } else if (this.answers[0] === '' || this.answers[1] === '') {
+            this.errorMessage = 'Please specify at least two possible answers';
+            return;
+          } else if (this.answers.length < 2) {
+            this.errorMessage = 'Please specify at least two unique answers';
             return;
           }
           break;
@@ -84,5 +94,22 @@ export class NewPollItemDialogComponent implements OnInit {
     if (!this.loading) {
       this.isVisible = false;
     }
+  }
+
+  /**
+   * Trims the list of entered answers to get rid of empty answers and duplicates.
+   * Note: The list has to be at least two elements long to display the correct UI.
+   */
+  trimAnswers(): string[] {
+    const trimmed = this.answers
+      .map(v => v.trim())
+      .filter((v, i, a) => a.indexOf(v) === i)
+      .filter(v => v !== '');
+    while (trimmed.length < 2) { trimmed.push(''); } // Fill up with blank items
+    return trimmed;
+  }
+
+  trackByFn(index: any, _: any): number {
+    return index;
   }
 }
