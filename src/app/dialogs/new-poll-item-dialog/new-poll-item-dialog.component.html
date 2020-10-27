@@ -36,8 +36,8 @@
           </label>
           <nz-divider></nz-divider>
 
-          <!-- Open Text question -->
-          <div *ngIf="itemType == 1">
+          <!-- Open Text question / Word cloud question / Rating question -->
+          <div *ngIf="itemType == 1 || itemType == 4 || itemType == 5">
             <i>Open text questions do not have pre-defined answers.</i>
           </div>
 
@@ -59,6 +59,7 @@
                 <i nz-icon nzType="plus-circle" nzTheme="outline"></i> Answer
               </button>
             </div>
+            <br><br>
           </div>
 
           <!-- Quiz question -->
@@ -82,22 +83,26 @@
                 <i nz-icon nzType="plus-circle" nzTheme="outline"></i> Answer
               </button>
             </div>
-          </div>
-
-          <!-- Word cloud question -->
-          <div *ngIf="itemType == 4">
-            <p>Item type 4</p>
-          </div>
-
-          <!-- Rating question -->
-          <div *ngIf="itemType == 5">
-            <p>Item type 5</p>
+            <br><br>
           </div>
         </div>
 
         <!-- Step 3 - Options -->
         <div *ngIf="step >= 3">
-
+          <div *ngFor="let option of options">
+            <!-- Type boolean -->
+            <span *ngIf="option.type === optionTypes.BOOLEAN">{{option.name}}: <nz-switch [(ngModel)]="option.value"></nz-switch></span>
+            <!-- Type int -->
+            <label *ngIf="option.type === optionTypes.INT">
+              <span class="input-label">{{option.name}}:</span>
+              <input nz-input nzOverlayClassName="numeric-input" [ngModel]="option.value"/>
+            </label>
+            <!-- Type string -->
+            <label *ngIf="option.type === optionTypes.STRING">
+              <span class="input-label">{{option.name}}:</span>
+              <input nz-input [ngModel]="option.value"/>
+            </label>
+          </div>
         </div>
 
         <nz-alert *ngIf="errorMessage?.length > 0" nzType="error" nzMessage={{errorMessage}} nzCloseText="Okay" (nzOnClose)="errorMessage = ''"></nz-alert>

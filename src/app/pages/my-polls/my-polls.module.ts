@@ -11,6 +11,7 @@ import { NzAlertModule } from 'ng-zorro-antd/alert';
 import { NzStepsModule } from 'ng-zorro-antd/steps';
 import { NzDividerModule} from 'ng-zorro-antd/divider';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
+import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { NewPollItemDialogComponent } from '../../dialogs/new-poll-item-dialog/new-poll-item-dialog.component';
 import { CommonModule } from '@angular/common';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
@@ -26,6 +27,7 @@ import {NzIconModule} from 'ng-zorro-antd/icon';
     NzAlertModule,
     NzStepsModule,
     NzDividerModule,
+    NzSwitchModule,
     FormsModule,
     CommonModule,
     NzLayoutModule,

@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {OPTIONS_DATA, OptionType} from '../../shared/poll-item-options';
 
 // Constants
 const STEP_LABELS = [
@@ -28,6 +29,7 @@ export class NewPollItemDialogComponent implements OnInit {
   // Constant associations
   stepLabels = STEP_LABELS;
   itemTypes = ITEM_TYPES;
+  optionTypes = OptionType;
 
   @Input() isVisible: boolean;
   step = 1;
@@ -36,6 +38,7 @@ export class NewPollItemDialogComponent implements OnInit {
   itemType = 0;
   question = '';
   answers = ['', ''];
+  options = [];
 
   ngOnInit(): void {}
 
@@ -56,19 +59,23 @@ export class NewPollItemDialogComponent implements OnInit {
             this.errorMessage = 'Please select an item type.';
             return;
           }
+          // Inputs are valid, set options data of selected item type
+          this.options = OPTIONS_DATA[this.itemType - 1].filter(option => option.visibleAtCreation);
           break;
         case 2:
-          this.answers = this.trimAnswers();
-
           if (this.question === '') {
             this.errorMessage = 'Please enter a question.';
             return;
-          } else if (this.answers[0] === '' || this.answers[1] === '') {
-            this.errorMessage = 'Please specify at least two possible answers';
-            return;
-          } else if (this.answers.length < 2) {
-            this.errorMessage = 'Please specify at least two unique answers';
-            return;
+          } else if (this.itemType === 2 || this.itemType === 3) {
+            // Multiple choice or quiz question
+            this.answers = this.trimAnswers();
+            if (this.answers[0] === '' || this.answers[1] === '') {
+              this.errorMessage = 'Please specify at least two possible answers';
+              return;
+            } else if (this.answers.length < 2) {
+              this.errorMessage = 'Please specify at least two unique answers';
+              return;
+            }
           }
           break;
       }
@@ -84,6 +91,7 @@ export class NewPollItemDialogComponent implements OnInit {
    */
   handleBack(): void {
     this.step--;
+    this.errorMessage = '';
   }
 
   /**
