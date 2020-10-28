@@ -15,7 +15,9 @@ import { en_US } from 'ng-zorro-antd/i18n';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
-import {NzRadioModule} from 'ng-zorro-antd/radio';
+import { NzBadgeModule } from 'ng-zorro-antd/badge';
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+import { NzSwitchModule } from 'ng-zorro-antd/switch';
 
 registerLocaleData(en);
 
@@ -31,7 +33,9 @@ registerLocaleData(en);
         HttpClientModule,
         BrowserAnimationsModule,
         NzBreadCrumbModule,
-        NzRadioModule
+        NzBadgeModule,
+        NzAvatarModule,
+        NzSwitchModule
     ],
   providers: [{provide: NZ_I18N, useValue: en_US}],
   exports: [],

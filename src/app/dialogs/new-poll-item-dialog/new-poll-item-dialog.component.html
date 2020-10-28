@@ -92,8 +92,9 @@
           <div *ngFor="let option of options">
             <!-- Type boolean -->
             <span *ngIf="option.type === optionTypes.BOOLEAN">
-              <span class="switch-label">{{option.name}}:</span>
               <nz-switch [(ngModel)]="option.value"></nz-switch>
+              <span class="switch-label">{{option.name}}</span>
+              <br><br>
             </span>
             <!-- Type int -->
             <label *ngIf="option.type === optionTypes.INT">

@@ -14,7 +14,8 @@ export const OPTIONS_DATA = [
     { name: 'Option 3', type: OptionType.INT, value: 0, visibleAtCreation: true }
   ],
   [ // Multiple choice question
-    { name: 'Can select multiple answers', type: OptionType.BOOLEAN, value: false, visibleAtCreation: true },
+    { name: 'User can select multiple answers', type: OptionType.BOOLEAN, value: false, visibleAtCreation: true },
+    { name: 'User can bring up a input field for custom answers', type: OptionType.BOOLEAN, value: false, visibleAtCreation: true }
   ],
   [ // Quiz question
 

@@ -1,14 +1,14 @@
-<nz-layout class="app-layout">
+<nz-layout class="app-layout" >
   <!-- Side bar -->
   <nz-sider class="menu-sidebar" nzCollapsible nzWidth="256px" nzBreakpoint="md"
-            [(nzCollapsed)]="isCollapsed" [nzTrigger]="null" nzTheme="light">
+            [(nzCollapsed)]="isCollapsed" [nzTrigger]="null" [nzTheme]="dark">
     <div class="sidebar-logo">
       <a href="https://www.live-poll.de" target="_blank">
         <img src="https://ng.ant.design/assets/img/logo.svg" alt="logo">
         <h1>Live-Poll</h1>
       </a>
     </div>
-    <ul nz-menu nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+    <ul nz-menu nzMode="inline" [nzInlineCollapsed]="isCollapsed" [nzTheme]="dark">
       <li class="no-select" nz-submenu nzOpen nzTitle="Dashboard" nzIcon="dashboard">
         <ul>
           <li nz-menu-item nzMatchRouter>
@@ -37,9 +37,18 @@
   <nz-layout>
     <!-- Main toolbar -->
     <nz-header>
-      <div class="app-header">
+      <div class="app-header" >
         <span class="header-trigger" (click)="isCollapsed = !isCollapsed">
           <i class="trigger" nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></i>
+        </span>
+        <span class="header-menu">
+          <nz-switch [ngModel]="dark === 'light'" (ngModelChange)="dark = $event ? 'light' : 'dark'" style="margin-right: 10px"
+                     [nzUnCheckedChildren]="unchecked" [nzCheckedChildren]="checked"></nz-switch>
+          <ng-template #unchecked><i nz-icon nzType="bulb"></i></ng-template>
+          <ng-template #checked><i nz-icon nzType="smile" nzTheme="outline"></i></ng-template>
+          <nz-badge [nzCount]="5" style="margin-right: 24px;">
+            <nz-avatar nzIcon="user"></nz-avatar>
+          </nz-badge>
         </span>
       </div>
     </nz-header>
