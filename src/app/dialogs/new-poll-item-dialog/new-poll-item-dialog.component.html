@@ -9,7 +9,7 @@
   <ng-template #dialogContent>
     <nz-layout style="margin: -24px">
       <!-- Side bar with timeline -->
-      <nz-sider nzWidth="300px">
+      <nz-sider class="dialog-sidebar" nzWidth="300px">
         <nz-steps [nzCurrent]="step -1" nzDirection="vertical" nzSize="small">
           <nz-step *ngFor="let name of stepLabels" nzTitle="{{name}}"></nz-step>
           <nz-step *ngIf="step === 4" nzTitle="Creating ..." nzStatus="process" nzIcon="loading"></nz-step>

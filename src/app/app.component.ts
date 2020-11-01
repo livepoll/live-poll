@@ -7,5 +7,36 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   isCollapsed = false;
-  dark = 'light';
+  darkTheme = false
+
+  changeTheme(darkTheme: boolean): void {
+    this.darkTheme = darkTheme;
+    if (darkTheme) {
+      // Remove light theme
+      const dom = document.getElementById('light-theme');
+      if (dom) {
+        dom.remove();
+      }
+      // Apply dark theme
+      const style = document.createElement('link');
+      style.type = 'text/css';
+      style.rel = 'stylesheet';
+      style.id = 'dark-theme';
+      style.href = 'assets/themes/dark.css';
+      document.body.appendChild(style);
+    } else {
+      // Remove dark theme
+      const dom = document.getElementById('dark-theme');
+      if (dom) {
+        dom.remove();
+      }
+      // Apply light theme
+      const style = document.createElement('link');
+      style.type = 'text/css';
+      style.rel = 'stylesheet';
+      style.id = 'dark-theme';
+      style.href = 'assets/themes/light.css';
+      document.body.appendChild(style);
+    }
+  }
 }

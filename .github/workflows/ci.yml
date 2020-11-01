@@ -29,4 +29,5 @@ jobs:
     - name: Install & Build
       run: |
         yarn install
+        yarn run build:themes
         yarn run build:ci
