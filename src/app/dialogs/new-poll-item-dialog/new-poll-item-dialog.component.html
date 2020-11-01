@@ -21,7 +21,7 @@
         <!-- Step 1 - Select item type -->
         <div *ngIf="step === 1">
           <nz-radio-group [(ngModel)]="itemType">
-            <label *ngFor="let type of itemTypes" nz-radio nzValue='{{type.id}}'>
+            <label *ngFor="let type of itemTypes" nz-radio [nzValue]='type.id'>
               <b>{{type.name}}</b><br>
               <span class="radio-description"><i>{{type.description}}</i></span>
             </label>

@@ -25,10 +25,10 @@
       <li class="main-menu no-select" nz-submenu nzTitle="Account" nzIcon="user">
         <ul>
           <li nz-menu-item nzMatchRouter>
-            <a>Change password</a>
+            <a>Account details</a>
           </li>
           <li nz-menu-item nzMatchRouter>
-            <a>Account details</a>
+            <a>Change password</a>
           </li>
         </ul>
       </li>
@@ -46,36 +46,20 @@
                      [nzUnCheckedChildren]="unchecked" [nzCheckedChildren]="checked"></nz-switch>
           <ng-template #unchecked><i nz-icon nzType="smile" nzTheme="outline"></i></ng-template>
           <ng-template #checked><i nz-icon nzType="bulb"></i></ng-template>
-          <nz-badge [nzCount]="5" style="margin-right: 24px;">
-            <nz-avatar nzIcon="user"></nz-avatar>
+          <nz-badge [nzCount]="getNonSilentNotifications().length" style="margin-right: 24px;">
+            <nz-avatar nzIcon="user" nz-popover [nzPopoverContent]="contentTemplate"
+                       nzPopoverPlacement="bottomRight"></nz-avatar>
           </nz-badge>
+          <ng-template #contentTemplate>
+            <!-- Notifications list -->
+
+          </ng-template>
         </span>
       </div>
     </nz-header>
 
     <nz-layout class="inner-layout">
-      <!-- Navigation bread crumbs -->
-      <nz-breadcrumb>
-        <nz-breadcrumb-item>
-          <a routerLink="/home" nz-icon nzType="home"></a>
-        </nz-breadcrumb-item>
-        <nz-breadcrumb-item>
-          <a routerLink="/my-polls"><i>My Polls</i></a>
-        </nz-breadcrumb-item>
-        <nz-breadcrumb-item>
-          <a routerLink="/polls/test-poll"><i>Test Poll</i></a>
-        </nz-breadcrumb-item>
-        <nz-breadcrumb-item>
-          <a routerLink="/polls/test-poll/1"><b>Question 1</b></a>
-        </nz-breadcrumb-item>
-      </nz-breadcrumb>
-
-      <!-- Page content, flipped by router -->
-      <nz-content style="margin-top: 10px">
-        <div class="inner-content">
-          <router-outlet></router-outlet>
-        </div>
-      </nz-content>
+      <router-outlet></router-outlet>
     </nz-layout>
   </nz-layout>
 </nz-layout>

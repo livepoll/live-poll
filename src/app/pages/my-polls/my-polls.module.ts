@@ -15,8 +15,9 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { NewPollItemDialogComponent } from '../../dialogs/new-poll-item-dialog/new-poll-item-dialog.component';
 import { CommonModule } from '@angular/common';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
-import {NzButtonModule} from 'ng-zorro-antd/button';
-import {NzIconModule} from 'ng-zorro-antd/icon';
+import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @NgModule({
   declarations: [MyPollsComponent, NewPollDialogComponent, NewPollItemDialogComponent],
@@ -34,6 +35,7 @@ import {NzIconModule} from 'ng-zorro-antd/icon';
     NzRadioModule,
     NzButtonModule,
     NzIconModule,
+    NzBreadCrumbModule
   ],
   providers: [],
   exports: [MyPollsComponent]

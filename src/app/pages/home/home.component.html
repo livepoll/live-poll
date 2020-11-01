@@ -1,12 +1,21 @@
-<div>
-  <nz-empty *ngIf="polls.length == 0"
-            nzNotFoundImage="/assets/empty.svg"
-            [nzNotFoundContent]="contentTpl" [nzNotFoundFooter]="footerTpl">
-    <ng-template #contentTpl>
-      <span>You do not have any polls yet.</span>
-    </ng-template>
-    <ng-template #footerTpl>
-      <button nz-button nzType="primary" (click)="onEmptyButtonClick()">Go to 'My polls' page</button>
-    </ng-template>
-  </nz-empty>
-</div>
+<!-- Navigation breadcrumb -->
+<nz-breadcrumb>
+  <nz-breadcrumb-item>
+    <a routerLink="/home" nz-icon nzType="home"></a>
+  </nz-breadcrumb-item>
+</nz-breadcrumb>
+
+<!-- Page content -->
+<nz-content style="margin-top: 10px">
+  <div class="inner-content">
+    <nz-empty *ngIf="polls.length == 0" nzNotFoundImage="/assets/empty.svg"[nzNotFoundContent]="contentTpl"
+              [nzNotFoundFooter]="footerTpl">
+      <ng-template #contentTpl>
+        <span>You do not have any polls yet.</span>
+      </ng-template>
+      <ng-template #footerTpl>
+        <button nz-button nzType="primary" (click)="onEmptyButtonClick()">Go to 'My polls' page</button>
+      </ng-template>
+    </nz-empty>
+  </div>
+</nz-content>

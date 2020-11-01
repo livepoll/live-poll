@@ -1,4 +1,17 @@
-<div>
-  <!--<app-new-poll-dialog [isVisible]="false"></app-new-poll-dialog>-->
-  <app-new-poll-item-dialog [isVisible]="true"></app-new-poll-item-dialog>
-</div>
+<!-- Navigation breadcrumb -->
+<nz-breadcrumb>
+  <nz-breadcrumb-item>
+    <a routerLink="/home" nz-icon nzType="home"></a>
+  </nz-breadcrumb-item>
+  <nz-breadcrumb-item>
+    <a routerLink="/my-polls"><i>My Polls</i></a>
+  </nz-breadcrumb-item>
+</nz-breadcrumb>
+
+<!-- Page content -->
+<nz-content style="margin-top: 10px">
+  <div class="inner-content">
+    <!--<app-new-poll-dialog [isVisible]="false"></app-new-poll-dialog>-->
+    <app-new-poll-item-dialog [isVisible]="true"></app-new-poll-item-dialog>
+  </div>
+</nz-content>

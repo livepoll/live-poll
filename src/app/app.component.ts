@@ -1,5 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -9,14 +10,29 @@ import { CookieService } from 'ngx-cookie-service';
 export class AppComponent implements OnInit {
   isCollapsed = false;
   darkTheme = false;
+  notifications = [
+    { id: 101, title: 'Poll "Test poll" opened', message: 'Your poll "Test poll" opened to participants. Share this link to your participants: <a href="https://www.live-poll.de/p/test-poll">https://www.live-poll.de/p/test-poll</a>', silent: true },
+    { id: 102, title: 'Poll "Test poll" closed', message: 'Your poll "Test poll" is closed now for all participants.', silent: false }
+  ];
 
-  constructor(private cookieService: CookieService) {}
+  constructor(private cookieService: CookieService, private route: ActivatedRoute) {}
 
+  /**
+   * Initialize the application
+   */
   ngOnInit(): void {
-    const themeValue = this.cookieService.get('theme');
-    if (themeValue != null && themeValue === 'dark') {
+    // Set persisted theme
+    this.darkTheme = this.cookieService.get('theme') === 'dark';
+    if (this.darkTheme) {
       this.changeTheme(true);
     }
+  }
+
+  /**
+   * Returns all non-silent notifications from the notifications list
+   */
+  getNonSilentNotifications(): any[] {
+    return this.notifications.filter(n => n.silent === false);
   }
 
   /**
@@ -27,7 +43,7 @@ export class AppComponent implements OnInit {
    */
   changeTheme(darkTheme: boolean): void {
     // Set cookie
-    this.cookieService.set('theme', 'dark');
+    this.cookieService.set('theme', darkTheme ? 'dark' : 'light');
     // Change theme
     this.darkTheme = darkTheme;
     if (darkTheme) {

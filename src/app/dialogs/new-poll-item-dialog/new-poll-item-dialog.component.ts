@@ -64,6 +64,7 @@ export class NewPollItemDialogComponent implements OnInit {
           this.options = OPTIONS_DATA[this.itemType - 1].filter(option => option.visibleAtCreation);
           break;
         case 2:
+          console.log(this.itemType);
           if (this.question === '') {
             this.errorMessage = 'Please enter a question.';
             return;
@@ -111,9 +112,9 @@ export class NewPollItemDialogComponent implements OnInit {
    */
   trimAnswers(): string[] {
     const trimmed = this.answers
-      .map(v => v.trim())
-      .filter((v, i, a) => a.indexOf(v) === i)
-      .filter(v => v !== '');
+      .map(v => v.trim()) // Remove blanks or tabs from the end of each answer
+      .filter((v, i, a) => a.indexOf(v) === i) // Filter out dupes
+      .filter(v => v !== ''); // Filter out blank items
     while (trimmed.length < 2) { trimmed.push(''); } // Fill up with blank items
     return trimmed;
   }
