@@ -18,6 +18,7 @@ import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
+import { CookieService } from 'ngx-cookie-service';
 
 registerLocaleData(en);
 
@@ -37,7 +38,10 @@ registerLocaleData(en);
         NzAvatarModule,
         NzSwitchModule
     ],
-  providers: [{provide: NZ_I18N, useValue: en_US}],
+  providers: [
+    CookieService,
+    {provide: NZ_I18N, useValue: en_US}
+  ],
   exports: [],
   bootstrap: [AppComponent]
 })

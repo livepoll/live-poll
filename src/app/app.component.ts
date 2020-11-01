@@ -1,15 +1,34 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.sass']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   isCollapsed = false;
-  darkTheme = false
+  darkTheme = false;
 
+  constructor(private cookieService: CookieService) {}
+
+  ngOnInit(): void {
+    const themeValue = this.cookieService.get('theme');
+    if (themeValue != null && themeValue === 'dark') {
+      this.changeTheme(true);
+    }
+  }
+
+  /**
+   * Changes the theme of the app. There are two available themes:
+   * light and dark.
+   *
+   * @param darkTheme True for dark theme, false for light theme
+   */
   changeTheme(darkTheme: boolean): void {
+    // Set cookie
+    this.cookieService.set('theme', 'dark');
+    // Change theme
     this.darkTheme = darkTheme;
     if (darkTheme) {
       // Remove light theme

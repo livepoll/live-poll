@@ -8,8 +8,8 @@
         <h1>Live-Poll</h1>
       </a>
     </div>
-    <ul nz-menu nzMode="inline" [nzInlineCollapsed]="isCollapsed">
-      <li class="no-select" nz-submenu nzOpen nzTitle="Dashboard" nzIcon="dashboard">
+    <ul class="main-menu" nz-menu nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+      <li class="main-menu no-select" nz-submenu nzOpen nzTitle="Dashboard" nzIcon="dashboard">
         <ul>
           <li nz-menu-item nzMatchRouter>
             <a routerLink="/home">Home</a>
@@ -22,7 +22,7 @@
           </li>
         </ul>
       </li>
-      <li class="no-select" nz-submenu nzTitle="Account" nzIcon="user">
+      <li class="main-menu no-select" nz-submenu nzTitle="Account" nzIcon="user">
         <ul>
           <li nz-menu-item nzMatchRouter>
             <a>Change password</a>
@@ -71,7 +71,7 @@
       </nz-breadcrumb>
 
       <!-- Page content, flipped by router -->
-      <nz-content>
+      <nz-content style="margin-top: 10px">
         <div class="inner-content">
           <router-outlet></router-outlet>
         </div>
