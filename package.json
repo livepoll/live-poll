@@ -35,7 +35,7 @@
     "@angular/router": "~10.1.2",
     "component": "^1.1.0",
     "less-plugin-clean-css": "^1.5.1",
-    "ng-zorro-antd": "^10.0.2",
+    "ng-zorro-antd": "^10.1.0",
     "ngx-cookie-service": "^10.1.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.3",
