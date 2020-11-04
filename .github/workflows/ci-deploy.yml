@@ -5,6 +5,7 @@ name: Angular Deploy
 on:
   push:
     branches: [ main ]
+    paths-ignore: [ 'README.md', 'SECURITY.md', '.git**' ]
 
 jobs:
   build:
