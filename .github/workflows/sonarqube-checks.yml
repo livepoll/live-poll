@@ -1,4 +1,4 @@
-# Workflow for Angular CI build
+# Workflow for SonarQube
 
 name: SonarQube Checks
 
