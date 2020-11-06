@@ -22,8 +22,8 @@
         <div *ngIf="step === 1">
           <nz-radio-group [(ngModel)]="itemType">
             <label *ngFor="let type of itemTypes" nz-radio [nzValue]='type.id'>
-              <b>{{type.name}}</b><br>
-              <span class="radio-description"><i>{{type.description}}</i></span>
+              <strong>{{type.name}}</strong><br>
+              <span class="radio-description"><em>{{type.description}}</em></span>
             </label>
           </nz-radio-group>
         </div>
@@ -38,7 +38,7 @@
 
           <!-- Open Text question / Word cloud question / Rating question -->
           <div *ngIf="itemType == 1 || itemType == 4 || itemType == 5">
-            <i>Open text questions do not have pre-defined answers.</i>
+            <em>Open text questions do not have pre-defined answers.</em>
           </div>
 
           <!-- Multiple choice question -->

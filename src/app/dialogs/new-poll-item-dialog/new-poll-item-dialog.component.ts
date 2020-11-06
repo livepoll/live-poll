@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {OPTIONS_DATA, OptionType} from '../../shared/poll-item-options';
-import {toNumber} from 'ng-zorro-antd/core/util';
 
 // Constants
 const STEP_LABELS = [
