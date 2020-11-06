@@ -1,6 +1,7 @@
 # Live-Poll
 ![Maven Build](https://github.com/livepoll/live-poll/workflows/Angular%20CI/badge.svg)
 ![Docker Build](https://img.shields.io/github/workflow/status/livepoll/live-poll/Angular%20Deploy?label=Docker%20build)
+[![Quality Gate Status](https://sonarqube.live-poll.de/api/project_badges/measure?project=live-poll&metric=alert_status)](https://sonarqube.live-poll.de/dashboard?id=live-poll)
 [![codecov](https://codecov.io/gh/livepoll/live-poll/branch/master/graph/badge.svg)](https://codecov.io/gh/livepoll/live-poll)
 
 ## Deployed versions
