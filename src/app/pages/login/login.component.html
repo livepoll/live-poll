@@ -8,17 +8,17 @@
           <label>
             <span class="input-label">Username:</span>
             <nz-input-group nzPrefixIcon="user">
-              <input type="text" nz-input formControlName="userName" placeholder="Username" />
+              <input type="text" [(ngModel)]="username" nz-input formControlName="username" placeholder="Username" />
             </nz-input-group>
           </label>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
-        <nz-form-control nzErrorTip="Please enter your password!">
+        <nz-form-control class="form-control-password" nzErrorTip="Please enter your password!">
           <label>
             <span class="input-label">Password:</span>
             <nz-input-group nzPrefixIcon="lock">
-              <input type="password" nz-input formControlName="password" placeholder="Password" />
+              <input type="password" [(ngModel)]="password" nz-input formControlName="password" placeholder="Password" />
             </nz-input-group>
           </label>
         </nz-form-control>
@@ -30,11 +30,13 @@
           </label>
         </div>
         <div nz-col [nzSpan]="12">
-          <a class="login-form-forgot">Forgot password</a>
+          <a class="login-form-forgot" routerLink="/forgot-password">Forgot password</a>
         </div>
       </div>
-      <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'">Log in</button>
-      Or <a routerLink="/signup"> Sign up now! </a>
+      <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'" [nzLoading]="loading">
+        {{loading ? 'Logging in ...' : 'Log in'}}
+      </button>
+      Or <a routerLink="/signup">Sign up now!</a>
     </form>
   </nz-card>
 
