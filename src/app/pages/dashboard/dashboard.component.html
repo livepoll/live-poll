@@ -42,17 +42,17 @@
           <i class="trigger" nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></i>
         </span>
         <span class="header-menu">
-          <nz-switch [ngModel]="!darkTheme" (ngModelChange)="changeTheme(!$event)" style="margin-right: 10px"
+          <nz-switch [ngModel]="!darkTheme" (ngModelChange)="changeTheme.emit(!$event)" style="margin-right: 10px"
                      [nzUnCheckedChildren]="unchecked" [nzCheckedChildren]="checked"></nz-switch>
           <ng-template #unchecked><i nz-icon nzType="smile" nzTheme="outline"></i></ng-template>
           <ng-template #checked><i nz-icon nzType="bulb"></i></ng-template>
-          <nz-badge [nzCount]="getNonSilentNotifications().length" style="margin-right: 24px;">
-            <nz-avatar nzIcon="user" nz-popover [nzPopoverContent]="contentTemplate"
-                       nzPopoverPlacement="bottomRight"></nz-avatar>
-          </nz-badge>
-          <ng-template #contentTemplate>
+          <nz-badge [nzCount]="getNonSilentNotifications().length" nzOverflowCount="9" style="margin-right: 24px;">
+              <nz-avatar nzIcon="user" nz-popover [nzPopoverContent]="userMenu"
+                         style="cursor: pointer;"></nz-avatar>
+            </nz-badge>
+          <ng-template #userMenu>
             <!-- Notifications list -->
-
+            <p>test</p>
           </ng-template>
         </span>
       </div>
