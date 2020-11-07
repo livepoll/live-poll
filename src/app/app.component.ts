@@ -4,8 +4,8 @@ import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
 import * as CryptoJS from 'crypto-js';
 import {Router} from '@angular/router';
 
-// const API_BASE_URL = 'https://dev.api.live-poll.de';
-const API_BASE_URL = 'http://localhost:8080';
+const API_BASE_URL = 'https://dev.api.live-poll.de';
+// const API_BASE_URL = 'http://localhost:8080';
 const AES_KEY = '1234567890';
 const PREAMBLE = 'lp-preamble';
 

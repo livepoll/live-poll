@@ -14,8 +14,4 @@ export class HomeComponent implements OnInit {
   constructor(private router: Router) {}
 
   ngOnInit(): void {}
-
-  onEmptyButtonClick(): void {
-    this.router.navigateByUrl('/my-polls');
-  }
 }
