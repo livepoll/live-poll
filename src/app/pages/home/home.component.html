@@ -8,7 +8,7 @@
 <!-- Page content -->
 <nz-content style="margin-top: 10px">
   <div class="inner-content">
-    <nz-empty *ngIf="polls.length == 0" nzNotFoundImage="/assets/empty.svg"[nzNotFoundContent]="contentTpl"
+    <nz-empty *ngIf="polls.length == 0" nzNotFoundImage="/assets/images/empty.svg"[nzNotFoundContent]="contentTpl"
               [nzNotFoundFooter]="footerTpl">
       <ng-template #contentTpl>
         <span>You do not have any polls yet.</span>
