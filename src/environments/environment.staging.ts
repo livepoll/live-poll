@@ -1,6 +1,7 @@
 export const environment = {
+  name: 'staging',
   production: true,
-  apiBaseUrl: 'https://api.live-poll.de',
+  apiBaseUrl: 'https://dev.api.live-poll.de',
   useSecureCookies: true,
-  cookieConsentUrl: 'https://dev.live-poll.de'
+  cookieConsentUrl: 'dev.live-poll.de'
 };
