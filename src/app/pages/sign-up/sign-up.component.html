@@ -10,7 +10,7 @@
             <nz-form-control nzErrorTip="The input is not valid username!">
               <label>
                 <span class="input-label">Username: <span class="required-field">*</span></span>
-                <input nz-input id="username" formControlName="username" tabindex="1" />
+                <input nz-input id="username" formControlName="username" tabindex="1" placeholder="Username" />
               </label>
             </nz-form-control>
           </nz-form-item>
@@ -19,7 +19,7 @@
             <nz-form-control nzErrorTip="Please enter your password!">
               <label>
                 <span class="input-label">Password: <span class="required-field">*</span></span>
-                <input nz-input type="password" id="password" formControlName="password"
+                <input nz-input type="password" id="password" formControlName="password" placeholder="Password"
                        tabindex="3" (ngModelChange)="updateConfirmValidator()" />
               </label>
             </nz-form-control>
@@ -42,7 +42,7 @@
             <nz-form-control nzErrorTip="The input is not valid email!">
               <label>
                 <span class="input-label">E-Mail: <span class="required-field">*</span></span>
-                <input nz-input id="email" formControlName="email" tabindex="2" />
+                <input nz-input id="email" formControlName="email" tabindex="2" placeholder="Email" />
               </label>
             </nz-form-control>
           </nz-form-item>
@@ -51,7 +51,8 @@
             <nz-form-control nzErrorTip="The passwords do not match!">
               <label>
                 <span class="input-label">Confirm password: <span class="required-field">*</span></span>
-                <input nz-input type="password" id="confirmPassword" formControlName="confirmPassword" tabindex="4" />
+                <input nz-input type="password" id="confirmPassword" formControlName="confirmPassword" tabindex="4"
+                       placeholder="Confirm password" />
               </label>
             </nz-form-control>
           </nz-form-item>
@@ -75,18 +76,5 @@
       </div>
     </form>
   </nz-card>
-
-  <!-- Wave animation -->
-  <div class="waveWrapperInner bgTop">
-    <div class="wave waveTop" [style]="'background-image: url(' + (darkTheme ? '../../../assets/images/dark/wave-top.svg'
-    :'../../../assets/images/light/wave-top.svg') + ');'"></div>
-  </div>
-  <div class="waveWrapperInner bgMiddle">
-    <div class="wave waveMiddle" [style]="'background-image: url(' + (darkTheme ? '../../../assets/images/dark/wave-mid.svg'
-    : '../../../assets/images/light/wave-mid.svg') + ');'"></div>
-  </div>
-  <div class="waveWrapperInner bgBottom">
-    <div class="wave waveBottom" [style]="'background-image: url(' + (darkTheme ? '../../../assets/images/dark/wave-bot.svg'
-    : '../../../assets/images/light/wave-bot.svg') + ');'"></div>
-  </div>
+  <app-waves [darkTheme]="darkTheme"></app-waves>
 </div>

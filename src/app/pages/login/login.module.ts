@@ -7,6 +7,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzCardModule } from 'ng-zorro-antd/card';
+import {WavesModule} from '../../components/waves/waves.module';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import { NzCardModule } from 'ng-zorro-antd/card';
     NzButtonModule,
     ReactiveFormsModule,
     NzCheckboxModule,
-    NzCardModule
+    NzCardModule,
+    WavesModule
   ],
   declarations: [LoginComponent],
   exports: [LoginComponent]

@@ -6,20 +6,22 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { ReactiveFormsModule } from '@angular/forms';
-import {NzCheckboxModule} from 'ng-zorro-antd/checkbox';
-import {CommonModule} from '@angular/common';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { CommonModule } from '@angular/common';
+import { WavesModule } from '../../components/waves/waves.module';
 
 @NgModule({
-    imports: [
-        SignUpRoutingModule,
-        NzCardModule,
-        NzFormModule,
-        NzInputModule,
-        NzButtonModule,
-        ReactiveFormsModule,
-        NzCheckboxModule,
-        CommonModule
-    ],
+  imports: [
+    SignUpRoutingModule,
+    NzCardModule,
+    NzFormModule,
+    NzInputModule,
+    NzButtonModule,
+    ReactiveFormsModule,
+    NzCheckboxModule,
+    CommonModule,
+    WavesModule
+  ],
   declarations: [SignUpComponent],
   exports: [SignUpComponent]
 })
