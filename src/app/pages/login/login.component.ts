@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SHA256 } from 'crypto-js';
 import { User } from '../../model/user';
@@ -10,6 +10,7 @@ import { User } from '../../model/user';
 })
 export class LoginComponent implements OnInit {
 
+  @Input() darkTheme = false;
   @Output() login = new EventEmitter<User>();
 
   validateForm!: FormGroup;

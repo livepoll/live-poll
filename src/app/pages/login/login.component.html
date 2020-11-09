@@ -3,6 +3,7 @@
   <nz-card class="login-container">
     <h3>Login to your account:</h3>
     <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+      <!-- Username -->
       <nz-form-item>
         <nz-form-control nzErrorTip="Please enter your username!">
           <label>
@@ -13,6 +14,7 @@
           </label>
         </nz-form-control>
       </nz-form-item>
+      <!-- Password -->
       <nz-form-item>
         <nz-form-control class="form-control-password" nzErrorTip="Please enter your password!">
           <label>
@@ -23,6 +25,7 @@
           </label>
         </nz-form-control>
       </nz-form-item>
+      <!-- Remember me -->
       <div nz-row class="login-form-margin">
         <div nz-col [nzSpan]="12">
           <label nz-checkbox formControlName="remember">
@@ -33,21 +36,13 @@
           <a class="login-form-forgot" routerLink="/forgot-password">Forgot password</a>
         </div>
       </div>
-      <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'" [nzLoading]="loading">
+      <!-- Login button -->
+      <button nz-button class="login-form-button login-form-margin" nzType="primary" [nzLoading]="loading">
         {{loading ? 'Logging in ...' : 'Log in'}}
       </button>
       Or <a routerLink="/signup">Sign up now!</a>
     </form>
   </nz-card>
 
-  <!-- Wave animation -->
-  <div class="waveWrapperInner bgTop">
-    <div class="wave waveTop" style="background-image: url('assets/images/wave-top.png')"></div>
-  </div>
-  <div class="waveWrapperInner bgMiddle">
-    <div class="wave waveMiddle" style="background-image: url('assets/images/wave-mid.png')"></div>
-  </div>
-  <div class="waveWrapperInner bgBottom">
-    <div class="wave waveBottom" style="background-image: url('assets/images/wave-bot.png')"></div>
-  </div>
+  <app-waves [darkTheme]="darkTheme"></app-waves>
 </div>

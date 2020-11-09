@@ -1,1 +1,81 @@
-<p>sign-up works!</p>
+<div class="sign-up-screen waveWrapper waveAnimation">
+  <!-- Sign up container -->
+  <nz-card class="sign-up-container">
+    <h3>Create an account:</h3>
+    <form *ngIf="!accountCreated" nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+      <div nz-row [nzGutter]="10">
+        <div nz-col nzSpan="12">
+          <!-- Username -->
+          <nz-form-item>
+            <nz-form-control nzErrorTip="The input is not valid username!">
+              <label>
+                <span class="input-label">Username: <span class="required-field">*</span></span>
+                <input nz-input id="username" [(ngModel)]="username" formControlName="username" tabindex="1" placeholder="Username" />
+              </label>
+            </nz-form-control>
+          </nz-form-item>
+          <!-- Password -->
+          <nz-form-item>
+            <nz-form-control nzErrorTip="Please enter your password!">
+              <label>
+                <span class="input-label">Password: <span class="required-field">*</span></span>
+                <input nz-input type="password" [(ngModel)]="password" id="password" formControlName="password" placeholder="Password"
+                       tabindex="3" (ngModelChange)="updateConfirmValidator()" />
+              </label>
+            </nz-form-control>
+          </nz-form-item>
+          <!-- License agreement -->
+          <nz-form-item>
+            <nz-form-control class="agb-checkbox">
+              <label nz-checkbox formControlName="agb">
+                <span>I have read the
+                  <a href="https://www.chillibits.com/en/legal-notice/">license agreement</a>
+                  <span class="required-field"> *</span>
+                </span>
+              </label>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzSpan="12">
+          <!-- Email -->
+          <nz-form-item>
+            <nz-form-control nzErrorTip="The input is not valid email!">
+              <label>
+                <span class="input-label">E-Mail: <span class="required-field">*</span></span>
+                <input nz-input id="email" [(ngModel)]="email" formControlName="email" tabindex="2" placeholder="Email" />
+              </label>
+            </nz-form-control>
+          </nz-form-item>
+          <!-- Confirm password -->
+          <nz-form-item>
+            <nz-form-control nzErrorTip="The passwords do not match!">
+              <label>
+                <span class="input-label">Confirm password: <span class="required-field">*</span></span>
+                <input nz-input type="password" id="confirmPassword" formControlName="confirmPassword" tabindex="4"
+                       placeholder="Confirm password" />
+              </label>
+            </nz-form-control>
+          </nz-form-item>
+          <!-- Newsletter -->
+          <nz-form-item>
+            <nz-form-control class="newsletter-checkbox" (change)="newsletter = $event.returnValue">
+              <label nz-checkbox formControlName="newsletter">
+                <span>Subscribe to the Live-Poll newsletter</span>
+              </label>
+            </nz-form-control>
+          </nz-form-item>
+          <!-- Sign up button (order of buttons is important, due to the button focus) -->
+          <button nz-button class="sign-up-form-button login-form-margin" nzType="primary" autofocus [nzLoading]="loading">
+            {{loading ? 'Creating ...' : 'Create account'}}
+          </button>
+          <!-- Back button -->
+          <button nz-button class="back-form-button login-form-margin" nzType="default" [disabled]="loading" routerLink="/login">
+            Back to login
+          </button>
+        </div>
+      </div>
+    </form>
+    
+  </nz-card>
+  <app-waves [darkTheme]="darkTheme"></app-waves>
+</div>
