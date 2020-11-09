@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
-import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
-import * as CryptoJS from 'crypto-js';
-import {Router} from '@angular/router';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { environment as env } from '../environments/environment';
 
-const API_BASE_URL = 'https://dev.api.live-poll.de';
-// const API_BASE_URL = 'http://localhost:8080';
-const AES_KEY = '1234567890';
-const PREAMBLE = 'lp-preamble';
+import jwt_decode from 'jwt-decode';
+import {NgcCookieConsentService} from 'ngx-cookieconsent';
+
+// Constants
+const COOKIE_NAME_SESSION = 'SESSION_ID';
+const COOKIE_NAME_THEME = 'THEME';
 
 @Component({
   selector: 'app-root',
@@ -18,7 +20,8 @@ export class AppComponent implements OnInit {
 
   currentPage: any;
   darkTheme = false;
-  sessionToken = '';
+  jwtToken = '';
+  shouldRedirect = false;
 
   /**
    * Initialize app component
@@ -26,21 +29,23 @@ export class AppComponent implements OnInit {
    * @param cookieService Injected cookie service
    * @param http Injected http client
    * @param router Injected router
+   * @param _ Injected CookieConsent manager (do not remove this import)
    */
   constructor(
     private cookieService: CookieService,
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private _: NgcCookieConsentService
   ) {}
 
   /**
-   * Initialize application
-   * - Auto-login if cookie exists
+   * Initialize application:
    * - Set theme if cookie exist
+   * - Auto-Redirect if cookie exists
    */
   ngOnInit(): void {
-    this.loginIfCookieExists();
     this.applyPersistedTheme();
+    this.redirectIfTokenExists();
   }
 
   /**
@@ -50,12 +55,16 @@ export class AppComponent implements OnInit {
    */
   onActivate(componentReference): void {
     this.currentPage = componentReference;
+    // Redirect if token was loaded successfully
+    if (this.shouldRedirect && !this.router.url.includes('/dashboard')) this.router.navigateByUrl('/dashboard');
     // Apply current theme
     if (this.currentPage.darkTheme !== null) this.currentPage.darkTheme = this.darkTheme;
+    // Attach jwt token
+    if (this.currentPage.jwtToken !== null) this.currentPage.jwtToken = this.jwtToken;
     // Subscribe to child methods
     componentReference.changeTheme?.subscribe(darkTheme => this.changeTheme(darkTheme));  // Change theme event
     componentReference.login?.subscribe(user =>  // Login trigger event
-      this.saveCookieAndLogin(user.username, user.password, user.accountState === 1)
+      this.login(user.username, user.password, user.accountState === 1)
     );
   }
 
@@ -63,7 +72,7 @@ export class AppComponent implements OnInit {
    * Applies the theme, saved in the cookie
    */
   applyPersistedTheme(): void {
-    this.darkTheme = this.cookieService.get('theme') === 'dark';
+    this.darkTheme = this.cookieService.get(COOKIE_NAME_THEME) === 'dark';
     if (this.darkTheme) this.changeTheme(true);
   }
 
@@ -72,32 +81,11 @@ export class AppComponent implements OnInit {
    *
    * Cookie structure: <preamble>;<username>;<password>
    */
-  loginIfCookieExists(): void {
-    const userData = CryptoJS.AES.decrypt(this.cookieService.get('user'), AES_KEY).toString(CryptoJS.enc.Utf8).split(';');
-    const [ preamble, username, password ] = userData;
-    if (preamble === PREAMBLE && username.length > 0 && password.length > 0) {
-      // Valid user data, continue with login
-      this.login(username, password);
-    }
-  }
-
-  /**
-   * Set cookie with user data and execute login afterwards
-   *
-   * Cookie structure: <preamble>;<username>;<password>
-   *
-   * @param username Username of the user
-   * @param password Password of the user (SHA256 hashed)
-   * @param remember Set cookie or not?
-   */
-  saveCookieAndLogin(username: string, password: string, remember: boolean): void {
-    // Set cookie, if necessary
-    if (remember) {
-      const userDataString = PREAMBLE + ';' + username + ';' + password;
-      this.cookieService.set('user', CryptoJS.AES.encrypt(userDataString, AES_KEY).toString());
-    }
-    // Login
-    this.login(username, password);
+  redirectIfTokenExists(): void {
+    if (this.cookieService.check(COOKIE_NAME_SESSION)) {
+      this.jwtToken = this.cookieService.get(COOKIE_NAME_SESSION);
+      this.shouldRedirect = true;
+    } else this.jwtToken = '';
   }
 
   /**
@@ -105,18 +93,28 @@ export class AppComponent implements OnInit {
    *
    * @param username Username of the user
    * @param password Password of the user (SHA256 hashed)
+   * @param remember Remember user
    */
-  login(username: string, password: string): void {
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    const options: any = { headers, responseType: 'text', observe: 'response' };
+  login(username: string, password: string, remember: boolean): void {
+    // Build header, body and options
+    const header = new HttpHeaders().set('Content-Type', 'application/json');
+    const options: any = { header, responseType: 'text', observe: 'response' };
     const body = { username, password };
-
-    this.http.post<string>(API_BASE_URL + '/authenticate', body, options).subscribe((response: HttpResponse<string>) => {
+    // Send request
+    this.http.post<string>(env.apiBaseUrl + '/authenticate', body, options).subscribe((response: HttpResponse<string>) => {
       if (response.ok) {
-        this.sessionToken = response.body;
+        // Request was successful, continue
+        this.jwtToken = response.body;
+        // Save token in a secure cookie, if remember checkbox was checked
+        if (remember) {
+          const expirationDate = this.getTokenExpirationDate(this.jwtToken);
+          this.cookieService.set(COOKIE_NAME_SESSION, this.jwtToken,
+            { secure: env.useSecureCookies, path: '/', sameSite: 'Strict', expires: expirationDate });
+        }
+        // Redirect to dashboard
         this.router.navigateByUrl('/dashboard');
       } else {
-        console.log('Error when logging in', response.statusText);
+        console.log('Login error', response.statusText);
       }
     });
   }
@@ -129,7 +127,8 @@ export class AppComponent implements OnInit {
    */
   changeTheme(darkTheme: boolean): void {
     // Set cookie
-    this.cookieService.set('theme', darkTheme ? 'dark' : 'light');
+    this.cookieService.set(COOKIE_NAME_THEME, darkTheme ? 'dark' : 'light',
+      { secure: env.useSecureCookies, path: '/', sameSite: 'Strict' });
     // Change theme
     this.darkTheme = darkTheme;
     if (darkTheme) {
@@ -155,5 +154,21 @@ export class AppComponent implements OnInit {
       style.href = 'assets/themes/light.css';
       document.body.appendChild(style);
     }
+  }
+
+  /**
+   * Decode the jwt token and calculate the expiration date.
+   * Used for setting the same expiration date to the secure cookie.
+   *
+   * @param token JWT token as string
+   */
+  getTokenExpirationDate(token: string): Date {
+    const tokenData = jwt_decode(token) as any;
+    if (tokenData.exp !== undefined) {
+      const date = new Date(0);
+      date.setUTCSeconds(tokenData.exp);
+      return date;
+    }
+    return null;
   }
 }
