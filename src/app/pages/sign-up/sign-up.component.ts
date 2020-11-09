@@ -1,8 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { SHA256 } from 'crypto-js';
-import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { environment as env } from '../../../environments/environment';
+import { Router } from '@angular/router';
+import { catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-sign-up',
@@ -19,16 +22,21 @@ export class SignUpComponent implements OnInit {
   password: string;
   loading = false;
   newsletter = false;
+  accountCreated = false;
 
   /**
    * Initialize login component
    *
    * @param formBuilder Injected form builder
    * @param http Injected http client
+   * @param notificationService Injected notification service
+   * @param router Injected router service
    */
   constructor(
     private formBuilder: FormBuilder,
-    private http: HttpClient
+    private http: HttpClient,
+    private notificationService: NzNotificationService,
+    private router: Router
   ) {}
 
   /**
@@ -92,14 +100,32 @@ export class SignUpComponent implements OnInit {
   signUp(username: string, email: string, password: string, newsletter: boolean): void {
     // Build header, body and options
     const header = new HttpHeaders().set('Content-Type', 'application/json');
-    const options: any = { header, responseType: 'text', observe: 'response' };
-    const body = { email, username, password, newsletter };
+    const options: any = { header, responseType: 'application/json', observe: 'response' };
+    const body = { id: 0, email, username, password };
     // Send request
-    this.http.post<string>(env.apiBaseUrl + '/register', body, options).subscribe((response: HttpResponse<string>) => {
-      if (response.ok) {
-        // Request was successful, continue
-
-      }
+    this.http.post<string>(env.apiBaseUrl + '/register', body, options)
+      .subscribe((response: HttpResponse<string>) => {
+        console.log('test1');
+        if (response.ok) {
+          // Request was successful, continue
+          this.accountCreated = true;
+          this.displaySuccessNotification();
+          this.router.navigateByUrl('/login');
+        }
+    }, (_) => {
+      this.notificationService.error('An error occurred', 'Something went wrong.', { nzPlacement: 'topRight' });
+      this.loading = false;
     });
+  }
+
+  /**
+   * Displays a notification with the mail confirm message
+   */
+  displaySuccessNotification(): void {
+    this.notificationService.success(
+      'Account creation successful',
+      'Please check your email inbox and confirm your email, by clicking on the confirmation link.',
+      { nzPlacement: 'topRight' }
+    );
   }
 }

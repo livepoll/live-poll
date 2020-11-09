@@ -2,7 +2,7 @@
   <!-- Sign up container -->
   <nz-card class="sign-up-container">
     <h3>Create an account:</h3>
-    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+    <form *ngIf="!accountCreated" nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
       <div nz-row [nzGutter]="10">
         <div nz-col nzSpan="12">
           <!-- Username -->
@@ -10,7 +10,7 @@
             <nz-form-control nzErrorTip="The input is not valid username!">
               <label>
                 <span class="input-label">Username: <span class="required-field">*</span></span>
-                <input nz-input id="username" formControlName="username" tabindex="1" placeholder="Username" />
+                <input nz-input id="username" [(ngModel)]="username" formControlName="username" tabindex="1" placeholder="Username" />
               </label>
             </nz-form-control>
           </nz-form-item>
@@ -19,7 +19,7 @@
             <nz-form-control nzErrorTip="Please enter your password!">
               <label>
                 <span class="input-label">Password: <span class="required-field">*</span></span>
-                <input nz-input type="password" id="password" formControlName="password" placeholder="Password"
+                <input nz-input type="password" [(ngModel)]="password" id="password" formControlName="password" placeholder="Password"
                        tabindex="3" (ngModelChange)="updateConfirmValidator()" />
               </label>
             </nz-form-control>
@@ -42,7 +42,7 @@
             <nz-form-control nzErrorTip="The input is not valid email!">
               <label>
                 <span class="input-label">E-Mail: <span class="required-field">*</span></span>
-                <input nz-input id="email" formControlName="email" tabindex="2" placeholder="Email" />
+                <input nz-input id="email" [(ngModel)]="email" formControlName="email" tabindex="2" placeholder="Email" />
               </label>
             </nz-form-control>
           </nz-form-item>
@@ -58,7 +58,7 @@
           </nz-form-item>
           <!-- Newsletter -->
           <nz-form-item>
-            <nz-form-control class="newsletter-checkbox">
+            <nz-form-control class="newsletter-checkbox" (change)="newsletter = $event.returnValue">
               <label nz-checkbox formControlName="newsletter">
                 <span>Subscribe to the Live-Poll newsletter</span>
               </label>
@@ -75,6 +75,7 @@
         </div>
       </div>
     </form>
+    
   </nz-card>
   <app-waves [darkTheme]="darkTheme"></app-waves>
 </div>

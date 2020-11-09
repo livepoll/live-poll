@@ -9,6 +9,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { CommonModule } from '@angular/common';
 import { WavesModule } from '../../components/waves/waves.module';
+import { NzNotificationModule } from 'ng-zorro-antd/notification';
 
 @NgModule({
   imports: [
@@ -20,7 +21,8 @@ import { WavesModule } from '../../components/waves/waves.module';
     ReactiveFormsModule,
     NzCheckboxModule,
     CommonModule,
-    WavesModule
+    WavesModule,
+    NzNotificationModule
   ],
   declarations: [SignUpComponent],
   exports: [SignUpComponent]
