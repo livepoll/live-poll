@@ -1,7 +1,7 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {User} from '../../model/user';
-import {SHA256} from 'crypto-js';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { User } from '../../model/user';
+import { SHA256 } from 'crypto-js';
 
 @Component({
   selector: 'app-sign-up',
@@ -17,6 +17,7 @@ export class SignUpComponent implements OnInit {
   email: string;
   password: string;
   loading = false;
+  newsletter = false;
 
   /**
    * Initialize login component
@@ -30,14 +31,31 @@ export class SignUpComponent implements OnInit {
    */
   ngOnInit(): void {
     this.validateForm = this.formBuilder.group({
+      email: [null, [Validators.email, Validators.required]],
       username: [null, [Validators.required]],
       password: [null, [Validators.required]],
-      agb: [false, [Validators.required]]
+      confirmPassword: [null, [Validators.required, this.confirmationValidator]],
+      agb: [false, [Validators.required]],
+      newsletter: [false, []]
     });
   }
 
   /**
-   * Validates the sign up form
+   * Password control validator
+   *
+   * @param control Form element
+   */
+  confirmationValidator = (control: FormControl): { [s: string]: boolean } => {
+    if (!control.value) {
+      return { required: true };
+    } else if (control.value !== this.validateForm.controls.password.value) {
+      return { confirm: true, error: true };
+    }
+    return {};
+  }
+
+  /**
+   * Validates the login form
    */
   submitForm(): void {
     // Validate form controls
@@ -47,14 +65,26 @@ export class SignUpComponent implements OnInit {
     }
     if (this.validateForm.valid) {
       this.loading = true;
-      this.signUp(this.username, this.email, this.password);
+      this.signUp(this.username, this.email, this.password, this.newsletter);
     }
   }
 
   /**
-   * Sign up
+   * Updates the confirm password validator on every update of the confirm password field
    */
-  signUp(username: string, email: string, password: string): void {
+  updateConfirmValidator(): void {
+    Promise.resolve().then(() => this.validateForm.controls.confirmPassword.updateValueAndValidity());
+  }
+
+  /**
+   * Sign up process
+   *
+   * @param username Username of the user
+   * @param email Email address of the user
+   * @param password Password of the user
+   * @param newsletter Subscribe to the newsletter
+   */
+  signUp(username: string, email: string, password: string, newsletter: boolean): void {
 
   }
 }
