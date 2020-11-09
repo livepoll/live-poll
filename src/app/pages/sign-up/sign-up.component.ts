@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {User} from '../../model/user';
 import {SHA256} from 'crypto-js';
@@ -9,6 +9,8 @@ import {SHA256} from 'crypto-js';
   styleUrls: ['./sign-up.component.sass']
 })
 export class SignUpComponent implements OnInit {
+
+  @Input() darkTheme = false;
 
   validateForm!: FormGroup;
   username: string;
