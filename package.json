@@ -36,7 +36,7 @@
     "crypto-js": "^4.0.0",
     "jwt-decode": "^3.1.1",
     "less-plugin-clean-css": "^1.5.1",
-    "ng-zorro-antd": "^10.1.0",
+    "ng-zorro-antd": "^10.1.1",
     "ngx-cookie-service": "^10.1.1",
     "ngx-cookieconsent": "^2.2.3",
     "rxjs": "~6.6.0",
