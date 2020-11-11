@@ -103,9 +103,8 @@ export class SignUpComponent implements OnInit {
     const options: any = { header, responseType: 'application/json', observe: 'response' };
     const body = { id: 0, email, username, password };
     // Send request
-    this.http.post<string>(env.apiBaseUrl + '/register', body, options)
+    this.http.post<string>(env.apiBaseUrl + '/account/register', body, options)
       .subscribe((response: HttpResponse<string>) => {
-        console.log('test1');
         if (response.ok) {
           // Request was successful, continue
           this.accountCreated = true;

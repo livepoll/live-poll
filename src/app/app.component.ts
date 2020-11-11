@@ -108,7 +108,6 @@ export class AppComponent implements OnInit {
         // Save token in a secure cookie, if remember checkbox was checked
         if (remember) {
           const expirationDate = this.getTokenExpirationDate(this.jwtToken);
-          console.log('secure cookies: ' + env.useSecureCookies);
           this.cookieService.set(COOKIE_NAME_SESSION, this.jwtToken,
             { secure: env.useSecureCookies, path: '/', sameSite: 'Strict', expires: expirationDate });
         }
