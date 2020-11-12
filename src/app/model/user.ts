@@ -10,6 +10,7 @@ import {UserAttribute} from './user-attribute';
  * which can be set later on individually on the server side.
  */
 export class User {
+  id: number;
   username: string;
   email: string;
   password: string;

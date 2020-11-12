@@ -4,6 +4,9 @@
 
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Router} from '@angular/router';
+import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
+import {environment as env} from '../../../environments/environment';
+import {User} from '../../model/user';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,7 +15,7 @@ import {Router} from '@angular/router';
 })
 export class DashboardComponent implements OnInit {
 
-  @Input() userData: null;
+  @Input() userData: User = null;
   @Input() darkTheme: boolean;
   @Output() changeTheme = new EventEmitter<boolean>();
 
@@ -21,15 +24,43 @@ export class DashboardComponent implements OnInit {
     { id: 101, title: 'Poll "Test poll" opened', message: 'Your poll "Test poll" opened to participants. Share this link to your participants: <a href="https://www.live-poll.de/p/test-poll">https://www.live-poll.de/p/test-poll</a>', silent: true },
     { id: 102, title: 'Poll "Test poll" closed', message: 'Your poll "Test poll" is closed now for all participants.', silent: false }
   ];
+  polls: any;
 
-  constructor(private router: Router) {}
+  /**
+   * Initialize the dashboard component
+   *
+   * @param router Injected router
+   * @param http Injected http client
+   */
+  constructor(
+    private router: Router,
+    private http: HttpClient
+  ) {}
 
   /**
    * Initialize the dashboard component
    */
   ngOnInit(): void {
     // Redirect to login page, if the userData is null
-    this.router.navigateByUrl('/login');
+    if (this.userData === null) {
+      this.router.navigateByUrl('/login');
+    } else {
+      this.loadPolls();
+    }
+  }
+
+  /**
+   * Loads all polls of the current user
+   */
+  loadPolls(): void {
+    // Build header, body and options
+    const header = new HttpHeaders().set('Content-Type', 'application/json');
+    const options: any = { header, responseType: 'application/json', observe: 'response' };
+    // Send request
+    this.http.get<string>(env.apiBaseUrl + '/user/' + this.userData.id + '/polls', options)
+      .subscribe((response: HttpResponse<string>) => {
+        if (response.ok) this.polls = response.body;
+      });
   }
 
   /**
