@@ -6,7 +6,7 @@
   <!-- Login container -->
   <nz-card *ngIf="loginMode" class="login-container">
     <h3>Login to your account:</h3>
-    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitLoginForm()">
+    <form nz-form [formGroup]="validateLoginForm" (ngSubmit)="submitLoginForm()">
       <!-- Username / Email -->
       <nz-form-item>
         <nz-form-control nzErrorTip="Please enter your username / email!">
@@ -55,7 +55,7 @@
   <!-- Forgot password container -->
   <nz-card *ngIf="!loginMode" class="login-container">
     <h3>Reset password:</h3>
-    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForgotPasswordForm()">
+    <form nz-form [formGroup]="validateResetPasswordForm" (ngSubmit)="submitForgotPasswordForm()">
       <!-- Username / Email -->
       <nz-form-item>
         <nz-form-control nzErrorTip="Please enter your username / email!">
