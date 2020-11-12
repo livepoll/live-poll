@@ -14,7 +14,9 @@
             <nz-form-control nzErrorTip="The input is not valid username!">
               <label>
                 <span class="input-label">Username: <span class="required-field">*</span></span>
-                <input nz-input id="username" [(ngModel)]="username" formControlName="username" tabindex="1" placeholder="Username" />
+                <nz-input-group nzPrefixIcon="user">
+                  <input nz-input id="username" [(ngModel)]="username" formControlName="username" tabindex="1" placeholder="Username" />
+                </nz-input-group>
               </label>
             </nz-form-control>
           </nz-form-item>
@@ -23,20 +25,25 @@
             <nz-form-control nzErrorTip="Please enter your password!">
               <label>
                 <span class="input-label">Password: <span class="required-field">*</span></span>
-                <input nz-input type="password" [(ngModel)]="password" id="password" formControlName="password" placeholder="Password"
-                       tabindex="3" (ngModelChange)="updateConfirmValidator()" />
+                <nz-input-group nzPrefixIcon="lock" [nzSuffix]="suffixTemplate">
+                  <input nz-input [type]="passwordVisible ? 'text' : 'password'" [(ngModel)]="password" id="password"
+                         formControlName="password" placeholder="Password" tabindex="3"
+                         (ngModelChange)="updateConfirmValidator()" />
+                </nz-input-group>
+                <ng-template #suffixTemplate>
+                  <i nz-icon [nzType]="passwordVisible ? 'eye-invisible' : 'eye'" (click)="passwordVisible = !passwordVisible"></i>
+                </ng-template>
               </label>
             </nz-form-control>
           </nz-form-item>
           <!-- License agreement -->
           <nz-form-item>
-            <nz-form-control class="agb-checkbox">
+            <nz-form-control class="agb-checkbox" nzErrorTip="Accepting the agreement is mandatory!">
               <label nz-checkbox formControlName="agb">
-                <span>I have read the
-                  <a href="https://www.chillibits.com/en/legal-notice/">license agreement</a>
-                  <span class="required-field"> *</span>
-                </span>
+                <span style="margin-right: -5px">I have read the</span>
               </label>
+              <a href="https://www.chillibits.com/en/legal-notice/" target="_blank">license agreement</a>
+              <span class="required-field"> *</span>
             </nz-form-control>
           </nz-form-item>
         </div>
@@ -46,7 +53,9 @@
             <nz-form-control nzErrorTip="The input is not valid email!">
               <label>
                 <span class="input-label">E-Mail: <span class="required-field">*</span></span>
-                <input nz-input id="email" [(ngModel)]="email" formControlName="email" tabindex="2" placeholder="Email" />
+                <nz-input-group nzPrefixIcon="mail">
+                  <input nz-input id="email" [(ngModel)]="email" formControlName="email" tabindex="2" placeholder="Email" />
+                </nz-input-group>
               </label>
             </nz-form-control>
           </nz-form-item>
@@ -55,8 +64,10 @@
             <nz-form-control nzErrorTip="The passwords do not match!">
               <label>
                 <span class="input-label">Confirm password: <span class="required-field">*</span></span>
-                <input nz-input type="password" id="confirmPassword" formControlName="confirmPassword" tabindex="4"
-                       placeholder="Confirm password" />
+                <nz-input-group nzPrefixIcon="lock">
+                  <input nz-input [type]="passwordVisible ? 'text' : 'password'" id="confirmPassword"
+                         formControlName="confirmPassword" tabindex="4" placeholder="Confirm password" />
+                </nz-input-group>
               </label>
             </nz-form-control>
           </nz-form-item>
@@ -79,7 +90,6 @@
         </div>
       </div>
     </form>
-
   </nz-card>
   <app-waves [darkTheme]="darkTheme"></app-waves>
 </div>

@@ -24,8 +24,10 @@ export class SignUpComponent implements OnInit {
   email: string;
   password: string;
   loading = false;
+  agb = false;
   newsletter = false;
   accountCreated = false;
+  passwordVisible = false;
 
   /**
    * Initialize sign up component
@@ -51,7 +53,7 @@ export class SignUpComponent implements OnInit {
       username: [null, [Validators.required]],
       password: [null, [Validators.required]],
       confirmPassword: [null, [Validators.required, this.confirmationValidator]],
-      agb: [false, [Validators.required]],
+      agb: [false, [Validators.required, Validators.requiredTrue]],
       newsletter: [false, []]
     });
   }

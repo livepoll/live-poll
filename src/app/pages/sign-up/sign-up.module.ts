@@ -14,6 +14,7 @@ import {NzCheckboxModule} from 'ng-zorro-antd/checkbox';
 import {CommonModule} from '@angular/common';
 import {WavesModule} from '../../components/waves/waves.module';
 import {NzNotificationModule} from 'ng-zorro-antd/notification';
+import {NzIconModule} from 'ng-zorro-antd/icon';
 
 @NgModule({
   imports: [
@@ -26,7 +27,8 @@ import {NzNotificationModule} from 'ng-zorro-antd/notification';
     NzCheckboxModule,
     CommonModule,
     WavesModule,
-    NzNotificationModule
+    NzNotificationModule,
+    NzIconModule
   ],
   declarations: [SignUpComponent],
   exports: [SignUpComponent]

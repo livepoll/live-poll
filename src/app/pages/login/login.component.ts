@@ -17,11 +17,13 @@ export class LoginComponent implements OnInit {
   @Input() darkTheme = false;
   @Output() login = new EventEmitter<User>();
 
+  loginMode = true;
   validateForm!: FormGroup;
   username: string;
   password: string;
   remember = true;
   loading = false;
+  passwordVisible = false;
 
   /**
    * Initialize login component
@@ -44,7 +46,7 @@ export class LoginComponent implements OnInit {
   /**
    * Validates the login form
    */
-  submitForm(): void {
+  submitLoginForm(): void {
     // Validate form controls
     for (const i in this.validateForm.controls) {
       this.validateForm.controls[i].markAsDirty();
