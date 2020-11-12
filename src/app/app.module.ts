@@ -10,6 +10,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {registerLocaleData} from '@angular/common';
 import {CookieService} from 'ngx-cookie-service';
 import {NgcCookieConsentConfig, NgcCookieConsentModule} from 'ngx-cookieconsent';
+import {NzNotificationModule} from 'ng-zorro-antd/notification';
 import en from '@angular/common/locales/en';
 
 import {AppRoutingModule} from './app-routing.module';
@@ -47,6 +48,7 @@ const cookieConfig: NgcCookieConsentConfig = {
         FormsModule,
         HttpClientModule,
         BrowserAnimationsModule,
+        NzNotificationModule,
         NgcCookieConsentModule.forRoot(cookieConfig)
     ],
   providers: [

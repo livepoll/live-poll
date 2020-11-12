@@ -12,7 +12,7 @@ import {Router} from '@angular/router';
 })
 export class DashboardComponent implements OnInit {
 
-  @Input() jwtToken = '';
+  @Input() userData: null;
   @Input() darkTheme: boolean;
   @Output() changeTheme = new EventEmitter<boolean>();
 
@@ -28,8 +28,8 @@ export class DashboardComponent implements OnInit {
    * Initialize the dashboard component
    */
   ngOnInit(): void {
-    // Redirect to login page, if the jwt token is empty
-    if (this.jwtToken.length === 0) this.router.navigateByUrl('/login');
+    // Redirect to login page, if the userData is null
+    this.router.navigateByUrl('/login');
   }
 
   /**

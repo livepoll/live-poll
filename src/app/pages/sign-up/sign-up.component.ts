@@ -28,7 +28,7 @@ export class SignUpComponent implements OnInit {
   accountCreated = false;
 
   /**
-   * Initialize login component
+   * Initialize sign up component
    *
    * @param formBuilder Injected form builder
    * @param http Injected http client
