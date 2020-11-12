@@ -1,3 +1,7 @@
+/*
+ * Copyright © Live-Poll 2020. All rights reserved
+ */
+
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Router} from '@angular/router';
 

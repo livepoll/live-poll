@@ -1,4 +1,8 @@
-import { browser, by, element } from 'protractor';
+/*
+ * Copyright © Live-Poll 2020. All rights reserved
+ */
+
+import {browser, by, element} from 'protractor';
 
 export class AppPage {
   navigateTo(): Promise<unknown> {

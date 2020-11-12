@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+/*
+ * Copyright © Live-Poll 2020. All rights reserved
+ */
+
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-analytics',

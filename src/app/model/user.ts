@@ -1,4 +1,8 @@
-import { UserAttribute } from './user-attribute';
+/*
+ * Copyright © Live-Poll 2020. All rights reserved
+ */
+
+import {UserAttribute} from './user-attribute';
 
 /**
  * User class.

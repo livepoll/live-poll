@@ -1,12 +1,11 @@
-import { NgModule } from '@angular/core';
-import { NZ_ICONS, NzIconModule } from 'ng-zorro-antd/icon';
+/*
+ * Copyright © Live-Poll 2020. All rights reserved
+ */
 
-import {
-  MenuFoldOutline,
-  MenuUnfoldOutline,
-  FormOutline,
-  DashboardOutline
-} from '@ant-design/icons-angular/icons';
+import {NgModule} from '@angular/core';
+import {NZ_ICONS, NzIconModule} from 'ng-zorro-antd/icon';
+
+import {DashboardOutline, FormOutline, MenuFoldOutline, MenuUnfoldOutline} from '@ant-design/icons-angular/icons';
 
 const icons = [MenuFoldOutline, MenuUnfoldOutline, DashboardOutline, FormOutline];
 

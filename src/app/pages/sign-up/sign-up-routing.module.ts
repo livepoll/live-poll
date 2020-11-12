@@ -1,6 +1,10 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { SignUpComponent } from './sign-up.component';
+/*
+ * Copyright © Live-Poll 2020. All rights reserved
+ */
+
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
+import {SignUpComponent} from './sign-up.component';
 
 const routes: Routes = [
   { path: '', component: SignUpComponent },

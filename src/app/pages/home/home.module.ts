@@ -1,12 +1,16 @@
-import { NgModule } from '@angular/core';
-import { HomeRoutingModule } from './home-routing.module';
-import { HomeComponent } from './home.component';
-import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzEmptyModule } from 'ng-zorro-antd/empty';
-import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
-import { NzLayoutModule } from 'ng-zorro-antd/layout';
-import { NzIconModule } from 'ng-zorro-antd/icon';
-import { CommonModule } from '@angular/common';
+/*
+ * Copyright © Live-Poll 2020. All rights reserved
+ */
+
+import {NgModule} from '@angular/core';
+import {HomeRoutingModule} from './home-routing.module';
+import {HomeComponent} from './home.component';
+import {NzButtonModule} from 'ng-zorro-antd/button';
+import {NzEmptyModule} from 'ng-zorro-antd/empty';
+import {NzBreadCrumbModule} from 'ng-zorro-antd/breadcrumb';
+import {NzLayoutModule} from 'ng-zorro-antd/layout';
+import {NzIconModule} from 'ng-zorro-antd/icon';
+import {CommonModule} from '@angular/common';
 
 @NgModule({
   imports: [

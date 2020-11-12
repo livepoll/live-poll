@@ -1,8 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { CookieService } from 'ngx-cookie-service';
-import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { Router } from '@angular/router';
-import { environment as env } from '../environments/environment';
+/*
+ * Copyright © Live-Poll 2020. All rights reserved
+ */
+
+import {Component, OnInit} from '@angular/core';
+import {CookieService} from 'ngx-cookie-service';
+import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
+import {Router} from '@angular/router';
+import {environment as env} from '../environments/environment';
 
 import jwt_decode from 'jwt-decode';
 import {NgcCookieConsentService} from 'ngx-cookieconsent';

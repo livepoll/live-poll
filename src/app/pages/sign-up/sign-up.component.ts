@@ -1,11 +1,14 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { NzNotificationService } from 'ng-zorro-antd/notification';
-import { SHA256 } from 'crypto-js';
-import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { environment as env } from '../../../environments/environment';
-import { Router } from '@angular/router';
-import { catchError } from 'rxjs/operators';
+/*
+ * Copyright © Live-Poll 2020. All rights reserved
+ */
+
+import {Component, Input, OnInit} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {NzNotificationService} from 'ng-zorro-antd/notification';
+import {SHA256} from 'crypto-js';
+import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
+import {environment as env} from '../../../environments/environment';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-sign-up',

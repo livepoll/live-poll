@@ -1,7 +1,11 @@
+/*
+ * Copyright © Live-Poll 2020. All rights reserved
+ */
+
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { SHA256 } from 'crypto-js';
-import { User } from '../../model/user';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {SHA256} from 'crypto-js';
+import {User} from '../../model/user';
 
 @Component({
   selector: 'app-login',
