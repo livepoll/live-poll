@@ -84,9 +84,9 @@ export class AppComponent implements OnInit {
   loadUserData(showErrorExplicitly: boolean): void {
     // Build header, body and options
     const header = new HttpHeaders().set('Content-Type', 'application/json');
-    const options: any = { header, responseType: 'application/json', observe: 'response', withCredentials: true };
+    const options: any = { header, observe: 'response', withCredentials: true };
     // Send request
-    this.http.get<string>(env.apiBaseUrl + '/users', options).subscribe((response: HttpResponse<string>) => {
+    this.http.get<string>(env.apiBaseUrl + '/authenticate/init', options).subscribe((response: HttpResponse<string>) => {
       if (response.ok) {
         this.userData = response.body;
         // Redirect to dashboard
@@ -109,10 +109,10 @@ export class AppComponent implements OnInit {
   login(username: string, password: string, remember: boolean): void {
     // Build header, body and options
     const header = new HttpHeaders().set('Content-Type', 'application/json');
-    const options: any = { header, responseType: 'text', observe: 'response' };
+    const options: any = { header, observe: 'response', withCredentials: true };
     const body = { username, password };
     // Send request
-    this.http.post<string>(env.apiBaseUrl + '/authenticate', body, options).subscribe((response: HttpResponse<string>) => {
+    this.http.post<string>(env.apiBaseUrl + '/authenticate/login', body, options).subscribe((response: HttpResponse<string>) => {
       if (response.ok) {
         // Load user data
         this.loadUserData(true);
@@ -121,6 +121,26 @@ export class AppComponent implements OnInit {
       }
     }, (_) => {
       this.showErrorMessage('Login failed.');
+    });
+  }
+
+  /**
+   * Executes the logout of the current user
+   */
+  logout(): void {
+    // Build header, body and options
+    const header = new HttpHeaders().set('Content-Type', 'application/json');
+    const options: any = { header, observe: 'response', withCredentials: true };
+    // Send request
+    this.http.put<string>(env.apiBaseUrl + '/authenticate/logout', null, options).subscribe((response: HttpResponse<string>) => {
+      if (response.ok) {
+        // Redirect to login page
+        this.router.navigateByUrl('/login');
+      } else {
+        console.log('Logout error', response.statusText);
+      }
+    }, (_) => {
+      this.showErrorMessage('Logout failed.');
     });
   }
 

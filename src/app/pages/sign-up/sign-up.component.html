@@ -6,7 +6,7 @@
   <!-- Sign up container -->
   <nz-card class="sign-up-container">
     <h3>Create an account:</h3>
-    <form *ngIf="!accountCreated" nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+    <form nz-form [formGroup]="signUpForm" (ngSubmit)="submitForm()">
       <div nz-row [nzGutter]="10">
         <div nz-col nzSpan="12">
           <!-- Username -->
@@ -15,7 +15,7 @@
               <label>
                 <span class="input-label">Username: <span class="required-field">*</span></span>
                 <nz-input-group nzPrefixIcon="user">
-                  <input nz-input id="username" [(ngModel)]="username" formControlName="username" tabindex="1" placeholder="Username" />
+                  <input nz-input id="username" formControlName="username" tabindex="1" placeholder="Username" />
                 </nz-input-group>
               </label>
             </nz-form-control>
@@ -26,7 +26,7 @@
               <label>
                 <span class="input-label">Password: <span class="required-field">*</span></span>
                 <nz-input-group nzPrefixIcon="lock" [nzSuffix]="suffixTemplate">
-                  <input nz-input [type]="passwordVisible ? 'text' : 'password'" [(ngModel)]="password" id="password"
+                  <input nz-input [type]="passwordVisible ? 'text' : 'password'" id="password"
                          formControlName="password" placeholder="Password" tabindex="3"
                          (ngModelChange)="updateConfirmValidator()" />
                 </nz-input-group>
@@ -54,7 +54,7 @@
               <label>
                 <span class="input-label">E-Mail: <span class="required-field">*</span></span>
                 <nz-input-group nzPrefixIcon="mail">
-                  <input nz-input id="email" [(ngModel)]="email" formControlName="email" tabindex="2" placeholder="Email" />
+                  <input nz-input id="email" formControlName="email" tabindex="2" placeholder="Email" />
                 </nz-input-group>
               </label>
             </nz-form-control>
@@ -73,7 +73,7 @@
           </nz-form-item>
           <!-- Newsletter -->
           <nz-form-item>
-            <nz-form-control class="newsletter-checkbox" (change)="newsletter = $event.returnValue">
+            <nz-form-control class="newsletter-checkbox">
               <label nz-checkbox formControlName="newsletter">
                 <span>Subscribe to the Live-Poll newsletter</span>
               </label>

@@ -21,11 +21,8 @@ export class LoginComponent implements OnInit {
   @Output() login = new EventEmitter<User>();
 
   loginMode = true;
-  validateLoginForm!: FormGroup;
-  validateResetPasswordForm!: FormGroup;
-  username: string;
-  password: string;
-  remember = true;
+  loginForm!: FormGroup;
+  resetPasswordForm!: FormGroup;
   loading = false;
   passwordVisible = false;
 
@@ -46,12 +43,12 @@ export class LoginComponent implements OnInit {
    * Initialize form validation
    */
   ngOnInit(): void {
-    this.validateLoginForm = this.formBuilder.group({
+    this.loginForm = this.formBuilder.group({
       username: [null, [Validators.required]],
       password: [null, [Validators.required]],
       remember: [true]
     });
-    this.validateResetPasswordForm = this.formBuilder.group({
+    this.resetPasswordForm = this.formBuilder.group({
       username: [null, [Validators.required]]
     });
   }
@@ -61,17 +58,17 @@ export class LoginComponent implements OnInit {
    */
   submitLoginForm(): void {
     // Validate form controls
-    for (const i in this.validateLoginForm.controls) {
-      this.validateLoginForm.controls[i].markAsDirty();
-      this.validateLoginForm.controls[i].updateValueAndValidity();
+    for (const i in this.loginForm.controls) {
+      this.loginForm.controls[i].markAsDirty();
+      this.loginForm.controls[i].updateValueAndValidity();
     }
-    if (this.validateLoginForm.valid) {
+    if (this.loginForm.valid) {
       this.loading = true;
       // Create user instance and trigger login
       const user = new User();
-      user.username = this.username;
-      user.password = SHA256(this.password).toString();
-      user.accountState = this.remember ? 1 : 0;
+      user.username = this.loginForm.controls.username.value;
+      user.password = SHA256(this.loginForm.controls.password.value).toString();
+      user.accountState = this.loginForm.controls.remember.value ? 1 : 0;
       this.login.emit(user);
     }
   }
@@ -81,13 +78,13 @@ export class LoginComponent implements OnInit {
    */
   submitForgotPasswordForm(): void {
     // Validate form controls
-    for (const i in this.validateResetPasswordForm.controls) {
-      this.validateResetPasswordForm.controls[i].markAsDirty();
-      this.validateResetPasswordForm.controls[i].updateValueAndValidity();
+    for (const i in this.resetPasswordForm.controls) {
+      this.resetPasswordForm.controls[i].markAsDirty();
+      this.resetPasswordForm.controls[i].updateValueAndValidity();
     }
-    if (this.validateResetPasswordForm.valid) {
+    if (this.resetPasswordForm.valid) {
       this.loading = true;
-      this.resetPassword(this.username);
+      this.resetPassword(this.loginForm.controls.username.value);
     }
   }
 
