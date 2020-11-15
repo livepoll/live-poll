@@ -1,3 +1,7 @@
+/*
+ * Copyright © Live-Poll 2020. All rights reserved
+ */
+
 import {Component, Input, OnInit} from '@angular/core';
 import {OPTIONS_DATA, OptionType} from '../../shared/poll-item-options';
 

@@ -1,3 +1,7 @@
+<!--
+  ~ Copyright © Live-Poll 2020. All rights reserved
+  -->
+
 <nz-modal [(nzVisible)]="isVisible" nzTitle="New Poll" (nzOnCancel)="isVisible = false" (nzOnOk)="createPoll()"
           [nzOkLoading]="loading" nzAutofocus="ok" [nzCancelDisabled]="loading" nzOkText="Create Poll" (close)="isVisible = false">
   <label>

@@ -1,6 +1,10 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+/*
+ * Copyright © Live-Poll 2020. All rights reserved
+ */
 
-import { NewPollDialogComponent } from './new-poll-dialog.component';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+
+import {NewPollDialogComponent} from './new-poll-dialog.component';
 
 describe('NewPollDialogComponent', () => {
   let component: NewPollDialogComponent;

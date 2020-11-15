@@ -1,15 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { CookieService } from 'ngx-cookie-service';
-import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { Router } from '@angular/router';
-import { environment as env } from '../environments/environment';
+/*
+ * Copyright © Live-Poll 2020. All rights reserved
+ */
 
-import jwt_decode from 'jwt-decode';
+import {Component, OnInit} from '@angular/core';
+import {CookieService} from 'ngx-cookie-service';
+import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
+import {Router} from '@angular/router';
+import {environment as env} from '../environments/environment';
 import {NgcCookieConsentService} from 'ngx-cookieconsent';
+import {NzNotificationService} from 'ng-zorro-antd/notification';
+import {User} from './model/user';
 
 // Constants
-const COOKIE_NAME_SESSION = 'SESSION_ID';
-const COOKIE_NAME_THEME = 'THEME';
+const COOKIE_NAME_THEME = 'theme';
 
 @Component({
   selector: 'app-root',
@@ -20,8 +23,7 @@ export class AppComponent implements OnInit {
 
   currentPage: any;
   darkTheme = false;
-  jwtToken = '';
-  shouldRedirect = false;
+  userData: User = null;
 
   /**
    * Initialize app component
@@ -29,12 +31,14 @@ export class AppComponent implements OnInit {
    * @param cookieService Injected cookie service
    * @param http Injected http client
    * @param router Injected router
+   * @param notificationService Injected notification service
    * @param _ Injected CookieConsent manager (do not remove this import)
    */
   constructor(
     private cookieService: CookieService,
     private http: HttpClient,
     private router: Router,
+    private notificationService: NzNotificationService,
     private _: NgcCookieConsentService
   ) {}
 
@@ -45,7 +49,7 @@ export class AppComponent implements OnInit {
    */
   ngOnInit(): void {
     this.applyPersistedTheme();
-    this.redirectIfTokenExists();
+    this.loadUserData(false);
   }
 
   /**
@@ -55,14 +59,13 @@ export class AppComponent implements OnInit {
    */
   onActivate(componentReference): void {
     this.currentPage = componentReference;
-    // Redirect if token was loaded successfully
-    if (this.shouldRedirect && !this.router.url.includes('/dashboard')) this.router.navigateByUrl('/dashboard');
+    // Attach user data
+    if (this.currentPage.userData !== null) this.currentPage.userData = this.userData;
     // Apply current theme
     if (this.currentPage.darkTheme !== null) this.currentPage.darkTheme = this.darkTheme;
-    // Attach jwt token
-    if (this.currentPage.jwtToken !== null) this.currentPage.jwtToken = this.jwtToken;
     // Subscribe to child methods
     componentReference.changeTheme?.subscribe(darkTheme => this.changeTheme(darkTheme));  // Change theme event
+    componentReference.logout?.subscribe(this.logout());
     componentReference.login?.subscribe(user =>  // Login trigger event
       this.login(user.username, user.password, user.accountState === 1)
     );
@@ -77,19 +80,33 @@ export class AppComponent implements OnInit {
   }
 
   /**
-   * Executes auto-login if cookie exists
-   *
-   * Cookie structure: <preamble>;<username>;<password>
+   * Tries to retrieve the user data from the server
+   * If the request fails with a http error 403, then the user has to log in first
    */
-  redirectIfTokenExists(): void {
-    if (this.cookieService.check(COOKIE_NAME_SESSION)) {
-      this.jwtToken = this.cookieService.get(COOKIE_NAME_SESSION);
-      this.shouldRedirect = true;
-    } else this.jwtToken = '';
+  loadUserData(showErrorExplicitly: boolean): void {
+    // Build header, body and options
+    const header = new HttpHeaders().set('Content-Type', 'application/json');
+    const options: any = { header, responseType: 'application/json', observe: 'response', withCredentials: true };
+    // Send request
+    this.http.get<string>(env.apiBaseUrl + '/authenticate/init', options).subscribe((response: HttpResponse<string>) => {
+      const user = JSON.parse(response.body);
+      this.userData = new User();
+      this.userData.id = user.id;
+      this.userData.username = user.username;
+      this.userData.email = user.email;
+      // Redirect to dashboard
+      this.router.navigateByUrl('/dashboard');
+    }, (_) => {
+      if (showErrorExplicitly) {
+        this.showErrorMessage('Loading user data failed.');
+      } else {
+        if (location.href.includes('dashboard')) this.router.navigateByUrl('/login');
+      }
+    });
   }
 
   /**
-   * Executes the login and JWT token retrieval process on the server
+   * Executes the login and JWT cookie retrieval process on the server
    *
    * @param username Username of the user
    * @param password Password of the user (SHA256 hashed)
@@ -98,25 +115,40 @@ export class AppComponent implements OnInit {
   login(username: string, password: string, remember: boolean): void {
     // Build header, body and options
     const header = new HttpHeaders().set('Content-Type', 'application/json');
-    const options: any = { header, responseType: 'text', observe: 'response' };
+    const options: any = { header, responseType: 'text', observe: 'response', withCredentials: true };
     const body = { username, password };
     // Send request
-    this.http.post<string>(env.apiBaseUrl + '/authenticate', body, options).subscribe((response: HttpResponse<string>) => {
-      if (response.ok) {
-        // Request was successful, continue
-        this.jwtToken = response.body;
-        // Save token in a secure cookie, if remember checkbox was checked
-        if (remember) {
-          const expirationDate = this.getTokenExpirationDate(this.jwtToken);
-          this.cookieService.set(COOKIE_NAME_SESSION, this.jwtToken,
-            { secure: env.useSecureCookies, path: '/', sameSite: 'Strict', expires: expirationDate });
-        }
-        // Redirect to dashboard
-        this.router.navigateByUrl('/dashboard');
-      } else {
-        console.log('Login error', response.statusText);
-      }
+    this.http.post<string>(env.apiBaseUrl + '/authenticate/login', body, options).subscribe((response: HttpResponse<string>) => {
+      // Load user data
+      this.loadUserData(true);
+    }, (_) => {
+      this.showErrorMessage('Login failed.');
     });
+  }
+
+  /**
+   * Executes the logout of the current user
+   */
+  logout(): void {
+    // Build header, body and options
+    const header = new HttpHeaders().set('Content-Type', 'application/json');
+    const options: any = { header, responseType: 'text', observe: 'response', withCredentials: true };
+    // Send request
+    this.http.put<string>(env.apiBaseUrl + '/authenticate/logout', null, options).subscribe((response: HttpResponse<string>) => {
+      // Redirect to login page
+      this.router.navigateByUrl('/login');
+    }, (_) => {
+      this.showErrorMessage('Logout failed.');
+    });
+  }
+
+  /**
+   * Shows an error message with a custom message
+   *
+   * @param message Custom error message
+   */
+  showErrorMessage(message: string): void {
+    this.notificationService.error('An error occurred', message, { nzPlacement: 'topRight' });
   }
 
   /**
@@ -154,21 +186,5 @@ export class AppComponent implements OnInit {
       style.href = 'assets/themes/light.css';
       document.body.appendChild(style);
     }
-  }
-
-  /**
-   * Decode the jwt token and calculate the expiration date.
-   * Used for setting the same expiration date to the secure cookie.
-   *
-   * @param token JWT token as string
-   */
-  getTokenExpirationDate(token: string): Date {
-    const tokenData = jwt_decode(token) as any;
-    if (tokenData.exp !== undefined) {
-      const date = new Date(0);
-      date.setUTCSeconds(tokenData.exp);
-      return date;
-    }
-    return null;
   }
 }

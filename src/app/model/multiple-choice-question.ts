@@ -1,5 +1,9 @@
-import { Question } from './question';
-import { Answer } from './answer';
+/*
+ * Copyright © Live-Poll 2020. All rights reserved
+ */
+
+import {Question} from './question';
+import {Answer} from './answer';
 
 /**
  * MultipleChoiceQuestion class.

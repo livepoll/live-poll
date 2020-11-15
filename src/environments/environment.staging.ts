@@ -1,3 +1,7 @@
+/*
+ * Copyright © Live-Poll 2020. All rights reserved
+ */
+
 export const environment = {
   name: 'staging',
   production: true,

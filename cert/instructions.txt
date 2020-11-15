@@ -1,0 +1,4 @@
+Please visit this article to get instructions for setting up https for the development server:
+https://medium.com/@richardr39/using-angular-cli-to-serve-over-https-locally-70dab07417c8
+
+The certificates are already generated in this folder.

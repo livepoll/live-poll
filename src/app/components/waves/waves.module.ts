@@ -1,7 +1,10 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { WavesComponent } from './waves.component';
+/*
+ * Copyright © Live-Poll 2020. All rights reserved
+ */
 
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {WavesComponent} from './waves.component';
 
 
 @NgModule({

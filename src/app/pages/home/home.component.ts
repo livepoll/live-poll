@@ -1,6 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { Poll } from '../../model/poll';
+/*
+ * Copyright © Live-Poll 2020. All rights reserved
+ */
+
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {Poll} from '../../model/poll';
 
 @Component({
   selector: 'app-home',

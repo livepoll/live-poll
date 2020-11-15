@@ -1,6 +1,10 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+/*
+ * Copyright © Live-Poll 2020. All rights reserved
+ */
 
-import { WavesComponent } from './waves.component';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+
+import {WavesComponent} from './waves.component';
 
 describe('WavesComponent', () => {
   let component: WavesComponent;

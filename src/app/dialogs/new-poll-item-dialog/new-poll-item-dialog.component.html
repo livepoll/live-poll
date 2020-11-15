@@ -1,3 +1,7 @@
+<!--
+  ~ Copyright © Live-Poll 2020. All rights reserved
+  -->
+
 <nz-modal [(nzVisible)]="isVisible" (nzOnCancel)="handleCancel()" nzWidth="850px"
           [nzTitle]="dialogTitle" [nzContent]="dialogContent" [nzFooter]="dialogFooter">
   <!-- Header -->
@@ -78,7 +82,7 @@
             </label>
             <!-- Add answer button -->
             <div style="padding-top: 10px; float: right;">
-              <i style="margin-inline-end: 20px;">The answers are going to be randomized for each user.</i>
+              <em style="margin-inline-end: 20px;">The answers are going to be randomized for each user.</em>
               <button [disabled]="answers.length >= 5" nz-button nzType="default" (click)="answers.push('')">
                 <i nz-icon nzType="plus-circle" nzTheme="outline"></i> Answer
               </button>

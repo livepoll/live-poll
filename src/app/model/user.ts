@@ -1,4 +1,8 @@
-import { UserAttribute } from './user-attribute';
+/*
+ * Copyright © Live-Poll 2020. All rights reserved
+ */
+
+import {UserAttribute} from './user-attribute';
 
 /**
  * User class.
@@ -6,6 +10,7 @@ import { UserAttribute } from './user-attribute';
  * which can be set later on individually on the server side.
  */
 export class User {
+  id: number;
   username: string;
   email: string;
   password: string;

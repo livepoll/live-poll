@@ -1,3 +1,7 @@
+<!--
+  ~ Copyright © Live-Poll 2020. All rights reserved
+  -->
+
 <nz-layout class="app-layout">
   <!-- Side bar -->
   <nz-sider class="menu-sidebar" nzCollapsible nzWidth="256px" nzBreakpoint="md"
@@ -52,7 +56,9 @@
             </nz-badge>
           <ng-template #userMenu>
             <!-- Notifications list -->
-            <p>test</p>
+             <ul nz-menu nzSelectable>
+               <li nz-menu-item (click)="logout.emit()">Logout</li>
+             </ul>
           </ng-template>
         </span>
       </div>

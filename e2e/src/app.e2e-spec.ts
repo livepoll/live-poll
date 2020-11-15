@@ -1,5 +1,9 @@
-import { AppPage } from './app.po';
-import { browser, logging } from 'protractor';
+/*
+ * Copyright © Live-Poll 2020. All rights reserved
+ */
+
+import {AppPage} from './app.po';
+import {browser, logging} from 'protractor';
 
 describe('workspace-project App', () => {
   let page: AppPage;

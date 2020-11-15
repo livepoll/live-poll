@@ -1,5 +1,13 @@
+/*
+ * Copyright © Live-Poll 2020. All rights reserved
+ */
+
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Router} from '@angular/router';
+import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
+import {environment as env} from '../../../environments/environment';
+import {User} from '../../model/user';
+import {Poll} from '../../model/poll';
 
 @Component({
   selector: 'app-dashboard',
@@ -8,8 +16,9 @@ import {Router} from '@angular/router';
 })
 export class DashboardComponent implements OnInit {
 
-  @Input() jwtToken = '';
+  @Input() userData: User = null;
   @Input() darkTheme: boolean;
+  @Output() logout = new EventEmitter();
   @Output() changeTheme = new EventEmitter<boolean>();
 
   isCollapsed = false;
@@ -17,15 +26,42 @@ export class DashboardComponent implements OnInit {
     { id: 101, title: 'Poll "Test poll" opened', message: 'Your poll "Test poll" opened to participants. Share this link to your participants: <a href="https://www.live-poll.de/p/test-poll">https://www.live-poll.de/p/test-poll</a>', silent: true },
     { id: 102, title: 'Poll "Test poll" closed', message: 'Your poll "Test poll" is closed now for all participants.', silent: false }
   ];
+  polls: any;
 
-  constructor(private router: Router) {}
+  /**
+   * Initialize the dashboard component
+   *
+   * @param router Injected router
+   * @param http Injected http client
+   */
+  constructor(
+    private router: Router,
+    private http: HttpClient
+  ) {}
 
   /**
    * Initialize the dashboard component
    */
   ngOnInit(): void {
-    // Redirect to login page, if the jwt token is empty
-    if (this.jwtToken.length === 0) this.router.navigateByUrl('/login');
+    // Load user data
+    if (this.userData !== null) this.loadPolls();
+  }
+
+  /**
+   * Loads all polls of the current user
+   */
+  loadPolls(): void {
+    // Build header, body and options
+    const header = new HttpHeaders().set('Content-Type', 'application/json');
+    const options: any = { header, responseType: 'application/json', observe: 'response' };
+    // Send request
+    this.http.get<string>(env.apiBaseUrl + '/user/' + this.userData.id + '/polls', options)
+      .subscribe((response: HttpResponse<string>) => {
+        if (response.ok) {
+          const polls = JSON.parse(response.body);
+          this.polls = polls.map(item => new Poll());
+        }
+      });
   }
 
   /**

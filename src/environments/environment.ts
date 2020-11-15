@@ -1,3 +1,7 @@
+/*
+ * Copyright © Live-Poll 2020. All rights reserved
+ */
+
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
@@ -5,10 +9,10 @@
 export const environment = {
   name: 'dev',
   production: false,
-  apiBaseUrl: 'http://localhost:8080/v0',
+  apiBaseUrl: 'https://localhost:8080/v0',
   apiVersion: 'v0',
   useSecureCookies: false,
-  cookieConsentUrl: '192.168.0.52'
+  cookieConsentUrl: 'localhost'
 };
 
 /*

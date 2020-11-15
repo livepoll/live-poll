@@ -1,11 +1,14 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { NzNotificationService } from 'ng-zorro-antd/notification';
-import { SHA256 } from 'crypto-js';
-import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { environment as env } from '../../../environments/environment';
-import { Router } from '@angular/router';
-import { catchError } from 'rxjs/operators';
+/*
+ * Copyright © Live-Poll 2020. All rights reserved
+ */
+
+import {Component, Input, OnInit} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {NzNotificationService} from 'ng-zorro-antd/notification';
+import {SHA256} from 'crypto-js';
+import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
+import {environment as env} from '../../../environments/environment';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-sign-up',
@@ -16,16 +19,12 @@ export class SignUpComponent implements OnInit {
 
   @Input() darkTheme = false;
 
-  validateForm!: FormGroup;
-  username: string;
-  email: string;
-  password: string;
+  signUpForm!: FormGroup;
   loading = false;
-  newsletter = false;
-  accountCreated = false;
+  passwordVisible = false;
 
   /**
-   * Initialize login component
+   * Initialize sign up component
    *
    * @param formBuilder Injected form builder
    * @param http Injected http client
@@ -43,12 +42,12 @@ export class SignUpComponent implements OnInit {
    * Initialize form validation
    */
   ngOnInit(): void {
-    this.validateForm = this.formBuilder.group({
+    this.signUpForm = this.formBuilder.group({
       email: [null, [Validators.email, Validators.required]],
       username: [null, [Validators.required]],
       password: [null, [Validators.required]],
       confirmPassword: [null, [Validators.required, this.confirmationValidator]],
-      agb: [false, [Validators.required]],
+      agb: [false, [Validators.required, Validators.requiredTrue]],
       newsletter: [false, []]
     });
   }
@@ -61,7 +60,7 @@ export class SignUpComponent implements OnInit {
   confirmationValidator = (control: FormControl): { [s: string]: boolean } => {
     if (!control.value) {
       return { required: true };
-    } else if (control.value !== this.validateForm.controls.password.value) {
+    } else if (control.value !== this.signUpForm.controls.password.value) {
       return { confirm: true, error: true };
     }
     return {};
@@ -72,13 +71,17 @@ export class SignUpComponent implements OnInit {
    */
   submitForm(): void {
     // Validate form controls
-    for (const i in this.validateForm.controls) {
-      this.validateForm.controls[i].markAsDirty();
-      this.validateForm.controls[i].updateValueAndValidity();
+    for (const i in this.signUpForm.controls) {
+      this.signUpForm.controls[i].markAsDirty();
+      this.signUpForm.controls[i].updateValueAndValidity();
     }
-    if (this.validateForm.valid) {
+    if (this.signUpForm.valid) {
       this.loading = true;
-      this.signUp(this.username, this.email, SHA256(this.password).toString(), this.newsletter);
+      const username = this.signUpForm.controls.username.value;
+      const email = this.signUpForm.controls.email.value;
+      const password = this.signUpForm.controls.password.value;
+      const newsletter = this.signUpForm.controls.newsletter.value;
+      this.signUp(username, email, SHA256(password).toString(), newsletter);
     }
   }
 
@@ -86,7 +89,7 @@ export class SignUpComponent implements OnInit {
    * Updates the confirm password validator on every update of the confirm password field
    */
   updateConfirmValidator(): void {
-    Promise.resolve().then(() => this.validateForm.controls.confirmPassword.updateValueAndValidity());
+    Promise.resolve().then(() => this.signUpForm.controls.confirmPassword.updateValueAndValidity());
   }
 
   /**
@@ -100,14 +103,12 @@ export class SignUpComponent implements OnInit {
   signUp(username: string, email: string, password: string, newsletter: boolean): void {
     // Build header, body and options
     const header = new HttpHeaders().set('Content-Type', 'application/json');
-    const options: any = { header, responseType: 'application/json', observe: 'response' };
-    const body = { id: 0, email, username, password };
+    const options: any = { header, observe: 'response' };
+    const body = { email, username, password };
     // Send request
-    this.http.post<string>(env.apiBaseUrl + '/account/register', body, options)
-      .subscribe((response: HttpResponse<string>) => {
+    this.http.post<string>(env.apiBaseUrl + '/account/register', body, options).subscribe((response: HttpResponse<string>) => {
         if (response.ok) {
           // Request was successful, continue
-          this.accountCreated = true;
           this.displaySuccessNotification();
           this.router.navigateByUrl('/login');
         }
