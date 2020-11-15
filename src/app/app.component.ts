@@ -9,6 +9,7 @@ import {Router} from '@angular/router';
 import {environment as env} from '../environments/environment';
 import {NgcCookieConsentService} from 'ngx-cookieconsent';
 import {NzNotificationService} from 'ng-zorro-antd/notification';
+import {User} from './model/user';
 
 // Constants
 const COOKIE_NAME_THEME = 'theme';
@@ -22,7 +23,7 @@ export class AppComponent implements OnInit {
 
   currentPage: any;
   darkTheme = false;
-  userData = null;
+  userData: User = null;
 
   /**
    * Initialize app component
@@ -58,10 +59,10 @@ export class AppComponent implements OnInit {
    */
   onActivate(componentReference): void {
     this.currentPage = componentReference;
-    // Apply current theme
-    if (this.currentPage.darkTheme !== null) this.currentPage.darkTheme = this.darkTheme;
     // Attach user data
     if (this.currentPage.userData !== null) this.currentPage.userData = this.userData;
+    // Apply current theme
+    if (this.currentPage.darkTheme !== null) this.currentPage.darkTheme = this.darkTheme;
     // Subscribe to child methods
     componentReference.changeTheme?.subscribe(darkTheme => this.changeTheme(darkTheme));  // Change theme event
     componentReference.login?.subscribe(user =>  // Login trigger event
@@ -84,18 +85,22 @@ export class AppComponent implements OnInit {
   loadUserData(showErrorExplicitly: boolean): void {
     // Build header, body and options
     const header = new HttpHeaders().set('Content-Type', 'application/json');
-    const options: any = { header, observe: 'response', withCredentials: true };
+    const options: any = { header, responseType: 'application/json', observe: 'response', withCredentials: true };
     // Send request
     this.http.get<string>(env.apiBaseUrl + '/authenticate/init', options).subscribe((response: HttpResponse<string>) => {
-      if (response.ok) {
-        this.userData = response.body;
-        // Redirect to dashboard
-        this.router.navigateByUrl('/dashboard');
-      } else {
-        console.log('User is not logged in yet', response.statusText);
-      }
+      const user = JSON.parse(response.body);
+      this.userData = new User();
+      this.userData.id = user.id;
+      this.userData.username = user.username;
+      this.userData.email = user.email;
+      // Redirect to dashboard
+      this.router.navigateByUrl('/dashboard');
     }, (_) => {
-      if (showErrorExplicitly) this.showErrorMessage('Loading user data failed.');
+      if (showErrorExplicitly) {
+        this.showErrorMessage('Loading user data failed.');
+      } else {
+        if (location.href.includes('dashboard')) this.router.navigateByUrl('/login');
+      }
     });
   }
 
@@ -109,16 +114,12 @@ export class AppComponent implements OnInit {
   login(username: string, password: string, remember: boolean): void {
     // Build header, body and options
     const header = new HttpHeaders().set('Content-Type', 'application/json');
-    const options: any = { header, observe: 'response', withCredentials: true };
+    const options: any = { header, responseType: 'text', observe: 'response', withCredentials: true };
     const body = { username, password };
     // Send request
     this.http.post<string>(env.apiBaseUrl + '/authenticate/login', body, options).subscribe((response: HttpResponse<string>) => {
-      if (response.ok) {
-        // Load user data
-        this.loadUserData(true);
-      } else {
-        console.log('Login error', response.statusText);
-      }
+      // Load user data
+      this.loadUserData(true);
     }, (_) => {
       this.showErrorMessage('Login failed.');
     });
@@ -130,15 +131,11 @@ export class AppComponent implements OnInit {
   logout(): void {
     // Build header, body and options
     const header = new HttpHeaders().set('Content-Type', 'application/json');
-    const options: any = { header, observe: 'response', withCredentials: true };
+    const options: any = { header, responseType: 'text', observe: 'response', withCredentials: true };
     // Send request
     this.http.put<string>(env.apiBaseUrl + '/authenticate/logout', null, options).subscribe((response: HttpResponse<string>) => {
-      if (response.ok) {
-        // Redirect to login page
-        this.router.navigateByUrl('/login');
-      } else {
-        console.log('Logout error', response.statusText);
-      }
+      // Redirect to login page
+      this.router.navigateByUrl('/login');
     }, (_) => {
       this.showErrorMessage('Logout failed.');
     });

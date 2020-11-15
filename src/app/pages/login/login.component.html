@@ -13,7 +13,7 @@
           <label>
             <span class="input-label">Username / Email:</span>
             <nz-input-group nzPrefixIcon="user">
-              <input type="text" nz-input formControlName="username" placeholder="Username / Email" />
+              <input type="text" nz-input formControlName="username" autocomplete="username" placeholder="Username / Email" />
             </nz-input-group>
           </label>
         </nz-form-control>
@@ -24,7 +24,7 @@
           <label>
             <span class="input-label">Password:</span>
             <nz-input-group nzPrefixIcon="lock" [nzSuffix]="suffixTemplate">
-              <input [type]="passwordVisible ? 'text' : 'password'" nz-input formControlName="password" placeholder="Password" />
+              <input [type]="passwordVisible ? 'text' : 'password'" nz-input autocomplete="current-password" formControlName="password" placeholder="Password" />
             </nz-input-group>
             <ng-template #suffixTemplate>
               <i nz-icon [nzType]="passwordVisible ? 'eye-invisible' : 'eye'"
@@ -62,7 +62,7 @@
           <label>
             <span class="input-label">Username / Email:</span>
             <nz-input-group nzPrefixIcon="user">
-              <input type="text" nz-input formControlName="username" placeholder="Username / Email" />
+              <input type="text" nz-input formControlName="username" autocomplete="username" placeholder="Username / Email" />
             </nz-input-group>
           </label>
         </nz-form-control>

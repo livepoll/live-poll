@@ -7,6 +7,7 @@ import {Router} from '@angular/router';
 import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {environment as env} from '../../../environments/environment';
 import {User} from '../../model/user';
+import {Poll} from '../../model/poll';
 
 @Component({
   selector: 'app-dashboard',
@@ -41,12 +42,8 @@ export class DashboardComponent implements OnInit {
    * Initialize the dashboard component
    */
   ngOnInit(): void {
-    // Redirect to login page, if the userData is null
-    if (this.userData === null) {
-      this.router.navigateByUrl('/login');
-    } else {
-      this.loadPolls();
-    }
+    // Load user data
+    if (this.userData !== null) this.loadPolls();
   }
 
   /**
@@ -59,7 +56,10 @@ export class DashboardComponent implements OnInit {
     // Send request
     this.http.get<string>(env.apiBaseUrl + '/user/' + this.userData.id + '/polls', options)
       .subscribe((response: HttpResponse<string>) => {
-        if (response.ok) this.polls = response.body;
+        if (response.ok) {
+          const polls = JSON.parse(response.body);
+          this.polls = polls.map(item => new Poll());
+        }
       });
   }
 

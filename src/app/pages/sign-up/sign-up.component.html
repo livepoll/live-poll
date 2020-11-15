@@ -15,7 +15,7 @@
               <label>
                 <span class="input-label">Username: <span class="required-field">*</span></span>
                 <nz-input-group nzPrefixIcon="user">
-                  <input nz-input id="username" formControlName="username" tabindex="1" placeholder="Username" />
+                  <input nz-input id="username" formControlName="username" autocomplete="username" tabindex="1" placeholder="Username" />
                 </nz-input-group>
               </label>
             </nz-form-control>
@@ -27,7 +27,7 @@
                 <span class="input-label">Password: <span class="required-field">*</span></span>
                 <nz-input-group nzPrefixIcon="lock" [nzSuffix]="suffixTemplate">
                   <input nz-input [type]="passwordVisible ? 'text' : 'password'" id="password"
-                         formControlName="password" placeholder="Password" tabindex="3"
+                         formControlName="password" autocomplete="new-password" placeholder="Password" tabindex="3"
                          (ngModelChange)="updateConfirmValidator()" />
                 </nz-input-group>
                 <ng-template #suffixTemplate>
@@ -54,7 +54,8 @@
               <label>
                 <span class="input-label">E-Mail: <span class="required-field">*</span></span>
                 <nz-input-group nzPrefixIcon="mail">
-                  <input nz-input id="email" formControlName="email" tabindex="2" placeholder="Email" />
+                  <input nz-input id="email" formControlName="email" autocomplete="email" tabindex="2"
+                         placeholder="Email" />
                 </nz-input-group>
               </label>
             </nz-form-control>
@@ -66,7 +67,8 @@
                 <span class="input-label">Confirm password: <span class="required-field">*</span></span>
                 <nz-input-group nzPrefixIcon="lock">
                   <input nz-input [type]="passwordVisible ? 'text' : 'password'" id="confirmPassword"
-                         formControlName="confirmPassword" tabindex="4" placeholder="Confirm password" />
+                         formControlName="confirmPassword" autocomplete="new-password" tabindex="4"
+                         placeholder="Confirm password" />
                 </nz-input-group>
               </label>
             </nz-form-control>

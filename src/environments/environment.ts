@@ -9,10 +9,10 @@
 export const environment = {
   name: 'dev',
   production: false,
-  apiBaseUrl: 'http://localhost:8080/v0',
+  apiBaseUrl: 'https://localhost:8080/v0',
   apiVersion: 'v0',
   useSecureCookies: false,
-  cookieConsentUrl: '192.168.0.52'
+  cookieConsentUrl: 'localhost'
 };
 
 /*

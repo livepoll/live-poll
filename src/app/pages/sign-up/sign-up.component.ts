@@ -106,8 +106,7 @@ export class SignUpComponent implements OnInit {
     const options: any = { header, observe: 'response' };
     const body = { email, username, password };
     // Send request
-    this.http.post<string>(env.apiBaseUrl + '/account/register', body, options)
-      .subscribe((response: HttpResponse<string>) => {
+    this.http.post<string>(env.apiBaseUrl + '/account/register', body, options).subscribe((response: HttpResponse<string>) => {
         if (response.ok) {
           // Request was successful, continue
           this.displaySuccessNotification();
