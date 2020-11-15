@@ -18,6 +18,7 @@ export class DashboardComponent implements OnInit {
 
   @Input() userData: User = null;
   @Input() darkTheme: boolean;
+  @Output() logout = new EventEmitter();
   @Output() changeTheme = new EventEmitter<boolean>();
 
   isCollapsed = false;

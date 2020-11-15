@@ -65,6 +65,7 @@ export class AppComponent implements OnInit {
     if (this.currentPage.darkTheme !== null) this.currentPage.darkTheme = this.darkTheme;
     // Subscribe to child methods
     componentReference.changeTheme?.subscribe(darkTheme => this.changeTheme(darkTheme));  // Change theme event
+    componentReference.logout?.subscribe(this.logout());
     componentReference.login?.subscribe(user =>  // Login trigger event
       this.login(user.username, user.password, user.accountState === 1)
     );
