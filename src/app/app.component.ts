@@ -2,7 +2,7 @@
  * Copyright © Live-Poll 2020. All rights reserved
  */
 
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit} from '@angular/core';
 import {CookieService} from 'ngx-cookie-service';
 import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {Router} from '@angular/router';
@@ -22,8 +22,9 @@ const COOKIE_NAME_THEME = 'theme';
 export class AppComponent implements OnInit {
 
   currentPage: any;
+  onUserDataChanged = new EventEmitter<User>();
   darkTheme = false;
-  userData: User = null;
+  userData: User;
 
   /**
    * Initialize app component
@@ -60,7 +61,7 @@ export class AppComponent implements OnInit {
   onActivate(componentReference): void {
     this.currentPage = componentReference;
     // Attach user data
-    if (this.currentPage.userData !== null) this.currentPage.userData = this.userData;
+    if (this.currentPage.onUserDataChanged !== null) this.currentPage.onUserDataChanged = this.onUserDataChanged;
     // Apply current theme
     if (this.currentPage.darkTheme !== null) this.currentPage.darkTheme = this.darkTheme;
     // Subscribe to child methods
@@ -94,8 +95,12 @@ export class AppComponent implements OnInit {
       this.userData.id = user.id;
       this.userData.username = user.username;
       this.userData.email = user.email;
-      // Redirect to dashboard
-      this.router.navigateByUrl('/dashboard');
+      // Redirect to dashboard if necessary, otherwise apply userData to dashboard
+      if (location.href.includes('dashboard')) {
+        this.onUserDataChanged.emit(this.userData);
+      } else {
+        this.router.navigateByUrl('/dashboard');
+      }
     }, (_) => {
       if (showErrorExplicitly) {
         this.showErrorMessage('Loading user data failed.');

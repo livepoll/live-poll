@@ -65,7 +65,7 @@
     </nz-header>
 
     <nz-layout class="inner-layout">
-      <router-outlet></router-outlet>
+      <router-outlet (activate)="onActivate($event)"></router-outlet>
     </nz-layout>
   </nz-layout>
 </nz-layout>

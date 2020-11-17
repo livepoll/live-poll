@@ -2,7 +2,7 @@
  * Copyright © Live-Poll 2020. All rights reserved
  */
 
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 
 /**
  * Wizard dialog, which lets the user create a new poll.
@@ -13,14 +13,14 @@ import {Component, Input, OnInit} from '@angular/core';
   templateUrl: './new-poll-dialog.component.html',
   styleUrls: ['./new-poll-dialog.component.sass']
 })
-export class NewPollDialogComponent implements OnInit {
+export class NewPollDialogComponent {
 
-  @Input('visible') isVisible: boolean;
+  @Input() isVisible: boolean;
+  @Output() close = new EventEmitter();
+
   loading = false;
   name?: string;
   errorMessage?: string;
-
-  ngOnInit(): void {}
 
   /**
    * User clicked on the 'Create poll' button.

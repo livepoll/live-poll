@@ -8,6 +8,8 @@ import {FormsModule} from '@angular/forms';
 import {MyPollsRoutingModule} from './my-polls-routing.module';
 import {MyPollsComponent} from './my-polls.component';
 import {NewPollDialogComponent} from '../../dialogs/new-poll-dialog/new-poll-dialog.component';
+import {ResultErrorModule} from '../../components/result-error/result-error.module';
+import {ResultEmptyModule} from '../../components/result-empty/result-empty.module';
 
 import {NzModalModule} from 'ng-zorro-antd/modal';
 import {NzInputModule} from 'ng-zorro-antd/input';
@@ -22,6 +24,10 @@ import {NzLayoutModule} from 'ng-zorro-antd/layout';
 import {NzBreadCrumbModule} from 'ng-zorro-antd/breadcrumb';
 import {NzButtonModule} from 'ng-zorro-antd/button';
 import {NzIconModule} from 'ng-zorro-antd/icon';
+import {NzCollapseModule} from 'ng-zorro-antd/collapse';
+import {NzSpinModule} from 'ng-zorro-antd/spin';
+import {NzPageHeaderModule} from 'ng-zorro-antd/page-header';
+import {NzTagModule} from 'ng-zorro-antd/tag';
 
 @NgModule({
   declarations: [MyPollsComponent, NewPollDialogComponent, NewPollItemDialogComponent],
@@ -39,7 +45,13 @@ import {NzIconModule} from 'ng-zorro-antd/icon';
     NzRadioModule,
     NzButtonModule,
     NzIconModule,
-    NzBreadCrumbModule
+    NzBreadCrumbModule,
+    NzCollapseModule,
+    ResultErrorModule,
+    ResultEmptyModule,
+    NzSpinModule,
+    NzPageHeaderModule,
+    NzTagModule
   ],
   providers: [],
   exports: [MyPollsComponent]

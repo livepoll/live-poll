@@ -96,7 +96,7 @@ export class LoginComponent implements OnInit {
   resetPassword(username: string): void {
     // Build header, body and options
     const header = new HttpHeaders().set('Content-Type', 'application/json');
-    const options: any = { header, responseType: 'application/json', observe: 'response' };
+    const options: any = { header, responseType: 'application/json', observe: 'response', withCredentials: false };
     const body = { username };
     // Send request
     this.http.put<string>(env.apiBaseUrl + '/account/reset', body, options)

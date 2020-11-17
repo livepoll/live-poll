@@ -103,7 +103,7 @@ export class SignUpComponent implements OnInit {
   signUp(username: string, email: string, password: string, newsletter: boolean): void {
     // Build header, body and options
     const header = new HttpHeaders().set('Content-Type', 'application/json');
-    const options: any = { header, observe: 'response' };
+    const options: any = { header, observe: 'response', withCredentials: false };
     const body = { email, username, password };
     // Send request
     this.http.post<string>(env.apiBaseUrl + '/account/register', body, options).subscribe((response: HttpResponse<string>) => {

@@ -2,11 +2,13 @@
   ~ Copyright © Live-Poll 2020. All rights reserved
   -->
 
-<nz-modal [(nzVisible)]="isVisible" nzTitle="New Poll" (nzOnCancel)="isVisible = false" (nzOnOk)="createPoll()"
-          [nzOkLoading]="loading" nzAutofocus="ok" [nzCancelDisabled]="loading" nzOkText="Create Poll" (close)="isVisible = false">
+<nz-modal [(nzVisible)]="isVisible" nzTitle="New Poll" (nzOnCancel)="handleCancel()" (nzOnOk)="createPoll()"
+          [nzOkLoading]="loading" nzAutofocus="ok" [nzCancelDisabled]="loading" nzOkText="Create Poll"
+          (close)="isVisible = false">
   <label>
     <span class="input-label">Name of the poll:</span>
     <input nz-input placeholder="Name of your new poll" [(ngModel)]="name" (input)="name = $event.target.value" />
   </label>
-  <nz-alert *ngIf="errorMessage?.length > 0" nzType="error" nzMessage={{errorMessage}} nzCloseText="Okay" (nzOnClose)="errorMessage = ''"></nz-alert>
+  <nz-alert *ngIf="errorMessage?.length > 0" nzType="error" nzMessage={{errorMessage}} nzCloseText="Okay"
+            (nzOnClose)="errorMessage = ''"></nz-alert>
 </nz-modal>
