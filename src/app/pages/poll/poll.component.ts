@@ -3,6 +3,8 @@
  */
 
 import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {Poll} from '../../model/poll';
 
 @Component({
   selector: 'app-poll',
@@ -11,9 +13,12 @@ import {Component, OnInit} from '@angular/core';
 })
 export class PollComponent implements OnInit {
 
-  constructor() { }
+  poll: Poll;
 
-  ngOnInit(): void {
+  constructor(private route: ActivatedRoute) {
+    this.route.params.subscribe( params => console.log(params.id) );
   }
+
+  ngOnInit(): void {}
 
 }

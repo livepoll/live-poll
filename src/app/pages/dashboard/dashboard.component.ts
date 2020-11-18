@@ -58,10 +58,6 @@ export class DashboardComponent implements OnInit {
       this.currentPage.onPollsChanged = this.onPollsChanged;
       this.currentPage.onPollsChanged.emit(this.polls);
     }
-    // Subscribe to child event emitters
-    this.currentPage.pollSelected.subscribe(poll => {
-      this.router.navigateByUrl('/dashboard/my-polls/' + poll.id);
-    });
   }
 
   /**

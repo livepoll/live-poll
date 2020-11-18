@@ -16,7 +16,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 export class NewPollDialogComponent {
 
   @Input() isVisible: boolean;
-  @Output() close = new EventEmitter();
+  @Output() onClose = new EventEmitter();
 
   loading = false;
   name?: string;

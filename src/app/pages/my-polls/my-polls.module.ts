@@ -28,6 +28,9 @@ import {NzCollapseModule} from 'ng-zorro-antd/collapse';
 import {NzSpinModule} from 'ng-zorro-antd/spin';
 import {NzPageHeaderModule} from 'ng-zorro-antd/page-header';
 import {NzTagModule} from 'ng-zorro-antd/tag';
+import {NzGridModule} from 'ng-zorro-antd/grid';
+import {NzCardModule} from 'ng-zorro-antd/card';
+import {NzStatisticModule} from 'ng-zorro-antd/statistic';
 
 @NgModule({
   declarations: [MyPollsComponent, NewPollDialogComponent, NewPollItemDialogComponent],
@@ -51,7 +54,10 @@ import {NzTagModule} from 'ng-zorro-antd/tag';
     ResultEmptyModule,
     NzSpinModule,
     NzPageHeaderModule,
-    NzTagModule
+    NzTagModule,
+    NzGridModule,
+    NzCardModule,
+    NzStatisticModule
   ],
   providers: [],
   exports: [MyPollsComponent]
