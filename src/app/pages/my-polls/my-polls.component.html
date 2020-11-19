@@ -81,6 +81,7 @@
     <app-result-error *ngIf="polls === null"></app-result-error>
 
     <!-- New poll dialog -->
-    <app-new-poll-dialog [isVisible]="showNewPollDialog" (onClose)="showNewPollDialog = false"></app-new-poll-dialog>
+    <app-new-poll-dialog [isVisible]="showNewPollDialog" (onClose)="handleNewPollDialogClose($event)"
+                         [userId]="userData.id"></app-new-poll-dialog>
   </div>
 </nz-content>

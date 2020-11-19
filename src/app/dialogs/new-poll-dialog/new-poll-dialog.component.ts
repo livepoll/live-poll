@@ -3,6 +3,9 @@
  */
 
 import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
+import {environment as env} from '../../../environments/environment';
+import {NzNotificationService} from 'ng-zorro-antd/notification';
 
 /**
  * Wizard dialog, which lets the user create a new poll.
@@ -15,23 +18,54 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 })
 export class NewPollDialogComponent {
 
+  @Input() userId: number;
   @Input() isVisible: boolean;
-  @Output() onClose = new EventEmitter();
+  @Output() onClose = new EventEmitter<boolean>(); // true = success; false = cancel
 
   loading = false;
-  name?: string;
-  errorMessage?: string;
+  name = '';
+
+  /**
+   * Initialize the component
+   * @param http Injected http client
+   * @param notificationService Injected notification service
+   */
+  constructor(
+    private http: HttpClient,
+    private notificationService: NzNotificationService
+  ) {}
 
   /**
    * User clicked on the 'Create poll' button.
    * Method executes validity checks for the user input and shows an
    * error message or creates the poll on the server.
    */
-  createPoll(): void {
-    if (this.name?.length > 0) {
-      this.loading = true;
-    } else {
-      this.errorMessage = 'Please enter a name.';
-    }
+  createPoll(name: string): void {
+    this.loading = true;
+    // Build header, body and options
+    const header = new HttpHeaders().set('Content-Type', 'application/json');
+    const options: any = { header, responseType: 'text', observe: 'response', withCredentials: true };
+    const body = { name, startDate: 0, endDate: 0 };
+    // Send request
+    this.http.post<string>(env.apiBaseUrl + '/users/' + this.userId + '/poll', body, options)
+      .subscribe((_: HttpResponse<string>) => {
+        // Reset values
+        this.name = '';
+        this.loading = false;
+        // Close dialog
+        this.onClose.emit(true);
+      }, (_) => {
+        this.loading = false;
+        this.showErrorMessage('An error occurred while creating the poll.');
+      });
+  }
+
+  /**
+   * Shows an error message with a custom message
+   *
+   * @param message Custom error message
+   */
+  showErrorMessage(message: string): void {
+    this.notificationService.error('An error occurred', message, { nzPlacement: 'topRight' });
   }
 }

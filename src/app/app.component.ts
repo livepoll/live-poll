@@ -123,7 +123,7 @@ export class AppComponent implements OnInit {
     const options: any = { header, responseType: 'text', observe: 'response', withCredentials: true };
     const body = { username, password };
     // Send request
-    this.http.post<string>(env.apiBaseUrl + '/authenticate/login', body, options).subscribe((response: HttpResponse<string>) => {
+    this.http.post<string>(env.apiBaseUrl + '/authenticate/login', body, options).subscribe((_: HttpResponse<string>) => {
       // Load user data
       this.loadUserData(true);
     }, (_) => {
@@ -139,7 +139,7 @@ export class AppComponent implements OnInit {
     const header = new HttpHeaders().set('Content-Type', 'application/json');
     const options: any = { header, responseType: 'text', observe: 'response', withCredentials: true };
     // Send request
-    this.http.put<string>(env.apiBaseUrl + '/authenticate/logout', null, options).subscribe((response: HttpResponse<string>) => {
+    this.http.put<string>(env.apiBaseUrl + '/authenticate/logout', null, options).subscribe((_: HttpResponse<string>) => {
       // Redirect to login page
       this.router.navigateByUrl('/login');
     }, (_) => {

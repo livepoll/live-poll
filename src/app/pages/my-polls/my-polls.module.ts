@@ -31,34 +31,36 @@ import {NzTagModule} from 'ng-zorro-antd/tag';
 import {NzGridModule} from 'ng-zorro-antd/grid';
 import {NzCardModule} from 'ng-zorro-antd/card';
 import {NzStatisticModule} from 'ng-zorro-antd/statistic';
+import {NzFormModule} from 'ng-zorro-antd/form';
 
 @NgModule({
   declarations: [MyPollsComponent, NewPollDialogComponent, NewPollItemDialogComponent],
-  imports: [
-    MyPollsRoutingModule,
-    NzModalModule,
-    NzInputModule,
-    NzAlertModule,
-    NzStepsModule,
-    NzDividerModule,
-    NzSwitchModule,
-    FormsModule,
-    CommonModule,
-    NzLayoutModule,
-    NzRadioModule,
-    NzButtonModule,
-    NzIconModule,
-    NzBreadCrumbModule,
-    NzCollapseModule,
-    ResultErrorModule,
-    ResultEmptyModule,
-    NzSpinModule,
-    NzPageHeaderModule,
-    NzTagModule,
-    NzGridModule,
-    NzCardModule,
-    NzStatisticModule
-  ],
+    imports: [
+        MyPollsRoutingModule,
+        NzModalModule,
+        NzInputModule,
+        NzAlertModule,
+        NzStepsModule,
+        NzDividerModule,
+        NzSwitchModule,
+        FormsModule,
+        CommonModule,
+        NzLayoutModule,
+        NzRadioModule,
+        NzButtonModule,
+        NzIconModule,
+        NzBreadCrumbModule,
+        NzCollapseModule,
+        ResultErrorModule,
+        ResultEmptyModule,
+        NzSpinModule,
+        NzPageHeaderModule,
+        NzTagModule,
+        NzGridModule,
+        NzCardModule,
+        NzStatisticModule,
+        NzFormModule
+    ],
   providers: [],
   exports: [MyPollsComponent]
 })

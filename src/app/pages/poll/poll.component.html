@@ -18,27 +18,18 @@
 <!-- Page content -->
 <nz-content style="margin-top: 10px">
   <nz-page-header class="site-page-header">
-    <!--breadcrumb-->
-    <nz-breadcrumb nz-page-header-breadcrumb>
-      <nz-breadcrumb-item>First-level Menu</nz-breadcrumb-item>
-      <nz-breadcrumb-item>
-        <a>Second-level Menu</a>
-      </nz-breadcrumb-item>
-      <nz-breadcrumb-item>Third-level Menu</nz-breadcrumb-item>
-    </nz-breadcrumb>
-
     <!--avatar-->
     <nz-avatar nz-page-header-avatar nzSrc="https://avatars0.githubusercontent.com/u/22736418?s=88&v=4"> </nz-avatar>
 
     <!--title-->
-    <nz-page-header-title>Title</nz-page-header-title>
+    <nz-page-header-title>{{poll.name}}</nz-page-header-title>
 
     <!--subtitle-->
-    <nz-page-header-subtitle>This is a subtitle</nz-page-header-subtitle>
+    <nz-page-header-subtitle>From {{poll.startDate}} to {{poll.endDate}}</nz-page-header-subtitle>
 
     <!--tags-->
     <nz-page-header-tags>
-      <nz-tag [nzColor]="'blue'">Running</nz-tag>
+      <nz-tag [nzColor]="'orange'">Planned</nz-tag>
     </nz-page-header-tags>
 
     <!--extra-->

@@ -58,6 +58,10 @@ export class DashboardComponent implements OnInit {
       this.currentPage.onPollsChanged = this.onPollsChanged;
       this.currentPage.onPollsChanged.emit(this.polls);
     }
+    // Subscribe to child event emitters
+    if (this.currentPage.reloadPolls !== null) {
+      this.currentPage.reloadPolls.subscribe(_ => this.loadPolls());
+    }
   }
 
   /**
