@@ -18,6 +18,7 @@ export class MyPollsComponent implements OnInit {
   @Input() onUserDataChanged: EventEmitter<User>;
   @Input() onPollsChanged: EventEmitter<Poll[]>;
   @Output() reloadPolls = new EventEmitter();
+  @Output() pollSelected = new EventEmitter();
 
   userData: User;
   polls: Poll[]; // undefined == loading, null == error

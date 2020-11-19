@@ -6,6 +6,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {environment as env} from '../../../environments/environment';
 import {NzNotificationService} from 'ng-zorro-antd/notification';
+import {User} from '../../model/user';
 
 /**
  * Wizard dialog, which lets the user create a new poll.
@@ -18,7 +19,7 @@ import {NzNotificationService} from 'ng-zorro-antd/notification';
 })
 export class NewPollDialogComponent {
 
-  @Input() userId: number;
+  @Input() userData: User;
   @Input() isVisible: boolean;
   @Output() onClose = new EventEmitter<boolean>(); // true = success; false = cancel
 
@@ -47,7 +48,7 @@ export class NewPollDialogComponent {
     const options: any = { header, responseType: 'text', observe: 'response', withCredentials: true };
     const body = { name, startDate: 0, endDate: 0 };
     // Send request
-    this.http.post<string>(env.apiBaseUrl + '/users/' + this.userId + '/poll', body, options)
+    this.http.post<string>(env.apiBaseUrl + '/users/' + this.userData.id + '/poll', body, options)
       .subscribe((_: HttpResponse<string>) => {
         // Reset values
         this.name = '';

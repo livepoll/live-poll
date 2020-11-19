@@ -57,7 +57,7 @@
             <span>Planned</span>
           </nz-tag>
           <button  nz-button nzType="primary" [nzSize]="p.nzActive ? 'default' : 'small'"
-                   [routerLink]="['/dashboard/poll', poll.id]" >
+                   (click)="onPollSelected.emit(poll)">
             Details<i nz-icon nzType="right"></i>
           </button>
         </ng-template>
@@ -82,6 +82,6 @@
 
     <!-- New poll dialog -->
     <app-new-poll-dialog [isVisible]="showNewPollDialog" (onClose)="handleNewPollDialogClose($event)"
-                         [userId]="userData.id"></app-new-poll-dialog>
+                         [userData]="userData"></app-new-poll-dialog>
   </div>
 </nz-content>

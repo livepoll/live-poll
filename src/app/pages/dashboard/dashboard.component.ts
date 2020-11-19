@@ -24,6 +24,7 @@ export class DashboardComponent implements OnInit {
   onPollsChanged = new EventEmitter<Poll[]>();
   userData: User;
   currentPage: any;
+  selectedPoll: Poll;
   isCollapsed = false;
   notifications = [
     { id: 101, title: 'Poll "Test poll" opened', message: 'Your poll "Test poll" opened to participants. Share this link to your participants: <a href="https://www.live-poll.de/p/test-poll">https://www.live-poll.de/p/test-poll</a>', silent: true },
@@ -49,7 +50,7 @@ export class DashboardComponent implements OnInit {
    */
   onActivate(componentReference): void {
     this.currentPage = componentReference;
-    // Attach user data
+    // Attach data to child components
     if (this.currentPage.onUserDataChanged !== null) {
       this.currentPage.onUserDataChanged = this.onUserDataChanged;
       this.currentPage.onUserDataChanged.emit(this.userData);
@@ -58,9 +59,18 @@ export class DashboardComponent implements OnInit {
       this.currentPage.onPollsChanged = this.onPollsChanged;
       this.currentPage.onPollsChanged.emit(this.polls);
     }
+    if (this.currentPage.poll !== null) {
+      this.currentPage.poll = this.selectedPoll;
+    }
     // Subscribe to child event emitters
-    if (this.currentPage.reloadPolls !== null) {
+    if (this.currentPage.reloadPolls) {
       this.currentPage.reloadPolls.subscribe(_ => this.loadPolls());
+    }
+    if (this.currentPage.pollSelected) {
+      this.currentPage.pollSelected.subscribe(poll => {
+        this.selectedPoll = poll;
+        this.router.navigateByUrl('/dashboard/poll/' + poll.id);
+      });
     }
   }
 
@@ -69,6 +79,13 @@ export class DashboardComponent implements OnInit {
    */
   ngOnInit(): void {
     // Subscribe to parent event emitters
+    this.setupUserDataEmitters();
+  }
+
+  /**
+   * Sets up the listeners for userData objects from the parent
+   */
+  setupUserDataEmitters(): void {
     this.onUserDataChanged.subscribe(user => {
       this.userData = user;
       this.loadPolls();

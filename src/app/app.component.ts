@@ -61,7 +61,11 @@ export class AppComponent implements OnInit {
   onActivate(componentReference): void {
     this.currentPage = componentReference;
     // Attach user data
-    if (this.currentPage.onUserDataChanged !== null) this.currentPage.onUserDataChanged = this.onUserDataChanged;
+    if (this.currentPage.onUserDataChanged !== null) {
+      this.currentPage.onUserDataChanged = this.onUserDataChanged;
+      if (this.currentPage.setupUserDataEmitters instanceof Function) this.currentPage.setupUserDataEmitters();
+      this.currentPage.onUserDataChanged.emit(this.userData);
+    }
     // Apply current theme
     if (this.currentPage.darkTheme !== null) this.currentPage.darkTheme = this.darkTheme;
     // Subscribe to child methods

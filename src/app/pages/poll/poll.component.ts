@@ -2,7 +2,7 @@
  * Copyright © Live-Poll 2020. All rights reserved
  */
 
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Poll} from '../../model/poll';
 
@@ -13,12 +13,21 @@ import {Poll} from '../../model/poll';
 })
 export class PollComponent implements OnInit {
 
+  onPollChanged = new EventEmitter<Poll>();
   poll: Poll;
 
-  constructor(private route: ActivatedRoute) {
-    this.route.params.subscribe( params => console.log(params.id) );
-  }
+  /**
+   * Initialize component
+   *
+   * @param router Injected router module
+   */
+  constructor(
+    private router: ActivatedRoute
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // Subscribe to parent event emitters
+    this.onPollChanged.subscribe(poll => this.poll = poll);
+  }
 
 }
