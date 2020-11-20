@@ -27,7 +27,6 @@ export class DashboardComponent {
   darkTheme: boolean;
   userData: User;
   currentPage: any;
-  selectedPoll: Poll;
   isCollapsed = false;
   notifications = [
     { id: 101, title: 'Poll "Test poll" opened', message: 'Your poll "Test poll" opened to participants. Share this link to your participants: <a href="https://www.live-poll.de/p/test-poll">https://www.live-poll.de/p/test-poll</a>', silent: true },
@@ -71,12 +70,6 @@ export class DashboardComponent {
     if (child.onReloadPolls) {
       child.onReloadPolls.subscribe(_ => this.loadPolls());
     }
-    if (child.onPollSelected) {
-      child.onPollSelected.subscribe(poll => {
-        this.selectedPoll = poll;
-        this.router.navigateByUrl('/dashboard/poll/' + poll.id);
-      });
-    }
   }
 
   /**
@@ -100,9 +93,9 @@ export class DashboardComponent {
           return poll;
         });
         // Emit polls to child elements
-        this.onPollsChanged.emit(this.polls);
+        if (this.onPollsChanged) this.onPollsChanged.emit(this.polls);
       }, (_) => {
-        this.onPollsChanged.emit(null); // Error == null
+        if (this.onPollsChanged) this.onPollsChanged.emit(null); // Error == null
       });
   }
 

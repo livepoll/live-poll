@@ -57,7 +57,7 @@
             <span>Planned</span>
           </nz-tag>
           <button  nz-button nzType="primary" [nzSize]="p.nzActive ? 'default' : 'small'"
-                   (click)="onPollSelected.emit(poll)">
+                   [routerLink]="'/dashboard/poll/' + poll.id">
             Details<i nz-icon nzType="right"></i>
           </button>
         </ng-template>

@@ -2,8 +2,8 @@
  * Copyright © Live-Poll 2020. All rights reserved
  */
 
-import {Component, EventEmitter, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {Component, EventEmitter} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Poll} from '../../model/poll';
 
 @Component({
@@ -11,26 +11,42 @@ import {Poll} from '../../model/poll';
   templateUrl: './poll.component.html',
   styleUrls: ['./poll.component.sass']
 })
-export class PollComponent implements OnInit {
+export class PollComponent {
 
   // Event Emitters
-  onPollChanged = new EventEmitter<Poll>();
+  onPollsChanged = new EventEmitter<Poll[]>();
 
   // Variables
+  polls: Poll[];
   poll: Poll;
+  pollId: number;
 
   /**
    * Initialize component
    *
-   * @param router Injected router module
+   * @param activeRoute Injected active route
+   * @param router Injected router
    */
   constructor(
-    private router: ActivatedRoute
-  ) {}
-
-  ngOnInit(): void {
-    // Subscribe to parent event emitters
-    this.onPollChanged.subscribe(poll => this.poll = poll);
+    private activeRoute: ActivatedRoute,
+    private router: Router
+  ) {
+    // Subscribe to own event emitters
+    this.onPollsChanged.subscribe(polls => {
+      this.polls = polls;
+      if (this.pollId && polls?.length > 0) this.setSelectedPoll();
+    });
+    this.activeRoute.params.subscribe( params => {
+      this.pollId = params.id;
+      if (this.polls?.length > 0) this.setSelectedPoll();
+    });
   }
 
+  onBack(): void {
+    this.router.navigateByUrl('/dashboard/my-polls');
+  }
+
+  setSelectedPoll(): void {
+    this.poll = this.polls.filter(poll => poll.id == this.pollId)[0]; // Has to be == and not ===
+  }
 }
