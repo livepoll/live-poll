@@ -2,7 +2,7 @@
  * Copyright © Live-Poll 2020. All rights reserved
  */
 
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter} from '@angular/core';
 import {Router} from '@angular/router';
 import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {environment as env} from '../../../environments/environment';
@@ -14,14 +14,17 @@ import {Poll} from '../../model/poll';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.sass']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent {
 
-  @Input() onUserDataChanged: EventEmitter<User>;
-  @Input() darkTheme: boolean;
-  @Output() logout = new EventEmitter();
-  @Output() changeTheme = new EventEmitter<boolean>();
+  // Event Emitters
+  onUserDataChanged = new EventEmitter<User>();
+  onUserDataChangedChildren: EventEmitter<User>;
+  onLogout = new EventEmitter();
+  onChangeTheme = new EventEmitter<boolean>();
+  onPollsChanged: EventEmitter<Poll[]>;
 
-  onPollsChanged = new EventEmitter<Poll[]>();
+  // Variables
+  darkTheme: boolean;
   userData: User;
   currentPage: any;
   selectedPoll: Poll;
@@ -41,55 +44,39 @@ export class DashboardComponent implements OnInit {
   constructor(
     private router: Router,
     private http: HttpClient
-  ) {}
+  ) {
+    // Subscribe to own Event Emitters
+    this.onUserDataChanged.subscribe(userData => {
+      this.userData = userData;
+      this.loadPolls();
+    });
+  }
 
   /**
    * Establishes the communication through the router outlet
    *
-   * @param componentReference Reference of the currently opened page within the router
+   * @param child Reference of the currently opened page within the router
    */
-  onActivate(componentReference): void {
-    this.currentPage = componentReference;
-    // Attach data to child components
-    if (this.currentPage.onUserDataChanged !== null) {
-      this.currentPage.onUserDataChanged = this.onUserDataChanged;
-      this.currentPage.onUserDataChanged.emit(this.userData);
+  onActivate(child): void {
+    this.currentPage = child;
+    // Wire up child Event Emitters
+    if (child.onUserDataChanged) {
+      this.onUserDataChangedChildren = child.onUserDataChanged;
+      this.onUserDataChangedChildren.emit(this.userData);
     }
-    if (this.currentPage.onPollsChanged !== null) {
-      this.currentPage.onPollsChanged = this.onPollsChanged;
-      this.currentPage.onPollsChanged.emit(this.polls);
+    if (child.onPollsChanged) {
+      this.onPollsChanged = child.onPollsChanged;
+      this.onPollsChanged.emit(this.polls);
     }
-    if (this.currentPage.poll !== null) {
-      this.currentPage.poll = this.selectedPoll;
+    if (child.onReloadPolls) {
+      child.onReloadPolls.subscribe(_ => this.loadPolls());
     }
-    // Subscribe to child event emitters
-    if (this.currentPage.reloadPolls) {
-      this.currentPage.reloadPolls.subscribe(_ => this.loadPolls());
-    }
-    if (this.currentPage.pollSelected) {
-      this.currentPage.pollSelected.subscribe(poll => {
+    if (child.onPollSelected) {
+      child.onPollSelected.subscribe(poll => {
         this.selectedPoll = poll;
         this.router.navigateByUrl('/dashboard/poll/' + poll.id);
       });
     }
-  }
-
-  /**
-   * Initialize the dashboard component
-   */
-  ngOnInit(): void {
-    // Subscribe to parent event emitters
-    this.setupUserDataEmitters();
-  }
-
-  /**
-   * Sets up the listeners for userData objects from the parent
-   */
-  setupUserDataEmitters(): void {
-    this.onUserDataChanged.subscribe(user => {
-      this.userData = user;
-      this.loadPolls();
-    });
   }
 
   /**

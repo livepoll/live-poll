@@ -13,7 +13,10 @@ import {Poll} from '../../model/poll';
 })
 export class PollComponent implements OnInit {
 
+  // Event Emitters
   onPollChanged = new EventEmitter<Poll>();
+
+  // Variables
   poll: Poll;
 
   /**

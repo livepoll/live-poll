@@ -15,6 +15,10 @@
 <!-- Page content -->
 <nz-content style="margin-top: 10px">
   <div class="inner-content">
-    <p>analytics works!</p>
+    <p *ngIf="polls?.length > 0">Polls found. This component does render them in the future!</p>
+
+    <!-- Empty result -->
+    <app-result-empty *ngIf="polls === undefined || polls.length === 0" link="/dashboard/my-polls"
+                      button-text="Go to 'My polls' page"></app-result-empty>
   </div>
 </nz-content>

@@ -8,13 +8,17 @@ import {AnalyticsComponent} from './analytics.component';
 import {NzBreadCrumbModule} from 'ng-zorro-antd/breadcrumb';
 import {NzLayoutModule} from 'ng-zorro-antd/layout';
 import {NzIconModule} from 'ng-zorro-antd/icon';
+import {CommonModule} from '@angular/common';
+import {ResultEmptyModule} from '../../components/result-empty/result-empty.module';
 
 @NgModule({
   imports: [
     AnalyticsRoutingModule,
     NzBreadCrumbModule,
     NzLayoutModule,
-    NzIconModule
+    NzIconModule,
+    CommonModule,
+    ResultEmptyModule
   ],
   declarations: [AnalyticsComponent],
   exports: [AnalyticsComponent]

@@ -2,7 +2,7 @@
  * Copyright © Live-Poll 2020. All rights reserved
  */
 
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {NzNotificationService} from 'ng-zorro-antd/notification';
 import {SHA256} from 'crypto-js';
@@ -17,8 +17,8 @@ import {Router} from '@angular/router';
 })
 export class SignUpComponent implements OnInit {
 
-  @Input() darkTheme = false;
-
+  // Variables
+  darkTheme = false;
   signUpForm!: FormGroup;
   loading = false;
   passwordVisible = false;

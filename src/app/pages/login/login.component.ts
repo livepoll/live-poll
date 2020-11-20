@@ -2,7 +2,7 @@
  * Copyright © Live-Poll 2020. All rights reserved
  */
 
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {SHA256} from 'crypto-js';
 import {User} from '../../model/user';
@@ -17,9 +17,11 @@ import {NzNotificationService} from 'ng-zorro-antd/notification';
 })
 export class LoginComponent implements OnInit {
 
-  @Input() darkTheme = false;
-  @Output() login = new EventEmitter<User>();
+  // Event Emitters
+  onLogin = new EventEmitter<User>();
 
+  // Variables
+  darkTheme = false;
   loginMode = true;
   loginForm!: FormGroup;
   resetPasswordForm!: FormGroup;
@@ -69,7 +71,7 @@ export class LoginComponent implements OnInit {
       user.username = this.loginForm.controls.username.value;
       user.password = SHA256(this.loginForm.controls.password.value).toString();
       user.accountState = this.loginForm.controls.remember.value ? 1 : 0;
-      this.login.emit(user);
+      this.onLogin.emit(user);
     }
   }
 

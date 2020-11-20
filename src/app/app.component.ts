@@ -21,8 +21,11 @@ const COOKIE_NAME_THEME = 'theme';
 })
 export class AppComponent implements OnInit {
 
+  // Event Emitters
+  onUserDataChanged: EventEmitter<User>;
+
+  // Variables
   currentPage: any;
-  onUserDataChanged = new EventEmitter<User>();
   darkTheme = false;
   userData: User;
 
@@ -56,24 +59,26 @@ export class AppComponent implements OnInit {
   /**
    * Establishes the communication through the router outlet
    *
-   * @param componentReference Reference of the currently opened page within the router
+   * @param child Reference of the currently opened page within the router
    */
-  onActivate(componentReference): void {
-    this.currentPage = componentReference;
-    // Attach user data
-    if (this.currentPage.onUserDataChanged !== null) {
-      this.currentPage.onUserDataChanged = this.onUserDataChanged;
-      if (this.currentPage.setupUserDataEmitters instanceof Function) this.currentPage.setupUserDataEmitters();
-      this.currentPage.onUserDataChanged.emit(this.userData);
+  onActivate(child): void {
+    this.currentPage = child;
+    // Wire up Attributes
+    if (child.darkTheme !== null) child.darkTheme = this.darkTheme;
+    // Wire up Event Emitters
+    if (child.onUserDataChanged) {
+      this.onUserDataChanged = child.onUserDataChanged;
+      if (this.userData) this.onUserDataChanged.emit(this.userData);
     }
-    // Apply current theme
-    if (this.currentPage.darkTheme !== null) this.currentPage.darkTheme = this.darkTheme;
-    // Subscribe to child methods
-    componentReference.changeTheme?.subscribe(darkTheme => this.changeTheme(darkTheme));  // Change theme event
-    componentReference.logout?.subscribe(_ => this.logout());
-    componentReference.login?.subscribe(user =>  // Login trigger event
-      this.login(user.username, user.password, user.accountState === 1)
-    );
+    if (child.onLogout) {
+      child.onLogout.subscribe(_ => this.logout());
+    }
+    if (child.onChangeTheme) {
+      child.onChangeTheme.subscribe(dark => this.changeTheme(dark));
+    }
+    if (child.onLogin) {
+      child.onLogin.subscribe(user => this.login(user.username, user.password, user.accountState === 1));
+    }
   }
 
   /**
@@ -95,6 +100,7 @@ export class AppComponent implements OnInit {
     // Send request
     this.http.get<string>(env.apiBaseUrl + '/authenticate/init', options).subscribe((response: HttpResponse<string>) => {
       const user = JSON.parse(response.body);
+      // Build user object
       this.userData = new User();
       this.userData.id = user.id;
       this.userData.username = user.username;

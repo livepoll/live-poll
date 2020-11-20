@@ -22,7 +22,6 @@ export class NewPollDialogComponent {
   @Input() userData: User;
   @Input() isVisible: boolean;
   @Output() onClose = new EventEmitter<boolean>(); // true = success; false = cancel
-
   loading = false;
   name = '';
 
