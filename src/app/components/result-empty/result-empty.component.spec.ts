@@ -4,21 +4,21 @@
 
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {ItemPollComponent} from './item-poll.component';
+import {ResultEmptyComponent} from './result-empty.component';
 
-describe('ItemPollComponent', () => {
-  let component: ItemPollComponent;
-  let fixture: ComponentFixture<ItemPollComponent>;
+describe('ResultEmptyComponent', () => {
+  let component: ResultEmptyComponent;
+  let fixture: ComponentFixture<ResultEmptyComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ItemPollComponent ]
+      declarations: [ ResultEmptyComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ItemPollComponent);
+    fixture = TestBed.createComponent(ResultEmptyComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -2,7 +2,7 @@
  * Copyright © Live-Poll 2020. All rights reserved
  */
 
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit} from '@angular/core';
 import {CookieService} from 'ngx-cookie-service';
 import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {Router} from '@angular/router';
@@ -21,9 +21,13 @@ const COOKIE_NAME_THEME = 'theme';
 })
 export class AppComponent implements OnInit {
 
+  // Event Emitters
+  onUserDataChanged: EventEmitter<User>;
+
+  // Variables
   currentPage: any;
   darkTheme = false;
-  userData: User = null;
+  userData: User;
 
   /**
    * Initialize app component
@@ -55,20 +59,26 @@ export class AppComponent implements OnInit {
   /**
    * Establishes the communication through the router outlet
    *
-   * @param componentReference Reference of the currently opened page within the router
+   * @param child Reference of the currently opened page within the router
    */
-  onActivate(componentReference): void {
-    this.currentPage = componentReference;
-    // Attach user data
-    if (this.currentPage.userData !== null) this.currentPage.userData = this.userData;
-    // Apply current theme
-    if (this.currentPage.darkTheme !== null) this.currentPage.darkTheme = this.darkTheme;
-    // Subscribe to child methods
-    componentReference.changeTheme?.subscribe(darkTheme => this.changeTheme(darkTheme));  // Change theme event
-    componentReference.logout?.subscribe(_ => this.logout());
-    componentReference.login?.subscribe(user =>  // Login trigger event
-      this.login(user.username, user.password, user.accountState === 1)
-    );
+  onActivate(child): void {
+    this.currentPage = child;
+    // Wire up Attributes
+    if (child.darkTheme !== null) child.darkTheme = this.darkTheme;
+    // Wire up Event Emitters
+    if (child.onUserDataChanged) {
+      this.onUserDataChanged = child.onUserDataChanged;
+      if (this.userData) this.onUserDataChanged.emit(this.userData);
+    }
+    if (child.onLogout) {
+      child.onLogout.subscribe(_ => this.logout());
+    }
+    if (child.onChangeTheme) {
+      child.onChangeTheme.subscribe(dark => this.changeTheme(dark));
+    }
+    if (child.onLogin) {
+      child.onLogin.subscribe(user => this.login(user.username, user.password, user.accountState === 1));
+    }
   }
 
   /**
@@ -90,12 +100,17 @@ export class AppComponent implements OnInit {
     // Send request
     this.http.get<string>(env.apiBaseUrl + '/authenticate/init', options).subscribe((response: HttpResponse<string>) => {
       const user = JSON.parse(response.body);
+      // Build user object
       this.userData = new User();
       this.userData.id = user.id;
       this.userData.username = user.username;
       this.userData.email = user.email;
-      // Redirect to dashboard
-      this.router.navigateByUrl('/dashboard');
+      // Redirect to dashboard if necessary, otherwise apply userData to dashboard
+      if (location.href.includes('dashboard')) {
+        this.onUserDataChanged.emit(this.userData);
+      } else {
+        this.router.navigateByUrl('/dashboard');
+      }
     }, (_) => {
       if (showErrorExplicitly) {
         this.showErrorMessage('Loading user data failed.');
@@ -118,7 +133,7 @@ export class AppComponent implements OnInit {
     const options: any = { header, responseType: 'text', observe: 'response', withCredentials: true };
     const body = { username, password };
     // Send request
-    this.http.post<string>(env.apiBaseUrl + '/authenticate/login', body, options).subscribe((response: HttpResponse<string>) => {
+    this.http.post<string>(env.apiBaseUrl + '/authenticate/login', body, options).subscribe((_: HttpResponse<string>) => {
       // Load user data
       this.loadUserData(true);
     }, (_) => {
@@ -134,7 +149,7 @@ export class AppComponent implements OnInit {
     const header = new HttpHeaders().set('Content-Type', 'application/json');
     const options: any = { header, responseType: 'text', observe: 'response', withCredentials: true };
     // Send request
-    this.http.put<string>(env.apiBaseUrl + '/authenticate/logout', null, options).subscribe((response: HttpResponse<string>) => {
+    this.http.put<string>(env.apiBaseUrl + '/authenticate/logout', null, options).subscribe((_: HttpResponse<string>) => {
       // Redirect to login page
       this.router.navigateByUrl('/login');
     }, (_) => {

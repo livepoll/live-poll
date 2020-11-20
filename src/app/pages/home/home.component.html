@@ -12,14 +12,11 @@
 <!-- Page content -->
 <nz-content style="margin-top: 10px">
   <div class="inner-content">
-    <nz-empty *ngIf="polls.length == 0" nzNotFoundImage="/assets/images/empty.svg"[nzNotFoundContent]="contentTpl"
-              [nzNotFoundFooter]="footerTpl">
-      <ng-template #contentTpl>
-        <span>You do not have any polls yet.</span>
-      </ng-template>
-      <ng-template #footerTpl>
-        <button nz-button nzType="primary" routerLink="/dashboard/my-polls">Go to 'My polls' page</button>
-      </ng-template>
-    </nz-empty>
+
+    <p *ngIf="polls?.length > 0">Polls found. This component does render them in the future!</p>
+
+    <!-- Empty result -->
+    <app-result-empty *ngIf="polls === undefined || polls.length === 0" link="/dashboard/my-polls"
+                      button-text="Go to 'My polls' page"></app-result-empty>
   </div>
 </nz-content>
