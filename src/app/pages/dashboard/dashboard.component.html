@@ -46,7 +46,7 @@
           <i class="trigger" nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></i>
         </span>
         <span class="header-menu">
-          <nz-switch [ngModel]="!darkTheme" (ngModelChange)="changeTheme.emit(!$event)" style="margin-right: 10px"
+          <nz-switch [ngModel]="!darkTheme" (ngModelChange)="onChangeTheme.emit(!$event)" style="margin-right: 10px"
                      [nzUnCheckedChildren]="unchecked" [nzCheckedChildren]="checked"></nz-switch>
           <ng-template #unchecked><i nz-icon nzType="smile" nzTheme="outline"></i></ng-template>
           <ng-template #checked><i nz-icon nzType="bulb"></i></ng-template>
@@ -56,16 +56,16 @@
             </nz-badge>
           <ng-template #userMenu>
             <!-- Notifications list -->
-             <ul nz-menu nzSelectable>
-               <li nz-menu-item (click)="logout.emit()">Logout</li>
-             </ul>
+            <ul nz-menu nzSelectable>
+             <li nz-menu-item (click)="onLogout.emit()">Logout</li>
+            </ul>
           </ng-template>
         </span>
       </div>
     </nz-header>
 
     <nz-layout class="inner-layout">
-      <router-outlet></router-outlet>
+      <router-outlet (activate)="onActivate($event)"></router-outlet>
     </nz-layout>
   </nz-layout>
 </nz-layout>

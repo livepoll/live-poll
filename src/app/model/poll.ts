@@ -9,7 +9,7 @@ import {Question} from './question';
  * Represents a poll. A poll can have a name a start and end date and hold several questions.
  */
 export class Poll {
-  userId: number;
+  id: number;
   name: string;
   startDate: Date;
   endDate: Date;

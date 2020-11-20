@@ -4,21 +4,21 @@
 
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {PollComponent} from './poll.component';
+import {ResultErrorComponent} from './result-error.component';
 
-describe('PollComponent', () => {
-  let component: PollComponent;
-  let fixture: ComponentFixture<PollComponent>;
+describe('ResultErrorComponent', () => {
+  let component: ResultErrorComponent;
+  let fixture: ComponentFixture<ResultErrorComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PollComponent ]
+      declarations: [ ResultErrorComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PollComponent);
+    fixture = TestBed.createComponent(ResultErrorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

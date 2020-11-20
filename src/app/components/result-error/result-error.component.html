@@ -1,0 +1,15 @@
+<!--
+  ~ Copyright © Live-Poll 2020. All rights reserved
+  -->
+
+<nz-result nzStatus="error" [nzTitle]="title" [nzSubTitle]="subtitle">
+  <div nz-result-content>
+    <div class="desc">
+      <h4 nz-title>The content you submitted has the following error:</h4>
+      <p nz-paragraph *ngFor="let message of errorMessages">
+        <i nz-icon nzType="close-circle"></i>
+        {{message}}
+      </p>
+    </div>
+  </div>
+</nz-result>

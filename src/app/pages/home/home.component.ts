@@ -2,20 +2,28 @@
  * Copyright © Live-Poll 2020. All rights reserved
  */
 
-import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
+import {Component, EventEmitter} from '@angular/core';
 import {Poll} from '../../model/poll';
+import {User} from '../../model/user';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.sass']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent {
 
-  polls: Poll[] = [];
+  // Event Emitters
+  onUserDataChanged = new EventEmitter<User>();
+  onPollsChanged = new EventEmitter<Poll[]>();
 
-  constructor(private router: Router) {}
+  // Variables
+  userData: User;
+  polls: Poll[];
 
-  ngOnInit(): void {}
+  constructor() {
+    // Subscribe to own Event Emitters
+    this.onUserDataChanged.subscribe(userData => this.userData = userData);
+    this.onPollsChanged.subscribe(polls => this.polls = polls);
+  }
 }
