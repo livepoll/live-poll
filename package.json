@@ -18,10 +18,10 @@
     "build:themes:light": "lessc -x src/theme.light.less src/assets/themes/light.css --js",
     "build:themes:dark": "lessc -x src/theme.dark.less src/assets/themes/dark.css --js",
     "int:extract": "ng xi18n --output-path src/locale --format=xlf2",
-    "start": "ng serve --ssl --ssl-key cert/localhost.key  --ssl-cert cert/localhost.crt",
+    "start": "ng serve --ssl --ssl-key cert/localhost.key --ssl-cert cert/localhost.crt",
     "start:secure": "ng serve --host 192.168.0.52",
-    "electron": "ng build & electron .",
-    "build:electron": "ng build & electron-packager ./dist/live-poll --out=dist --all"
+    "electron": "ng build --configuration=electron & electron .",
+    "build:electron": "ng build --configuration=electron & electron-packager ./dist/live-poll --out=dist --all"
   },
   "private": true,
   "dependencies": {

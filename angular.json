@@ -97,6 +97,12 @@
                   "maximumError": "10kb"
                 }
               ]
+            },
+            "electron": {
+              "index": {
+                "input": "src/index-electron.html",
+                "output": "index.html"
+              }
             }
           }
         },
