@@ -26,16 +26,6 @@
           </li>
         </ul>
       </li>
-      <li class="main-menu no-select" nz-submenu nzTitle="Account" nzIcon="user">
-        <ul>
-          <li nz-menu-item nzMatchRouter>
-            <a>Account details</a>
-          </li>
-          <li nz-menu-item nzMatchRouter>
-            <a>Change password</a>
-          </li>
-        </ul>
-      </li>
     </ul>
   </nz-sider>
   <nz-layout>
@@ -52,13 +42,12 @@
           <ng-template #checked><i nz-icon nzType="bulb"></i></ng-template>
           <nz-badge [nzCount]="getNonSilentNotifications().length" nzOverflowCount="9" style="margin-right: 24px;">
               <nz-avatar nzIcon="user" nz-popover [nzPopoverContent]="userMenu"
-                         style="cursor: pointer;"></nz-avatar>
+                         nzPopoverPlacement="bottomRight" nzPopoverTrigger="click" style="cursor: pointer;"></nz-avatar>
             </nz-badge>
           <ng-template #userMenu>
-            <!-- Notifications list -->
-            <ul nz-menu nzSelectable>
-             <li nz-menu-item (click)="onLogout.emit()">Logout</li>
-            </ul>
+            <app-main-options-menu [userData]="userData" [notifications]="notifications" (logout)="onLogout.emit()"
+                                   (markAsRead)="markAsRead($event)">
+            </app-main-options-menu>
           </ng-template>
         </span>
       </div>
