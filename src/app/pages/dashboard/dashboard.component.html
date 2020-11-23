@@ -41,8 +41,8 @@
           <ng-template #unchecked><i nz-icon nzType="smile" nzTheme="outline"></i></ng-template>
           <ng-template #checked><i nz-icon nzType="bulb"></i></ng-template>
           <nz-badge [nzCount]="getNonSilentNotifications().length" nzOverflowCount="9" style="margin-right: 24px;">
-              <nz-avatar nzIcon="user" nz-popover [nzPopoverContent]="userMenu" nzPopoverPlacement="bottomLeft"
-                         nzPopoverTrigger="click" style="cursor: pointer;"></nz-avatar>
+              <nz-avatar nzIcon="user" nz-popover [nzPopoverContent]="userMenu"
+                         nzPopoverPlacement="bottomRight" nzPopoverTrigger="click" style="cursor: pointer;"></nz-avatar>
             </nz-badge>
           <ng-template #userMenu>
             <app-main-options-menu [userData]="userData" [notifications]="notifications" (logout)="onLogout.emit()">
