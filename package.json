@@ -20,8 +20,8 @@
     "int:extract": "ng xi18n --output-path src/locale --format=xlf2",
     "start": "ng serve --ssl --ssl-key cert/localhost.key  --ssl-cert cert/localhost.crt",
     "start:secure": "ng serve --host 192.168.0.52",
-    "electron": "electron .",
-    "build:electron": "npm run build & electron-packager ./dist livepoll --out=dist --all"
+    "electron": "ng build & electron .",
+    "build:electron": "npm run build & electron-packager ./dist live-poll --out=dist --all"
   },
   "private": true,
   "dependencies": {
