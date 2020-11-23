@@ -26,16 +26,6 @@
           </li>
         </ul>
       </li>
-      <li class="main-menu no-select" nz-submenu nzTitle="Account" nzIcon="user">
-        <ul>
-          <li nz-menu-item nzMatchRouter>
-            <a>Account details</a>
-          </li>
-          <li nz-menu-item nzMatchRouter>
-            <a>Change password</a>
-          </li>
-        </ul>
-      </li>
     </ul>
   </nz-sider>
   <nz-layout>
@@ -51,57 +41,12 @@
           <ng-template #unchecked><i nz-icon nzType="smile" nzTheme="outline"></i></ng-template>
           <ng-template #checked><i nz-icon nzType="bulb"></i></ng-template>
           <nz-badge [nzCount]="getNonSilentNotifications().length" nzOverflowCount="9" style="margin-right: 24px;">
-              <nz-avatar nzIcon="user" nz-popover [nzPopoverContent]="userMenu" nzPopoverPlacement="rightBottom"
+              <nz-avatar nzIcon="user" nz-popover [nzPopoverContent]="userMenu" nzPopoverPlacement="bottomLeft"
                          nzPopoverTrigger="click" style="cursor: pointer;"></nz-avatar>
             </nz-badge>
           <ng-template #userMenu>
-            <!-- Notifications list -->
-            <nz-tabset style="margin: -12px -16px;">
-              <!-- Actions tab -->
-              <nz-tab [nzTitle]="tabTitle1">
-                <div style="width: 400px; margin-top: -16px">
-                  <ul nz-menu>
-                    <li nz-menu-item>Logout</li>
-                    <li nz-menu-item>Account details</li>
-                    <li nz-menu-item>Logout</li>
-                  </ul>
-                </div>
-
-                <ng-template #tabTitle1>
-                  <i nz-icon nzType="interaction" style="margin-left: 15px"></i>Actions
-                </ng-template>
-              </nz-tab>
-              <!-- Notifications tab -->
-              <nz-tab [nzTitle]="tabTitle2">
-                <nz-collapse *ngIf="notifications.length > 0" nzBordered="false" nzAccordion
-                             style="user-select: none; width: 400px; margin-top: -16px">
-                  <nz-collapse-panel #p *ngFor="let notification of notifications" [nzHeader]="header"
-                                     [nzExtra]="options" [nzExpandedIcon]="expandedIcon">
-                    <!-- Item content -->
-                    <p [innerHTML]="notification.message"></p>
-
-                    <!-- Header -->
-                    <ng-template #header>
-                      <span nzEllipsis nzEllipsisRows="1">{{notification.title}}</span>
-                    </ng-template>
-                    <!-- Header options -->
-                    <ng-template #options>
-                      <button nz-button nzSize="small">
-                        <i nz-icon nzType="read" nzTheme="outline"></i> Mark as read
-                      </button>
-                    </ng-template>
-                    <!-- Expand icon -->
-                    <ng-template #expandedIcon>
-                      <i nz-icon nzType="right-circle" class="ant-collapse-arrow" [nzRotate]="p.nzActive ? 90 : 0"
-                         style="font-size: 16px;"></i>
-                    </ng-template>
-                  </nz-collapse-panel>
-                </nz-collapse>
-                <nz-empty *ngIf="notifications.length === 0"></nz-empty>
-
-                <ng-template #tabTitle2 style="padding: 5px"><i nz-icon nzType="notification"></i>Notifications</ng-template>
-              </nz-tab>
-            </nz-tabset>
+            <app-main-options-menu [userData]="userData" [notifications]="notifications" (logout)="onLogout.emit()">
+            </app-main-options-menu>
           </ng-template>
         </span>
       </div>

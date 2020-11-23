@@ -20,6 +20,9 @@ import {CommonModule} from '@angular/common';
 import {NzButtonModule} from 'ng-zorro-antd/button';
 import {NzEmptyModule} from 'ng-zorro-antd/empty';
 import {NzTypographyModule} from 'ng-zorro-antd/typography';
+import {NzGridModule} from 'ng-zorro-antd/grid';
+import {NzUploadModule} from 'ng-zorro-antd/upload';
+import {MainOptionsMenuModule} from '../../components/main-options-menu/main-options-menu.module';
 
 @NgModule({
   imports: [
@@ -37,7 +40,10 @@ import {NzTypographyModule} from 'ng-zorro-antd/typography';
     CommonModule,
     NzButtonModule,
     NzEmptyModule,
-    NzTypographyModule
+    NzTypographyModule,
+    NzGridModule,
+    NzUploadModule,
+    MainOptionsMenuModule
   ],
   declarations: [DashboardComponent],
   exports: [DashboardComponent]
