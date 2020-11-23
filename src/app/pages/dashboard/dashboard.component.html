@@ -45,7 +45,8 @@
                          nzPopoverPlacement="bottomRight" nzPopoverTrigger="click" style="cursor: pointer;"></nz-avatar>
             </nz-badge>
           <ng-template #userMenu>
-            <app-main-options-menu [userData]="userData" [notifications]="notifications" (logout)="onLogout.emit()">
+            <app-main-options-menu [userData]="userData" [notifications]="notifications" (logout)="onLogout.emit()"
+                                   (markAsRead)="markAsRead($event)">
             </app-main-options-menu>
           </ng-template>
         </span>

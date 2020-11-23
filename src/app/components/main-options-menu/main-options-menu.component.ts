@@ -8,6 +8,7 @@ import {User} from '../../model/user';
 })
 export class MainOptionsMenuComponent {
   @Input() userData: User;
-  @Input() notifications: object[];
+  @Input() notifications: any[];
   @Output() logout = new EventEmitter();
+  @Output() markAsRead = new EventEmitter<number>();
 }

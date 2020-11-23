@@ -9,8 +9,7 @@ import {NzButtonModule} from 'ng-zorro-antd/button';
 import {NzEmptyModule} from 'ng-zorro-antd/empty';
 import {NzIconModule} from 'ng-zorro-antd/icon';
 import {NzGridModule} from 'ng-zorro-antd/grid';
-
-
+import {NzBadgeModule} from 'ng-zorro-antd/badge';
 
 @NgModule({
   declarations: [MainOptionsMenuComponent],
@@ -26,7 +25,8 @@ import {NzGridModule} from 'ng-zorro-antd/grid';
     NzButtonModule,
     NzEmptyModule,
     NzIconModule,
-    NzGridModule
+    NzGridModule,
+    NzBadgeModule
   ]
 })
 export class MainOptionsMenuModule { }
