@@ -29,8 +29,20 @@ export class DashboardComponent {
   currentPage: any;
   isCollapsed = false;
   notifications = [
-    { id: 101, title: 'Poll "Test poll" opened', message: 'Your poll "Test poll" opened to participants. Share this link to your participants: <a href="https://www.live-poll.de/p/test-poll">https://www.live-poll.de/p/test-poll</a>', silent: true },
-    { id: 102, title: 'Poll "Test poll" closed', message: 'Your poll "Test poll" is closed now for all participants.', silent: false }
+    {
+      id: 101,
+      title: 'Poll "Test poll" opened',
+      message: 'Your poll "Test poll" opened to participants. Share this link to your participants: <a href="https://www.live-poll.de/p/test-poll">https://www.live-poll.de/p/test-poll</a>',
+      silent: true,
+      alreadyRead: false
+    },
+    {
+      id: 102,
+      title: 'Poll "Test poll" closed',
+      message: 'Your poll "Test poll" is closed now for all participants.',
+      silent: false,
+      alreadyRead: false
+    }
   ];
   polls: Poll[]; // undefined == loading, null == error
 
@@ -104,5 +116,14 @@ export class DashboardComponent {
    */
   getNonSilentNotifications(): any[] {
     return this.notifications.filter(n => n.silent === false);
+  }
+
+  /**
+   * Marks a single notification as read.
+   *
+   * @param notificationId Id of the notification to mark as read
+   */
+  markAsRead(notificationId: number): void {
+    this.notifications.find(notification => notification.id = notificationId).alreadyRead = true;
   }
 }
