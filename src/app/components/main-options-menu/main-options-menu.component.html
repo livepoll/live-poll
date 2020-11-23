@@ -1,7 +1,7 @@
 <nz-tabset nzTabBarGutter="0" style="margin: -12px -16px;">
   <!-- Account tab -->
   <nz-tab [nzTitle]="tabTitle1">
-    <div nz-row nzGutter="10" style="width: 400px; margin-top: -16px; padding: 10px">
+    <div nz-row style="width: 410px; margin-top: -16px; padding: 10px">
       <div nz-col nzSpan="8">
         <div class="center"><nz-avatar [nzSize]="90" nzIcon="user"></nz-avatar></div>
         <!-- Upload button for new profile images -->
@@ -18,11 +18,12 @@
         <span><strong>Email:</strong> {{userData.email}}</span>
 
         <!-- Edit personal data button -->
-        <button nz-button nzSize="small" style="position: absolute; bottom: 0; left: 10px;">
+        <button nz-button nzSize="small" style="position: absolute; bottom: 0; left: 0;">
           <i nz-icon nzType="edit"></i>Edit data
         </button>
         <!-- Logout button -->
-        <button nz-button nzSize="small" style="position: absolute; bottom: 0; right: 5px;" (click)="logout.emit()">
+        <button nz-button nzType="primary" nzSize="small" style="position: absolute; bottom: 0; right: 0;"
+                (click)="logout.emit()">
           <i nz-icon nzType="logout"></i>Logout
         </button>
       </div>
@@ -34,8 +35,8 @@
   </nz-tab>
   <!-- Notifications tab -->
   <nz-tab [nzTitle]="tabTitle2">
-    <nz-collapse *ngIf="notifications.length > 0" nzBordered="false" nzAccordion
-                 style="user-select: none; width: 400px; margin-top: -16px;">
+    <nz-collapse *ngIf="notifications.length > 0" nzBordered="true" nzAccordion
+                 style="user-select: none; width: 410px; margin-top: -16px;">
       <nz-collapse-panel #p *ngFor="let notification of notifications" [nzHeader]="header"
                          [nzExtra]="options" [nzExpandedIcon]="expandedIcon">
         <!-- Item content -->
