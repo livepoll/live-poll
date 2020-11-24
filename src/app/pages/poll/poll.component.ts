@@ -20,6 +20,7 @@ export class PollComponent {
   polls: Poll[];
   poll: Poll;
   pollId: number;
+  changingState = false;
 
   /**
    * Initialize component
@@ -42,11 +43,31 @@ export class PollComponent {
     });
   }
 
+  /**
+   * Is called when the user clicks back in the poll detail view to come back to the poll list
+   */
   onBack(): void {
     this.router.navigateByUrl('/dashboard/my-polls');
   }
 
+  /**
+   * Filter out the currently active poll and assign it to the poll variable
+   */
   setSelectedPoll(): void {
     this.poll = this.polls.filter(poll => poll.id == this.pollId)[0]; // Has to be == and not ===
+  }
+
+  /**
+   * Change the poll state on the server
+   *
+   * @param open Open = true; closed = false
+   */
+  changePollState(open: boolean): void {
+    this.changingState = true;
+    if (open) {
+
+    } else {
+
+    }
   }
 }

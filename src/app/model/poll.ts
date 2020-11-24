@@ -13,5 +13,6 @@ export class Poll {
   name: string;
   startDate: Date;
   endDate: Date;
+  open: boolean;
   questions: Question[];
 }
