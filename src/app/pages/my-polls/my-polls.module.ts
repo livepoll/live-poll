@@ -62,6 +62,6 @@ import {NzFormModule} from 'ng-zorro-antd/form';
         NzFormModule
     ],
   providers: [],
-  exports: [MyPollsComponent]
+    exports: [MyPollsComponent, NewPollItemDialogComponent]
 })
 export class MyPollsModule { }

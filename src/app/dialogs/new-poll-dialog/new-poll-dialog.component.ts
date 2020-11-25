@@ -19,9 +19,12 @@ import {User} from '../../model/user';
 })
 export class NewPollDialogComponent {
 
+  // Event Emitters
   @Input() userData: User;
   @Input() isVisible: boolean;
   @Output() onClose = new EventEmitter<boolean>(); // true = success; false = cancel
+
+  // Variables
   loading = false;
   name = '';
 

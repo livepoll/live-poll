@@ -10,14 +10,14 @@
   <nz-breadcrumb-item>
     <a routerLink="/dashboard/my-polls"><em>My Polls</em></a>
   </nz-breadcrumb-item>
-  <nz-breadcrumb-item>
+  <nz-breadcrumb-item *ngIf="poll">
     <a [routerLink]="'/dashboard/my-polls/poll/' + poll.id"><em>{{poll.name}}</em></a>
   </nz-breadcrumb-item>
 </nz-breadcrumb>
 
 <!-- Page content -->
 <nz-content style="margin-top: 10px">
-  <nz-page-header *ngIf="poll !== undefined" class="site-page-header" (nzBack)="onBack()" nzBackIcon>
+  <nz-page-header *ngIf="!error && poll !== undefined" class="site-page-header" (nzBack)="onBack()" nzBackIcon>
     <!--title-->
     <nz-page-header-title>{{poll.name}}</nz-page-header-title>
 
@@ -49,23 +49,68 @@
     <!--content-->
     <nz-page-header-content>
       <div nz-row>
-        <div class="content">
-          <p>
-            Ant Design interprets the color system into two levels: a system-level color system and a product-level color system.
-          </p>
-          <p>
-            Ant Design's design team preferred to design with the HSB color model, which makes it easier for designers to have a clear
-            psychological expectation of color when adjusting colors, as well as facilitate communication in teams.
-          </p>
-          <div class="content-link">
-            <a> <img src="https://gw.alipayobjects.com/zos/rmsportal/MjEImQtenlyueSmVEfUD.svg" alt="start" />Quick Start </a>
-            <a> <img src="https://gw.alipayobjects.com/zos/rmsportal/NbuDUAuBlIApFuDvWiND.svg" alt="info" />Product Info </a>
-            <a> <img src="https://gw.alipayobjects.com/zos/rmsportal/ohOEPSYdDTNnyMbGuyLb.svg" alt="doc" />Product Doc </a>
-          </div>
-        </div>
+        You can share this URL for participants:&nbsp;
+        <p style="color: #38C6BC">
+          {{host}}/p/
+          <span nz-typography nzCopyable nzEditable [nzContent]="poll.snippet" (nzContentChange)="onUrlChange($event)"
+                [nzCopyText]="host + '/' + poll.snippet" style="margin-left: -2px; color: #38C6BC"></span>
+        </p>
+        <nz-tabset class="content" style="width: 100%">
+          <nz-tab [nzTitle]="titleQuestions">
+            <ng-template #titleQuestions>
+              <i nz-icon nzType="ordered-list"></i>Questions
+            </ng-template>
+
+            <!-- Poll item list -->
+            <nz-page-header>
+              <nz-page-header-subtitle>Click on an item for details</nz-page-header-subtitle>
+              <nz-page-header-extra>
+                <button nz-button nzType="primary" (click)="showNewPollItemDialog = true">New question</button>
+              </nz-page-header-extra>
+            </nz-page-header>
+            <nz-list nzGrid>
+              <div nz-row [nzGutter]="16">
+                <div nz-col [nzXXl]="8" [nzXl]="4" [nzLg]="6" [nzMd]="6" [nzSm]="12" [nzXs]="24" *ngFor="let item of poll.questions">
+                  <nz-list-item>
+                    <nz-card [nzTitle]="item.question">
+                      Card content
+                    </nz-card>
+                  </nz-list-item>
+                </div>
+              </div>
+            </nz-list>
+
+            <!-- No poll items -->
+            <app-result-empty *ngIf="poll.questions === undefined || poll.questions.length === 0"
+                              message="You do not have any questions yet."></app-result-empty>
+          </nz-tab>
+          <nz-tab [nzTitle]="titleResults">
+            <ng-template #titleResults>
+              <i nz-icon nzType="bar-chart"></i>Results
+            </ng-template>
+
+            <!-- No results -->
+            <app-result-empty *ngIf="poll.questions === undefined || poll.questions.length === 0"
+                              message="The results of your poll are not yet available."></app-result-empty>
+          </nz-tab>
+          <nz-tab [nzTitle]="titleQA">
+            <ng-template #titleQA>
+              <i nz-icon nzType="message"></i>Q&A Management
+            </ng-template>
+
+            <p>Q&A is up to now far beyond the scope of the application</p>
+          </nz-tab>
+        </nz-tabset>
       </div>
 
-      <!--<app-new-poll-item-dialog [isVisible]="true"></app-new-poll-item-dialog>-->
+      <app-new-poll-item-dialog [isVisible]="showNewPollItemDialog" (onClose)="handleNewPollItemDialogClose($event)">
+      </app-new-poll-item-dialog>
     </nz-page-header-content>
   </nz-page-header>
+
+  <!-- Loading indicator -->
+  <nz-spin *ngIf="!error && poll === undefined" nzSize="large"></nz-spin>
+
+  <!-- Error message -->
+  <app-result-error *ngIf="error" title="Error" subtitle="An error occurred while loading the poll"></app-result-error>
 </nz-content>

@@ -17,6 +17,17 @@ import {NzGridModule} from 'ng-zorro-antd/grid';
 import {NzTagModule} from 'ng-zorro-antd/tag';
 import {NzLayoutModule} from 'ng-zorro-antd/layout';
 import {RouterModule} from '@angular/router';
+import {MyPollsModule} from '../my-polls/my-polls.module';
+import {NzTabsModule} from 'ng-zorro-antd/tabs';
+import {ResultEmptyModule} from '../../components/result-empty/result-empty.module';
+import {NzTypographyModule} from 'ng-zorro-antd/typography';
+import {NzInputModule} from 'ng-zorro-antd/input';
+import {FormsModule} from '@angular/forms';
+import {NzToolTipModule} from 'ng-zorro-antd/tooltip';
+import {NzCardModule} from 'ng-zorro-antd/card';
+import {NzListModule} from 'ng-zorro-antd/list';
+import {ResultErrorModule} from '../../components/result-error/result-error.module';
+import {NzSpinModule} from 'ng-zorro-antd/spin';
 
 @NgModule({
   declarations: [PollComponent],
@@ -33,7 +44,18 @@ import {RouterModule} from '@angular/router';
     NzGridModule,
     NzTagModule,
     NzLayoutModule,
-    RouterModule
+    RouterModule,
+    MyPollsModule,
+    NzTabsModule,
+    ResultEmptyModule,
+    NzTypographyModule,
+    NzInputModule,
+    FormsModule,
+    NzToolTipModule,
+    NzCardModule,
+    NzListModule,
+    ResultErrorModule,
+    NzSpinModule
   ]
 })
 export class PollModule { }

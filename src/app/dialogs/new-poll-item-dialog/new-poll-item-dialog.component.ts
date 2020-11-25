@@ -2,7 +2,7 @@
  * Copyright © Live-Poll 2020. All rights reserved
  */
 
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {OPTIONS_DATA, OptionType} from '../../shared/poll-item-options';
 
 // Constants
@@ -28,14 +28,18 @@ const ITEM_TYPES = [
   templateUrl: './new-poll-item-dialog.component.html',
   styleUrls: ['./new-poll-item-dialog.component.sass']
 })
-export class NewPollItemDialogComponent implements OnInit {
+export class NewPollItemDialogComponent {
 
   // Constant associations
   stepLabels = STEP_LABELS;
   itemTypes = ITEM_TYPES;
   optionTypes = OptionType;
 
+  // Event Emitters
   @Input() isVisible: boolean;
+  @Output() onClose = new EventEmitter<boolean>(); // true = success; false = cancel
+
+  // Variables
   step = 1;
   loading = false;
   errorMessage = '';
@@ -43,8 +47,6 @@ export class NewPollItemDialogComponent implements OnInit {
   question = '';
   answers = ['', ''];
   options = [];
-
-  ngOnInit(): void {}
 
   /**
    * User clicked on 'Next' button.

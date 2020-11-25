@@ -28,7 +28,7 @@ export class MyPollsComponent {
    * Initialize MyPolls component
    */
   constructor() {
-    // Subscribe to parent event emitters
+    // Subscribe to own event emitters
     this.onUserDataChanged.subscribe(user => this.userData = user);
     this.onPollsChanged.subscribe(polls => this.polls = polls);
   }
