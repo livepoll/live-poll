@@ -28,6 +28,7 @@ import {NzCardModule} from 'ng-zorro-antd/card';
 import {NzListModule} from 'ng-zorro-antd/list';
 import {ResultErrorModule} from '../../components/result-error/result-error.module';
 import {NzSpinModule} from 'ng-zorro-antd/spin';
+import {NzPopconfirmModule} from 'ng-zorro-antd/popconfirm';
 
 @NgModule({
   declarations: [PollComponent],
@@ -55,7 +56,8 @@ import {NzSpinModule} from 'ng-zorro-antd/spin';
     NzCardModule,
     NzListModule,
     ResultErrorModule,
-    NzSpinModule
+    NzSpinModule,
+    NzPopconfirmModule
   ]
 })
 export class PollModule { }

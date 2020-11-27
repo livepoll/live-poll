@@ -8,6 +8,7 @@ import {Poll} from '../../model/poll';
 import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {environment as env} from '../../../environments/environment';
 import {User} from '../../model/user';
+import {Question} from '../../model/question';
 
 @Component({
   selector: 'app-poll',
@@ -105,9 +106,8 @@ export class PollComponent {
     // Build header, body and options
     const header = new HttpHeaders().set('Content-Type', 'application/json');
     const options: any = { header, observe: 'response', withCredentials: true };
-    const body = { id: this.pollId };
     // Send request
-    this.http.post<string>(env.apiBaseUrl + '/user/' + this.userData.id + '/polls/' + this.pollId, body, options)
+    this.http.get<string>(env.apiBaseUrl + '/user/' + this.userData.id + '/polls/' + this.pollId, options)
       .subscribe((response: HttpResponse<string>) => {
         if (response.ok) {
           const json = JSON.parse(response.body);
@@ -119,7 +119,37 @@ export class PollComponent {
           this.poll = poll;
         }
       }, (_) => {
-        this.error = true;
+        // this.error = true;
+        // Mocked item - TODO: please remove later
+        // Mock questions
+        const question1 = new Question();
+        question1.question = 'How are you?';
+        question1.pos = 2;
+        const question2 = new Question();
+        question2.question = 'What did you eat today?';
+        question2.pos = 1;
+        // Mock poll
+        this.poll = new Poll();
+        this.poll.id = this.pollId;
+        this.poll.snippet = 'adg32kjas';
+        this.poll.open = false;
+        this.poll.name = 'This is my test poll';
+        this.poll.questions = [question1, question2];
+        this.poll.startDate = new Date(2020, 11, 28, 11);
+        this.poll.endDate = new Date(2020, 11, 29, 12);
+      });
+  }
+
+  deletePoll(): void {
+    // Build header, body and options
+    const header = new HttpHeaders().set('Content-Type', 'application/json');
+    const options: any = { header, observe: 'response', withCredentials: true };
+    // Send request
+    this.http.delete<string>(env.apiBaseUrl + '/user/' + this.userData.id + '/polls/' + this.pollId, options)
+      .subscribe((response: HttpResponse<string>) => {
+        if (response.ok) {
+          this.router.navigateByUrl('/dashboard/my-polls');
+        }
       });
   }
 }

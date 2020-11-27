@@ -17,19 +17,22 @@
 
 <!-- Page content -->
 <nz-content style="margin-top: 10px">
-  <nz-page-header *ngIf="!error && poll !== undefined" class="site-page-header" (nzBack)="onBack()" nzBackIcon>
+  <nz-page-header *ngIf="!error && poll" class="site-page-header" (nzBack)="onBack()" nzBackIcon>
     <!--title-->
     <nz-page-header-title>{{poll.name}}</nz-page-header-title>
 
     <!--subtitle-->
     <nz-page-header-subtitle *ngIf="poll.startDate != '0' && poll.endDate != '0'">
-      From {{poll.startDate}} to {{poll.endDate}}
+      From {{poll.startDate | date:'short'}} to {{poll.endDate | date:'short'}}
     </nz-page-header-subtitle>
     <nz-page-header-subtitle *ngIf="poll.startDate == '0' && poll.endDate != '0'">
-      From {{poll.startDate}} to {{poll.endDate}}
+      Manual opening, closing automatically at {{poll.endDate | date:'short'}}
+    </nz-page-header-subtitle>
+    <nz-page-header-subtitle *ngIf="poll.startDate == '0' && poll.endDate != '0'">
+      Opening automatically at {{poll.startDate | date:'short'}}, manual closing
     </nz-page-header-subtitle>
     <nz-page-header-subtitle *ngIf="poll.startDate == '0' && poll.endDate == '0'">
-      Manual activation / deactivation
+      Manual opening / closing
     </nz-page-header-subtitle>
 
     <!--tags-->
@@ -39,7 +42,10 @@
 
     <!--extra-->
     <nz-page-header-extra>
-      <button nz-button nzType="dashed" nzDanger><i nz-icon nzType="delete"></i>Delete poll</button>
+      <button nz-button nzType="dashed" nz-popconfirm nzPopconfirmTitle="Are you sure you want to delete this poll?"
+              nzPopconfirmPlacement="bottom" (nzOnConfirm)="deletePoll()" nzDanger>
+        <i nz-icon nzType="delete"></i>Delete poll
+      </button>
       <button nz-button><i nz-icon nzType="edit"></i>Edit poll</button>
       <button nz-button nzType="primary" [nzLoading]="changingState" (click)="changePollState(!poll.open)">
         Open poll
@@ -49,7 +55,7 @@
     <!--content-->
     <nz-page-header-content>
       <div nz-row>
-        You can share this URL for participants:&nbsp;
+        You can share this URL with your participants:&nbsp;
         <p style="color: #38C6BC">
           {{host}}/p/
           <span nz-typography nzCopyable nzEditable [nzContent]="poll.snippet" (nzContentChange)="onUrlChange($event)"
@@ -103,8 +109,8 @@
         </nz-tabset>
       </div>
 
-      <app-new-poll-item-dialog [isVisible]="showNewPollItemDialog" (onClose)="handleNewPollItemDialogClose($event)">
-      </app-new-poll-item-dialog>
+      <app-new-poll-item-dialog [isVisible]="showNewPollItemDialog" (onClose)="handleNewPollItemDialogClose($event)"
+                                [poll]="poll"></app-new-poll-item-dialog>
     </nz-page-header-content>
   </nz-page-header>
 

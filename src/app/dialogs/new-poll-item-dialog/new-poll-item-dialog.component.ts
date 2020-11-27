@@ -4,6 +4,10 @@
 
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {OPTIONS_DATA, OptionType} from '../../shared/poll-item-options';
+import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
+import {environment as env} from '../../../environments/environment';
+import {NzNotificationService} from 'ng-zorro-antd/notification';
+import {Poll} from '../../model/poll';
 
 // Constants
 const STEP_LABELS = [
@@ -12,11 +16,36 @@ const STEP_LABELS = [
   'Options'
 ];
 const ITEM_TYPES = [
-  { id: 1, name: 'Open Text Question', description: 'Enables the user to fill in a text as answer' },
-  { id: 2, name: 'Multiple Choice Question', description: 'Lets the user choose between several, pre-defined answers' },
-  { id: 3, name: 'Quiz Question', description: 'Multiple choice question, which displays the right answer afterwards' },
-  { id: 4, name: 'Word Cloud Question', description: 'Single word can be entered. The words will be arranged in form of clouds' },
-  { id: 5, name: 'Rating Question', description: 'Star rating.' },
+  {
+    id: 1,
+    name: 'Open Text Question',
+    description: 'Enables the user to fill in a text as answer',
+    endpointFraction: 'opentextitem'
+  },
+  {
+    id: 2,
+    name: 'Multiple Choice Question',
+    description: 'Lets the user choose between several, pre-defined answers',
+    endpointFraction: 'multiplechoiceitem'
+  },
+  {
+    id: 3,
+    name: 'Quiz Question',
+    description: 'Multiple choice question, which displays the right answer afterwards',
+    endpointFraction: 'quizitem'
+  },
+  {
+    id: 4,
+    name: 'Word Cloud Question',
+    description: 'Single word can be entered. The words will be arranged in form of clouds',
+    endpointFraction: 'wordclouditem'
+  },
+  {
+    id: 5,
+    name: 'Rating Question',
+    description: 'Star rating.',
+    endpointFraction: 'ratingitem'
+  },
 ];
 
 /**
@@ -37,6 +66,7 @@ export class NewPollItemDialogComponent {
 
   // Event Emitters
   @Input() isVisible: boolean;
+  @Input() poll: Poll;
   @Output() onClose = new EventEmitter<boolean>(); // true = success; false = cancel
 
   // Variables
@@ -49,6 +79,17 @@ export class NewPollItemDialogComponent {
   options = [];
 
   /**
+   * Initialize the component
+   *
+   * @param http Injected http client
+   * @param notificationService Injected notification service
+   */
+  constructor(
+    private http: HttpClient,
+    private notificationService: NzNotificationService
+  ) {}
+
+  /**
    * User clicked on 'Next' button.
    * It handles the validity check of the entries on the current page and throws an
    * error message or redirects the use to the next page if the user input is valid
@@ -56,7 +97,7 @@ export class NewPollItemDialogComponent {
   handleNext(): void {
     if (this.step === STEP_LABELS.length) {
       this.step++;
-      this.loading = true;
+      this.createPollItem(this.poll.id, this.question, 0, this.answers);
     } else {
       // Validity check
       switch (this.step) {
@@ -69,7 +110,6 @@ export class NewPollItemDialogComponent {
           this.options = OPTIONS_DATA[this.itemType - 1].filter(option => option.visibleAtCreation);
           break;
         case 2:
-          console.log(this.itemType);
           if (this.question === '') {
             this.errorMessage = 'Please enter a question.';
             return;
@@ -106,9 +146,7 @@ export class NewPollItemDialogComponent {
    * Method closes the dialog to cancel the creation operation.
    */
   handleCancel(): void {
-    if (!this.loading) {
-      this.isVisible = false;
-    }
+    if (!this.loading) this.onClose.emit(false);
   }
 
   /**
@@ -126,5 +164,35 @@ export class NewPollItemDialogComponent {
 
   trackByFn(index: any, _: any): number {
     return index;
+  }
+
+  createPollItem(pollId: number, question: string, position: number, answers: string[]): void {
+    this.loading = true;
+    // Build header, body and options
+    const header = new HttpHeaders().set('Content-Type', 'application/json');
+    const options: any = { header, observe: 'response', withCredentials: true };
+    const body = { pollId, question, position, answers };
+    // Send request
+    const endpointFraction = ITEM_TYPES.find(item => item.id === this.itemType).endpointFraction;
+    this.http.post<string>(env.apiBaseUrl + '/polls/' + pollId + '/' + endpointFraction, body, options)
+      .subscribe((response: HttpResponse<string>) => {
+        if (response.ok) {
+          // Request was successful, continue
+          this.onClose.emit(false);
+        }
+      }, (_) => {
+        this.showErrorMessage('An unknown error occurred. Please try again.');
+        this.loading = false;
+        this.step--;
+      });
+  }
+
+  /**
+   * Shows an error message with a custom message
+   *
+   * @param message Custom error message
+   */
+  showErrorMessage(message: string): void {
+    this.notificationService.error('An error occurred', message, { nzPlacement: 'topRight' });
   }
 }
