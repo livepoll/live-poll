@@ -52,9 +52,17 @@
         </ng-template>
         <!-- Header options -->
         <ng-template #options>
-          <nz-tag nzColor="orange">
+          <nz-tag *ngIf="poll.startDate > currentDate" nzColor="orange">
             <i nz-icon nzType="clock-circle"></i>
             <span>Planned</span>
+          </nz-tag>
+          <nz-tag *ngIf="poll.startDate < currentDate && poll.endDate > currentDate" nzColor="green">
+            <i nz-icon nzType="loading"></i>
+            <span>Running</span>
+          </nz-tag>
+          <nz-tag *ngIf="poll.endDate < currentDate" nzColor="purple">
+            <i nz-icon nzType="check"></i>
+            <span>Finished</span>
           </nz-tag>
           <button  nz-button nzType="primary" [nzSize]="p.nzActive ? 'default' : 'small'"
                    [routerLink]="'/dashboard/my-polls/poll/' + poll.id">

@@ -19,6 +19,7 @@ export class PollComponent {
 
   // Constants
   host = location.protocol + '//' + location.host;
+  currentDate = new Date();
 
   // Event Emitters
   onUserDataChanged = new EventEmitter<User>();
@@ -55,6 +56,11 @@ export class PollComponent {
       // Check if userData is already available
       if (this.userData) this.loadPoll();
     });
+
+    // Keep the current time in sync
+    setInterval(() => {
+      this.currentDate = new Date();
+    }, 1000);
   }
 
   /**
@@ -135,7 +141,7 @@ export class PollComponent {
         this.poll.open = false;
         this.poll.name = 'This is my test poll';
         this.poll.questions = [question1, question2];
-        this.poll.startDate = new Date(2020, 11, 28, 11);
+        this.poll.startDate = new Date(2020, 10, 28, 15, 40);
         this.poll.endDate = new Date(2020, 11, 29, 12);
       });
   }
