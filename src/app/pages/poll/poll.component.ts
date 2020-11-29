@@ -141,8 +141,8 @@ export class PollComponent {
         this.poll = new Poll();
         this.poll.id = this.pollId;
         this.poll.snippet = 'adg32kjas';
-        this.poll.open = false;
-        this.poll.name = 'This is my test poll';
+        this.poll.open = true;
+        this.poll.name = 'Test-Umfrage';
         this.poll.questions = [question1, question2];
         this.poll.startDate = new Date(2020, 10, 28, 15, 40);
         this.poll.endDate = new Date(2020, 11, 29, 12);
