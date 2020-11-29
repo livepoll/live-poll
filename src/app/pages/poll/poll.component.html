@@ -59,7 +59,7 @@
       </button>
       <button nz-button><i nz-icon nzType="edit"></i>Edit</button>
       <button nz-button nzType="primary" [nzLoading]="changingState" (click)="changePollState(!poll.open)">
-        Open
+        {{poll.open ? 'Close' : 'Open'}}
       </button>
     </nz-page-header-extra>
 

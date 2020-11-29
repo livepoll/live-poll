@@ -9,6 +9,7 @@ import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {environment as env} from '../../../environments/environment';
 import {User} from '../../model/user';
 import {Question} from '../../model/question';
+import {NzNotificationService} from 'ng-zorro-antd/notification';
 
 @Component({
   selector: 'app-poll',
@@ -38,11 +39,13 @@ export class PollComponent {
    * @param activeRoute Injected active route
    * @param router Injected router
    * @param http Injected http client
+   * @param notificationService Injected notification service
    */
   constructor(
     private activeRoute: ActivatedRoute,
     private router: Router,
-    private http: HttpClient
+    private http: HttpClient,
+    private notificationService: NzNotificationService
   ) {
     // Subscribe to own event emitters
     this.onUserDataChanged.subscribe(user => {
@@ -146,6 +149,27 @@ export class PollComponent {
       });
   }
 
+  /**
+   * Commits the poll object to the server
+   */
+  updatePoll(callback: () => void, error?: () => void): void {
+    error = error ?? function(): void {
+      this.showErrorMessage('The change could not be committed on the server. Please try again later.');
+    };
+    // Build header, body and options
+    const header = new HttpHeaders().set('Content-Type', 'application/json');
+    const options: any = { header, observe: 'response', withCredentials: true };
+    const body = {  };
+    // Send request
+    this.http.put<string>(env.apiBaseUrl + '/user/' + this.userData.id + '/polls/' + this.pollId, body, options)
+      .subscribe((response: HttpResponse<string>) => {
+        if (response.ok) callback();
+      }, (_) => error());
+  }
+
+  /**
+   * Deletes the current poll from the server and redirects the user back to the my polls list
+   */
   deletePoll(): void {
     // Build header, body and options
     const header = new HttpHeaders().set('Content-Type', 'application/json');
@@ -157,5 +181,14 @@ export class PollComponent {
           this.router.navigateByUrl('/dashboard/my-polls');
         }
       });
+  }
+
+  /**
+   * Shows an error message with a custom message
+   *
+   * @param message Custom error message
+   */
+  showErrorMessage(message: string): void {
+    this.notificationService.error('An error occurred', message, { nzPlacement: 'topRight' });
   }
 }
