@@ -4,7 +4,7 @@
 
 <nz-empty nzNotFoundImage="assets/images/empty.svg" [nzNotFoundContent]="contentTpl" [nzNotFoundFooter]="footerTpl">
   <ng-template #contentTpl>
-    <span>You do not have any polls yet.</span>
+    <span>{{message}}</span>
   </ng-template>
   <ng-template #footerTpl>
     <button *ngIf="buttonText?.length > 0 && link?.length > 0"

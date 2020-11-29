@@ -13,5 +13,7 @@ export class Poll {
   name: string;
   startDate: Date;
   endDate: Date;
+  open: boolean;
+  snippet: string;
   questions: Question[];
 }
