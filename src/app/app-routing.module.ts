@@ -15,7 +15,7 @@ const routes: Routes = [
       { path: '', pathMatch: 'full', redirectTo: '/dashboard/home' },
       { path: 'home', loadChildren: () => import('./pages/home/home.module').then(m => m.HomeModule) },
       { path: 'my-polls', loadChildren: () => import('./pages/my-polls/my-polls.module').then(m => m.MyPollsModule) },
-      { path: 'poll/:id', loadChildren: () => import('./pages/poll/poll.module').then(m => m.PollModule) },
+      { path: 'my-polls/poll/:id', loadChildren: () => import('./pages/poll/poll.module').then(m => m.PollModule) },
       { path: 'analytics', loadChildren: () => import('./pages/analytics/analytics.module').then(m => m.AnalyticsModule) }
     ]
   },

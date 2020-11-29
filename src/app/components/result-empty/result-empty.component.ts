@@ -10,6 +10,7 @@ import {Component, Input} from '@angular/core';
   styleUrls: ['./result-empty.component.sass']
 })
 export class ResultEmptyComponent {
+  @Input() message: string;
   @Input('button-text') buttonText: string;
   @Input() link: string;
 }

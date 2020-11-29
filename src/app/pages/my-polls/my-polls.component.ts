@@ -13,6 +13,9 @@ import {User} from '../../model/user';
 })
 export class MyPollsComponent {
 
+  // Constants
+  currentDate = new Date();
+
   // Event Emitters
   onUserDataChanged = new EventEmitter<User>();
   onPollsChanged = new EventEmitter<Poll[]>();
@@ -28,9 +31,14 @@ export class MyPollsComponent {
    * Initialize MyPolls component
    */
   constructor() {
-    // Subscribe to parent event emitters
+    // Subscribe to own event emitters
     this.onUserDataChanged.subscribe(user => this.userData = user);
     this.onPollsChanged.subscribe(polls => this.polls = polls);
+
+    // Keep the current time in sync
+    setInterval(() => {
+      this.currentDate = new Date();
+    }, 1000);
   }
 
   /**

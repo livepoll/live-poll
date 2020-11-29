@@ -107,7 +107,7 @@ export class AppComponent implements OnInit {
       this.userData.email = user.email;
       // Redirect to dashboard if necessary, otherwise apply userData to dashboard
       if (location.href.includes('dashboard')) {
-        this.onUserDataChanged.emit(this.userData);
+        if (this.onUserDataChanged) this.onUserDataChanged.emit(this.userData);
       } else {
         this.router.navigateByUrl('/dashboard');
       }

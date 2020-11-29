@@ -17,6 +17,6 @@
 
     <!-- Empty result -->
     <app-result-empty *ngIf="polls === undefined || polls.length === 0" link="/dashboard/my-polls"
-                      button-text="Go to 'My polls' page"></app-result-empty>
+                      button-text="Go to 'My polls' page" message="You do not have any polls yet."></app-result-empty>
   </div>
 </nz-content>

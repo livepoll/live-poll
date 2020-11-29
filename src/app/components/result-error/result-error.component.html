@@ -3,7 +3,7 @@
   -->
 
 <nz-result nzStatus="error" [nzTitle]="title" [nzSubTitle]="subtitle">
-  <div nz-result-content>
+  <div *ngIf="errorMessages" nz-result-content>
     <div class="desc">
       <h4 nz-title>The content you submitted has the following error:</h4>
       <p nz-paragraph *ngFor="let message of errorMessages">
