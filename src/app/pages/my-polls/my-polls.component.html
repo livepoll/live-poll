@@ -78,7 +78,8 @@
     </nz-collapse>
 
     <!-- Empty result -->
-    <app-result-empty *ngIf="polls !== undefined && polls !== null && polls.length === 0"></app-result-empty>
+    <app-result-empty *ngIf="polls !== undefined && polls !== null && polls.length === 0"
+                      message="You do not have any polls yet. Click on the 'New poll' button above to create one."></app-result-empty>
 
     <!-- Loading spinner -->
     <div style="display: flex; align-items: center; justify-content: center;">
