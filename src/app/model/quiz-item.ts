@@ -2,13 +2,13 @@
  * Copyright © Live-Poll 2020. All rights reserved
  */
 
-import {Question} from './question';
+import {PollItem} from './poll-item';
 import {Answer} from './answer';
 
 /**
- * QuizQuestion class.
+ * QuizItem class.
  * Represents a quiz question. Quiz questions can have multiple possible answers.
  */
-export class QuizQuestion extends Question {
+export class QuizItem extends PollItem {
   answers: Answer[];
 }

@@ -2,7 +2,7 @@
  * Copyright © Live-Poll 2020. All rights reserved
  */
 
-import {Question} from './question';
+import {PollItem} from './poll-item';
 
 /**
  * Poll class.
@@ -15,5 +15,5 @@ export class Poll {
   endDate: Date;
   open: boolean;
   snippet: string;
-  questions: Question[];
+  pollItems: PollItem[];
 }

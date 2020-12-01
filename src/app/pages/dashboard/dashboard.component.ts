@@ -100,8 +100,8 @@ export class DashboardComponent {
           const poll = new Poll();
           poll.id = item.id;
           poll.name = item.name;
-          poll.startDate = item.startDate;
-          poll.endDate = item.endDate;
+          poll.startDate = new Date(item.startDate);
+          poll.endDate = new Date(item.endDate);
           return poll;
         });
         // Emit polls to child elements

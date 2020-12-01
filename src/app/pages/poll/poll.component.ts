@@ -8,7 +8,7 @@ import {Poll} from '../../model/poll';
 import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {environment as env} from '../../../environments/environment';
 import {User} from '../../model/user';
-import {Question} from '../../model/question';
+import {PollItem} from '../../model/poll-item';
 import {NzNotificationService} from 'ng-zorro-antd/notification';
 
 @Component({
@@ -92,10 +92,11 @@ export class PollComponent {
   changePollState(open: boolean): void {
     this.changingState = true;
     if (open) {
-
+      this.poll.startDate = this.poll.endDate = this.currentDate;
     } else {
-
+      this.poll.endDate = this.currentDate;
     }
+    this.updatePoll(() => this.changingState = false);
   }
 
   /**
@@ -112,40 +113,33 @@ export class PollComponent {
    * Loads a single poll from the server
    */
   loadPoll(): void {
+    console.log('Loading');
     // Build header, body and options
     const header = new HttpHeaders().set('Content-Type', 'application/json');
-    const options: any = { header, observe: 'response', withCredentials: true };
+    const options: any = { header, responseType: 'application/json', observe: 'response', withCredentials: true };
     // Send request
-    this.http.get<string>(env.apiBaseUrl + '/user/' + this.userData.id + '/polls/' + this.pollId, options)
+    this.http.get<string>(env.apiBaseUrl + '/users/' + this.userData.id + '/polls/' + this.pollId, options)
       .subscribe((response: HttpResponse<string>) => {
         if (response.ok) {
           const json = JSON.parse(response.body);
           const poll = new Poll();
           poll.id = json.id;
           poll.name = json.name;
-          poll.startDate = json.startDate;
-          poll.endDate = json.endDate;
+          poll.startDate = new Date(json.startDate);
+          poll.endDate = new Date(json.endDate);
+          poll.pollItems = [];
+          json.pollItems.forEach(item => {
+            const pollItem = new PollItem();
+            pollItem.id = item.itemId;
+            pollItem.question = item.question;
+            pollItem.pos = item.position;
+            poll.pollItems.push(pollItem);
+          });
           this.poll = poll;
         }
       }, (_) => {
-        // this.error = true;
-        // Mocked item - TODO: please remove later
-        // Mock questions
-        const question1 = new Question();
-        question1.question = 'How are you?';
-        question1.pos = 2;
-        const question2 = new Question();
-        question2.question = 'What did you eat today?';
-        question2.pos = 1;
-        // Mock poll
-        this.poll = new Poll();
-        this.poll.id = this.pollId;
-        this.poll.snippet = 'adg32kjas';
-        this.poll.open = true;
-        this.poll.name = 'Test-Umfrage';
-        this.poll.questions = [question1, question2];
-        this.poll.startDate = new Date(2020, 10, 28, 15, 40);
-        this.poll.endDate = new Date(2020, 11, 29, 12);
+        this.error = true;
+        this.showErrorMessage('Something went wrong, loading the poll.');
       });
   }
 
@@ -161,7 +155,7 @@ export class PollComponent {
     const options: any = { header, observe: 'response', withCredentials: true };
     const body = {  };
     // Send request
-    this.http.put<string>(env.apiBaseUrl + '/user/' + this.userData.id + '/polls/' + this.pollId, body, options)
+    this.http.put<string>(env.apiBaseUrl + '/users/' + this.userData.id + '/polls/' + this.pollId, body, options)
       .subscribe((response: HttpResponse<string>) => {
         if (response.ok) callback();
       }, (_) => error());
@@ -175,7 +169,7 @@ export class PollComponent {
     const header = new HttpHeaders().set('Content-Type', 'application/json');
     const options: any = { header, observe: 'response', withCredentials: true };
     // Send request
-    this.http.delete<string>(env.apiBaseUrl + '/user/' + this.userData.id + '/polls/' + this.pollId, options)
+    this.http.delete<string>(env.apiBaseUrl + '/users/' + this.userData.id + '/polls/' + this.pollId, options)
       .subscribe((response: HttpResponse<string>) => {
         if (response.ok) {
           this.router.navigateByUrl('/dashboard/my-polls');

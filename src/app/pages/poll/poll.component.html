@@ -22,22 +22,22 @@
     <nz-page-header-title>{{poll.name}}</nz-page-header-title>
 
     <!--subtitle-->
-    <nz-page-header-subtitle *ngIf="poll.startDate != '0' && poll.endDate != '0'">
+    <nz-page-header-subtitle *ngIf="poll.startDate.getTime() !== 0 && poll.endDate.getTime() !== 0">
       {{poll.startDate | date:'short'}} - {{poll.endDate | date:'short'}}
     </nz-page-header-subtitle>
-    <nz-page-header-subtitle *ngIf="poll.startDate == '0' && poll.endDate != '0'">
+    <nz-page-header-subtitle *ngIf="poll.startDate.getTime() === 0 && poll.endDate.getTime() !== 0">
       Manual opening, closing automatically at {{poll.endDate | date:'short'}}
     </nz-page-header-subtitle>
-    <nz-page-header-subtitle *ngIf="poll.startDate == '0' && poll.endDate != '0'">
+    <nz-page-header-subtitle *ngIf="poll.startDate.getTime() === 0 && poll.endDate.getTime() !== 0">
       Opening automatically at {{poll.startDate | date:'short'}}, manual closing
     </nz-page-header-subtitle>
-    <nz-page-header-subtitle *ngIf="poll.startDate == '0' && poll.endDate == '0'">
+    <nz-page-header-subtitle *ngIf="poll.startDate.getTime() === 0 && poll.endDate.getTime() === 0">
       Manual opening / closing
     </nz-page-header-subtitle>
 
     <!--tags-->
     <nz-page-header-tags>
-      <nz-tag *ngIf="poll.startDate > currentDate" nzColor="orange">
+      <nz-tag *ngIf="poll.startDate > currentDate || poll.endDate.getTime() === 0" nzColor="orange">
         <i nz-icon nzType="clock-circle"></i>
         <span>Planned</span>
       </nz-tag>
@@ -45,7 +45,7 @@
         <i nz-icon nzType="loading"></i>
         <span>Running</span>
       </nz-tag>
-      <nz-tag *ngIf="poll.endDate < currentDate" nzColor="purple">
+      <nz-tag *ngIf="poll.endDate < currentDate && poll.endDate.getTime() !== 0" nzColor="purple">
         <i nz-icon nzType="check"></i>
         <span>Finished</span>
       </nz-tag>
@@ -87,7 +87,7 @@
             </nz-page-header>
             <nz-list nzGrid>
               <div nz-row [nzGutter]="16">
-                <div nz-col [nzXXl]="8" [nzXl]="4" [nzLg]="6" [nzMd]="6" [nzSm]="12" [nzXs]="24" *ngFor="let item of poll.questions">
+                <div nz-col [nzXXl]="8" [nzXl]="4" [nzLg]="6" [nzMd]="6" [nzSm]="12" [nzXs]="24" *ngFor="let item of poll.pollItems">
                   <nz-list-item>
                     <nz-card [nzTitle]="item.question">
                       Card content
@@ -98,17 +98,17 @@
             </nz-list>
 
             <!-- No poll items -->
-            <app-result-empty *ngIf="poll.questions === undefined || poll.questions.length === 0"
+            <app-result-empty *ngIf="poll.pollItems === undefined || poll.pollItems.length === 0"
                               message="You do not have any questions yet."></app-result-empty>
           </nz-tab>
           <nz-tab [nzTitle]="titleResults">
             <ng-template #titleResults>
-              <i nz-icon nzType="bar-chart"></i>Results
+              <i nz-icon nzType="bar-chart"></i>Analytics
             </ng-template>
 
             <!-- No results -->
-            <app-result-empty *ngIf="poll.questions === undefined || poll.questions.length === 0"
-                              message="The results of your poll are not yet available."></app-result-empty>
+            <app-result-empty *ngIf="poll.pollItems === undefined || poll.pollItems.length === 0"
+                              message="The analytics of your poll are not yet available."></app-result-empty>
           </nz-tab>
           <nz-tab [nzTitle]="titleQA">
             <ng-template #titleQA>

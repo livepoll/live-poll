@@ -52,7 +52,7 @@
         </ng-template>
         <!-- Header options -->
         <ng-template #options>
-          <nz-tag *ngIf="poll.startDate > currentDate" nzColor="orange">
+          <nz-tag *ngIf="poll.startDate > currentDate || poll.endDate.getTime() === 0" nzColor="orange">
             <i nz-icon nzType="clock-circle"></i>
             <span>Planned</span>
           </nz-tag>
@@ -60,7 +60,7 @@
             <i nz-icon nzType="loading"></i>
             <span>Running</span>
           </nz-tag>
-          <nz-tag *ngIf="poll.endDate < currentDate" nzColor="purple">
+          <nz-tag *ngIf="poll.endDate < currentDate && poll.endDate.getTime() !== 0" nzColor="purple">
             <i nz-icon nzType="check"></i>
             <span>Finished</span>
           </nz-tag>

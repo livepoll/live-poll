@@ -1,7 +1,12 @@
 {
   "name": "live-poll",
   "version": "0.1.0",
+  "description": "Platform for providing surveys with live display features",
   "main": "src/electron/main.js",
+  "keywords": ["Live", "Poll", "Survey", "Question", "Answer", "Quiz", "Mulitple Choice", "Open Text", "Rating"],
+  "repository": "https://github.com/livepoll/live-poll",
+  "author": "Marc Auberer",
+  "license": "MIT",
   "scripts": {
     "ng": "ng",
     "test": "ng test",
@@ -19,7 +24,7 @@
     "build:themes:dark": "lessc -x src/theme.dark.less src/assets/themes/dark.css --js",
     "int:extract": "ng xi18n --output-path src/locale --format=xlf2",
     "start": "ng serve --ssl --ssl-key cert/localhost.key --ssl-cert cert/localhost.crt",
-    "start:secure": "ng serve --host 192.168.0.52",
+    "start:insecure": "ng serve --host 192.168.0.52",
     "electron": "ng build --configuration=electron & electron .",
     "build:electron": "ng build --configuration=electron & electron-packager ./dist/live-poll --out=dist --all"
   },
