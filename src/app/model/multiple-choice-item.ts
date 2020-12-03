@@ -2,13 +2,13 @@
  * Copyright © Live-Poll 2020. All rights reserved
  */
 
-import {Question} from './question';
+import {PollItem} from './poll-item';
 import {Answer} from './answer';
 
 /**
- * MultipleChoiceQuestion class.
+ * MultipleChoiceItem class.
  * Represents a multiple choice question, which can have several possible answers.
  */
-export class MultipleChoiceQuestion extends Question {
+export class MultipleChoiceItem extends PollItem {
   answers: Answer[];
 }

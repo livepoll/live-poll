@@ -2,13 +2,13 @@
  * Copyright © Live-Poll 2020. All rights reserved
  */
 
-import {Question} from './question';
+import {PollItem} from './poll-item';
 
 /**
- * RatingQuestion class.
+ * RatingItem class.
  * Represents a rating question, where the user can rate between <min> and <max> stars.
  */
-export class RatingQuestion extends Question {
+export class RatingItem extends PollItem {
   minStars: number;
   maxStars: number;
 }
