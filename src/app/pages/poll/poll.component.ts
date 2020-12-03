@@ -8,8 +8,9 @@ import {Poll} from '../../model/poll';
 import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {environment as env} from '../../../environments/environment';
 import {User} from '../../model/user';
-import {Question} from '../../model/question';
+import {PollItem} from '../../model/poll-item';
 import {NzNotificationService} from 'ng-zorro-antd/notification';
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-poll',
@@ -32,6 +33,7 @@ export class PollComponent {
   changingState = false;
   showNewPollItemDialog = false;
   error = false;
+  results = [];
 
   /**
    * Initialize component
@@ -92,10 +94,11 @@ export class PollComponent {
   changePollState(open: boolean): void {
     this.changingState = true;
     if (open) {
-
+      this.poll.startDate = this.poll.endDate = this.currentDate;
     } else {
-
+      this.poll.endDate = this.currentDate;
     }
+    this.updatePoll(() => this.changingState = false);
   }
 
   /**
@@ -112,40 +115,37 @@ export class PollComponent {
    * Loads a single poll from the server
    */
   loadPoll(): void {
+    console.log('Loading');
     // Build header, body and options
     const header = new HttpHeaders().set('Content-Type', 'application/json');
-    const options: any = { header, observe: 'response', withCredentials: true };
+    const options: any = { header, responseType: 'application/json', observe: 'response', withCredentials: true };
     // Send request
-    this.http.get<string>(env.apiBaseUrl + '/user/' + this.userData.id + '/polls/' + this.pollId, options)
+    this.http.get<string>(env.apiBaseUrl + '/users/' + this.userData.id + '/polls/' + this.pollId, options)
       .subscribe((response: HttpResponse<string>) => {
         if (response.ok) {
+          // Parse data
           const json = JSON.parse(response.body);
           const poll = new Poll();
           poll.id = json.id;
           poll.name = json.name;
-          poll.startDate = json.startDate;
-          poll.endDate = json.endDate;
+          poll.startDate = new Date(json.startDate);
+          poll.endDate = new Date(json.endDate);
+          poll.pollItems = [];
+          json.pollItems.forEach(item => {
+            const pollItem = new PollItem();
+            pollItem.id = item.itemId;
+            pollItem.question = item.question;
+            pollItem.pos = item.position;
+            pollItem.type = item.type;
+            poll.pollItems.push(pollItem);
+          });
           this.poll = poll;
+          // Setup result observer
+          this.setupResultObserver();
         }
       }, (_) => {
-        // this.error = true;
-        // Mocked item - TODO: please remove later
-        // Mock questions
-        const question1 = new Question();
-        question1.question = 'How are you?';
-        question1.pos = 2;
-        const question2 = new Question();
-        question2.question = 'What did you eat today?';
-        question2.pos = 1;
-        // Mock poll
-        this.poll = new Poll();
-        this.poll.id = this.pollId;
-        this.poll.snippet = 'adg32kjas';
-        this.poll.open = true;
-        this.poll.name = 'Test-Umfrage';
-        this.poll.questions = [question1, question2];
-        this.poll.startDate = new Date(2020, 10, 28, 15, 40);
-        this.poll.endDate = new Date(2020, 11, 29, 12);
+        this.error = true;
+        this.showErrorMessage('Something went wrong, loading the poll.');
       });
   }
 
@@ -161,7 +161,7 @@ export class PollComponent {
     const options: any = { header, observe: 'response', withCredentials: true };
     const body = {  };
     // Send request
-    this.http.put<string>(env.apiBaseUrl + '/user/' + this.userData.id + '/polls/' + this.pollId, body, options)
+    this.http.put<string>(env.apiBaseUrl + '/users/' + this.userData.id + '/polls/' + this.pollId, body, options)
       .subscribe((response: HttpResponse<string>) => {
         if (response.ok) callback();
       }, (_) => error());
@@ -175,7 +175,7 @@ export class PollComponent {
     const header = new HttpHeaders().set('Content-Type', 'application/json');
     const options: any = { header, observe: 'response', withCredentials: true };
     // Send request
-    this.http.delete<string>(env.apiBaseUrl + '/user/' + this.userData.id + '/polls/' + this.pollId, options)
+    this.http.delete<string>(env.apiBaseUrl + '/users/' + this.userData.id + '/polls/' + this.pollId, options)
       .subscribe((response: HttpResponse<string>) => {
         if (response.ok) {
           this.router.navigateByUrl('/dashboard/my-polls');
@@ -190,5 +190,63 @@ export class PollComponent {
    */
   showErrorMessage(message: string): void {
     this.notificationService.error('An error occurred', message, { nzPlacement: 'topRight' });
+  }
+
+  /**
+   * Move poll items in poll item array
+   *
+   * @param event DragDrop Event
+   */
+  drop(event: CdkDragDrop<string[]>): void {
+    moveItemInArray(this.poll.pollItems, event.previousIndex, event.currentIndex);
+  }
+
+  /**
+   * Filter currently selected poll item from results
+   *
+   * @param pollId Id of the poll item
+   */
+  getChartData(pollId: number): any[] {
+    return this.results.find(item => item.id === pollId).data;
+  }
+
+  /**
+   * Calculate total answers on a poll item
+   *
+   * @param pollId Id of the poll item
+   */
+  getAnswersCount(pollId: number): number {
+    return this.getChartData(pollId).reduce((sum, current) => sum + current.value, 0);
+  }
+
+  setupResultObserver(): void {
+    this.results = [];
+    this.poll.pollItems.forEach(pollItem => {
+      this.results.push({
+        id: pollItem.id,
+        data: [
+          {
+            name: 'Noodles',
+            value: 4
+          },
+          {
+            name: 'Pizza',
+            value: 10
+          },
+          {
+            name: 'Burger',
+            value: 11
+          },
+          {
+            name: 'Rice',
+            value: 4
+          },
+          {
+            name: 'Vegetables',
+            value: 5
+          }
+        ]
+      });
+    });
   }
 }

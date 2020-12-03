@@ -179,6 +179,13 @@ export class NewPollItemDialogComponent {
         if (response.ok) {
           // Request was successful, continue
           this.onClose.emit(false);
+          // Reset dialog
+          this.step = 1;
+          this.itemType = 0;
+          this.question = '';
+          this.answers = ['', ''];
+          this.options = [];
+          this.loading = false;
         }
       }, (_) => {
         this.showErrorMessage('An unknown error occurred. Please try again.');
