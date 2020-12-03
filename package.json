@@ -3,7 +3,17 @@
   "version": "0.1.0",
   "description": "Platform for providing surveys with live display features",
   "main": "src/electron/main.js",
-  "keywords": ["Live", "Poll", "Survey", "Question", "Answer", "Quiz", "Mulitple Choice", "Open Text", "Rating"],
+  "keywords": [
+    "Live",
+    "Poll",
+    "Survey",
+    "Question",
+    "Answer",
+    "Quiz",
+    "Mulitple Choice",
+    "Open Text",
+    "Rating"
+  ],
   "repository": "https://github.com/livepoll/live-poll",
   "author": "Marc Auberer",
   "license": "MIT",
@@ -31,6 +41,7 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "~10.0.0",
+    "@angular/cdk": "^11.0.1",
     "@angular/common": "~11.0.0",
     "@angular/compiler": "~11.0.0",
     "@angular/core": "~11.0.0",

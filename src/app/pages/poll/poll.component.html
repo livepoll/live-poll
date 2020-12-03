@@ -72,42 +72,65 @@
           <span nz-typography nzCopyable nzEditable [nzContent]="poll.snippet" (nzContentChange)="onUrlChange($event)"
                 [nzCopyText]="host + '/' + poll.snippet" style="margin-left: -2px; color: #38C6BC"></span>
         </p>
-        <nz-tabset class="content" style="width: 100%">
-          <nz-tab [nzTitle]="titleQuestions">
+        <nz-tabset class="content" style="width: 100%;">
+          <nz-tab [nzTitle]="titleQuestions" style="margin-top: -16px;">
             <ng-template #titleQuestions>
-              <i nz-icon nzType="ordered-list"></i>Questions
+              <i nz-icon nzType="ordered-list"></i>Questions / Results
             </ng-template>
 
-            <!-- Poll item list -->
-            <nz-page-header>
-              <nz-page-header-subtitle>Click on an item for details</nz-page-header-subtitle>
+            <!-- List header -->
+            <nz-page-header style="margin-top: -16px;">
+              <nz-page-header-subtitle>Click on question for details</nz-page-header-subtitle>
               <nz-page-header-extra>
                 <button nz-button nzType="primary" (click)="showNewPollItemDialog = true">New question</button>
               </nz-page-header-extra>
             </nz-page-header>
-            <nz-list nzGrid>
-              <div nz-row [nzGutter]="16">
-                <div nz-col [nzXXl]="8" [nzXl]="4" [nzLg]="6" [nzMd]="6" [nzSm]="12" [nzXs]="24" *ngFor="let item of poll.pollItems">
-                  <nz-list-item>
-                    <nz-card [nzTitle]="item.question">
-                      Card content
-                    </nz-card>
-                  </nz-list-item>
-                </div>
-              </div>
-            </nz-list>
+            <!-- Poll item list -->
+            <nz-collapse class="poll-item-list" nzBordered="false" nzAccordion style="user-select: none;"
+                         *ngIf="poll.pollItems !== undefined && poll.pollItems !== null && poll.pollItems.length > 0"
+                         cdkDropList (cdkDropListDropped)="drop($event)">
+              <nz-collapse-panel class="poll-item" #p *ngFor="let pollItem of poll.pollItems" [nzHeader]="header"
+                                 [nzExtra]="options" [nzExpandedIcon]="expandedIcon" cdkDrag>
+                <!-- Item content -->
+                <p>Test</p>
+
+                <!-- Header -->
+                <ng-template #header>
+                  <span [style]="'font-size: ' + (p.nzActive ? 'large' : 'small') + '; transition: font-size 0.4s; margin-left: 20px;'">
+                    {{pollItem.question}}
+                  </span>
+                </ng-template>
+                <!-- Header options -->
+                <ng-template #options>
+                  <nz-tag nzColor="default">{{pollItem.type}}</nz-tag>
+                  <button  nz-button nzType="primary" [nzSize]="p.nzActive ? 'default' : 'small'"
+                           [routerLink]="'/dashboard/my-polls/poll/' + poll.id + '/' + pollItem.id">
+                    Details<i nz-icon nzType="right"></i>
+                  </button>
+                </ng-template>
+                <!-- Expand icon -->
+                <ng-template #expandedIcon>
+                  <i nz-icon class="ant-collapse-arrow"
+                     style="font-size: 16px; margin-left: -5px; margin-right: 5px;">
+                    <object type="image/svg+xml" data="assets/images/drag_indicator.svg"></object>
+                  </i>
+                  <i nz-icon nzType="right-circle" class="ant-collapse-arrow" [nzRotate]="p.nzActive ? 90 : 0"
+                     style="font-size: 16px; margin-left: 20px;"></i>
+                </ng-template>
+              </nz-collapse-panel>
+            </nz-collapse>
 
             <!-- No poll items -->
             <app-result-empty *ngIf="poll.pollItems === undefined || poll.pollItems.length === 0"
                               message="You do not have any questions yet."></app-result-empty>
           </nz-tab>
-          <nz-tab [nzTitle]="titleResults">
-            <ng-template #titleResults>
+          <nz-tab [nzTitle]="titleAnalytics">
+            <ng-template #titleAnalytics>
               <i nz-icon nzType="bar-chart"></i>Analytics
             </ng-template>
 
             <!-- No results -->
-            <app-result-empty *ngIf="poll.pollItems === undefined || poll.pollItems.length === 0"
+            <app-result-empty *ngIf="poll.pollItems === undefined || poll.pollItems.length === 0 || poll.startDate > currentDate || poll.startDate.getTime() === 0"
                               message="The analytics of your poll are not yet available."></app-result-empty>
           </nz-tab>
           <nz-tab [nzTitle]="titleQA">

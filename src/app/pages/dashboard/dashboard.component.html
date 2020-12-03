@@ -12,19 +12,18 @@
         <h1>Live-Poll</h1>
       </a>
     </div>
-    <ul class="main-menu" nz-menu nzMode="inline" [nzInlineCollapsed]="isCollapsed">
-      <li class="main-menu no-select" nz-submenu nzOpen nzTitle="Dashboard" nzIcon="dashboard">
-        <ul>
-          <li nz-menu-item nzMatchRouter>
-            <a routerLink="/dashboard/home">Home</a>
-          </li>
-          <li nz-menu-item nzMatchRouter>
-            <a routerLink="/dashboard/my-polls" >My Polls</a>
-          </li>
-          <li nz-menu-item nzMatchRouter>
-            <a routerLink="/dashboard/analytics">Analytics</a>
-          </li>
-        </ul>
+    <ul class="main-menu" nz-menu nzMode="inline">
+      <li nz-menu-item nzMatchRouter>
+        <i nz-icon nzType="home"></i>
+        <span><a routerLink="/dashboard/home">Home</a></span>
+      </li>
+      <li nz-menu-item nzMatchRouter>
+        <i nz-icon nzType="unordered-list"></i>
+        <span><a routerLink="/dashboard/my-polls" >My Polls</a></span>
+      </li>
+      <li nz-menu-item nzMatchRouter>
+        <i nz-icon nzType="bar-chart"></i>
+        <span><a routerLink="/dashboard/analytics">Analytics</a></span>
       </li>
     </ul>
   </nz-sider>

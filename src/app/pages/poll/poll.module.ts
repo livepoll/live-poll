@@ -29,6 +29,8 @@ import {NzListModule} from 'ng-zorro-antd/list';
 import {ResultErrorModule} from '../../components/result-error/result-error.module';
 import {NzSpinModule} from 'ng-zorro-antd/spin';
 import {NzPopconfirmModule} from 'ng-zorro-antd/popconfirm';
+import {NzCollapseModule} from 'ng-zorro-antd/collapse';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [PollComponent],
@@ -57,7 +59,9 @@ import {NzPopconfirmModule} from 'ng-zorro-antd/popconfirm';
     NzListModule,
     ResultErrorModule,
     NzSpinModule,
-    NzPopconfirmModule
+    NzPopconfirmModule,
+    NzCollapseModule,
+    DragDropModule
   ]
 })
 export class PollModule { }

@@ -10,6 +10,7 @@ import {environment as env} from '../../../environments/environment';
 import {User} from '../../model/user';
 import {PollItem} from '../../model/poll-item';
 import {NzNotificationService} from 'ng-zorro-antd/notification';
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-poll',
@@ -133,6 +134,7 @@ export class PollComponent {
             pollItem.id = item.itemId;
             pollItem.question = item.question;
             pollItem.pos = item.position;
+            pollItem.type = item.type;
             poll.pollItems.push(pollItem);
           });
           this.poll = poll;
@@ -184,5 +186,14 @@ export class PollComponent {
    */
   showErrorMessage(message: string): void {
     this.notificationService.error('An error occurred', message, { nzPlacement: 'topRight' });
+  }
+
+  /**
+   * Move poll items in poll item array
+   *
+   * @param event DragDrop Event
+   */
+  drop(event: CdkDragDrop<string[]>): void {
+    moveItemInArray(this.poll.pollItems, event.previousIndex, event.currentIndex);
   }
 }
