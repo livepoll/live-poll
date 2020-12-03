@@ -31,6 +31,8 @@ import {NzSpinModule} from 'ng-zorro-antd/spin';
 import {NzPopconfirmModule} from 'ng-zorro-antd/popconfirm';
 import {NzCollapseModule} from 'ng-zorro-antd/collapse';
 import {DragDropModule} from '@angular/cdk/drag-drop';
+import {NgxChartsModule} from '@swimlane/ngx-charts';
+import {NzStatisticModule} from 'ng-zorro-antd/statistic';
 
 @NgModule({
   declarations: [PollComponent],
@@ -61,7 +63,9 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
     NzSpinModule,
     NzPopconfirmModule,
     NzCollapseModule,
-    DragDropModule
+    DragDropModule,
+    NgxChartsModule,
+    NzStatisticModule
   ]
 })
 export class PollModule { }

@@ -90,9 +90,19 @@
                          *ngIf="poll.pollItems !== undefined && poll.pollItems !== null && poll.pollItems.length > 0"
                          cdkDropList (cdkDropListDropped)="drop($event)">
               <nz-collapse-panel class="poll-item" #p *ngFor="let pollItem of poll.pollItems" [nzHeader]="header"
-                                 [nzExtra]="options" [nzExpandedIcon]="expandedIcon" cdkDrag>
+                                 [nzExtra]="options" [nzExpandedIcon]="expandedIcon" cdkDrag cdkDragLockAxis="y">
                 <!-- Item content -->
-                <p>Test</p>
+                <div nz-row>
+                  <div nz-col nzSpan="12">
+                    <nz-statistic [nzValue]="(getAnswersCount(pollItem.id) | number)!" nzTitle="Total answers"></nz-statistic>
+                  </div>
+                  <div nz-col nzSpan="12">
+                    <ngx-charts-bar-horizontal class="chart" [view]="[0, 300]" [results]="getChartData(pollItem.id)"
+                                               scheme="forest" xAxis="true" yAxis="true" legend="true"
+                                               showXAxisLabel="true" showYAxisLabel="true" animations="true"
+                                               xAxisLabel="Participants" yAxisLabel="Answers"></ngx-charts-bar-horizontal>
+                  </div>
+                </div>
 
                 <!-- Header -->
                 <ng-template #header>
@@ -110,9 +120,9 @@
                 </ng-template>
                 <!-- Expand icon -->
                 <ng-template #expandedIcon>
-                  <i nz-icon class="ant-collapse-arrow"
-                     style="font-size: 16px; margin-left: -5px; margin-right: 5px;">
-                    <object type="image/svg+xml" data="assets/images/drag_indicator.svg"></object>
+                  <i nz-icon class="ant-collapse-arrow" cdkDragHandle
+                     style="margin-left: -5px; margin-right: 5px; cursor: move;">
+                    <img width="16" height="16" src="assets/images/drag_indicator.svg" alt="drag">
                   </i>
                   <i nz-icon nzType="right-circle" class="ant-collapse-arrow" [nzRotate]="p.nzActive ? 90 : 0"
                      style="font-size: 16px; margin-left: 20px;"></i>

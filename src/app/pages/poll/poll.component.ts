@@ -33,6 +33,7 @@ export class PollComponent {
   changingState = false;
   showNewPollItemDialog = false;
   error = false;
+  results = [];
 
   /**
    * Initialize component
@@ -122,6 +123,7 @@ export class PollComponent {
     this.http.get<string>(env.apiBaseUrl + '/users/' + this.userData.id + '/polls/' + this.pollId, options)
       .subscribe((response: HttpResponse<string>) => {
         if (response.ok) {
+          // Parse data
           const json = JSON.parse(response.body);
           const poll = new Poll();
           poll.id = json.id;
@@ -138,6 +140,8 @@ export class PollComponent {
             poll.pollItems.push(pollItem);
           });
           this.poll = poll;
+          // Setup result observer
+          this.setupResultObserver();
         }
       }, (_) => {
         this.error = true;
@@ -195,5 +199,54 @@ export class PollComponent {
    */
   drop(event: CdkDragDrop<string[]>): void {
     moveItemInArray(this.poll.pollItems, event.previousIndex, event.currentIndex);
+  }
+
+  /**
+   * Filter currently selected poll item from results
+   *
+   * @param pollId Id of the poll item
+   */
+  getChartData(pollId: number): any[] {
+    return this.results.find(item => item.id === pollId).data;
+  }
+
+  /**
+   * Calculate total answers on a poll item
+   *
+   * @param pollId Id of the poll item
+   */
+  getAnswersCount(pollId: number): number {
+    return this.getChartData(pollId).reduce((sum, current) => sum + current.value, 0);
+  }
+
+  setupResultObserver(): void {
+    this.results = [];
+    this.poll.pollItems.forEach(pollItem => {
+      this.results.push({
+        id: pollItem.id,
+        data: [
+          {
+            name: 'Noodles',
+            value: 4
+          },
+          {
+            name: 'Pizza',
+            value: 10
+          },
+          {
+            name: 'Burger',
+            value: 11
+          },
+          {
+            name: 'Rice',
+            value: 4
+          },
+          {
+            name: 'Vegetables',
+            value: 5
+          }
+        ]
+      });
+    });
   }
 }
