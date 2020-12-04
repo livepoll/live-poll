@@ -36,6 +36,8 @@ export class PollComponent {
   error = false;
   results = [];
   pollStatus = 1; // 1 = Planned; 2 = Running; 3 = Finished
+  showEditPollDialog = false;
+  showEditPollItemDialog = false;
 
   /**
    * Initialize component
@@ -84,10 +86,20 @@ export class PollComponent {
    *
    * @param url Customized input url
    */
-  onUrlChange(url: string): void {
+  onSnippetChange(url: string): void {
     if (!url || url.length === 0) return;
-    this.poll.snippet = encodeURI(url.toLocaleLowerCase().split(' ').join('-'));
-    // TODO: Commit changes to server
+    const oldSnippet = this.poll.snippet;
+    const newSnippet = this.poll.snippet = encodeURI(url.toLocaleLowerCase().split(' ').join('-'));
+    // Commit changes to the server
+    // Build header, body and options
+    const header = new HttpHeaders().set('Content-Type', 'application/json');
+    const options: any = { header, observe: 'response', withCredentials: true };
+    const body = { newSnippet };
+    // Send request
+    this.http.put<string>(env.apiBaseUrl + '/users/' + this.userData.id + '/polls/' + this.pollId + '/snippet', body, options)
+      .subscribe((response: HttpResponse<string>) => {
+        if (!response.ok) this.poll.snippet = oldSnippet;
+      }, _ => this.poll.snippet = oldSnippet);
   }
 
   /**
@@ -114,7 +126,7 @@ export class PollComponent {
   }
 
   /**
-   * Is called when the NewPollItemDialog is closed. Triggers an poll reload, if the creation of an item was sucessful
+   * Is called when the NewPollItemDialog was closed. Triggers a poll reload, if the creation of an item was successful
    *
    * @param success Item successfully created
    */
@@ -127,6 +139,11 @@ export class PollComponent {
    * Loads a single poll from the server
    */
   loadPoll(): void {
+    // Redirect to MyPolls page, if some data is missing to load the poll
+    if (!this.userData || !this.pollId) {
+      this.router.navigateByUrl('/dashboard/my-polls');
+      return;
+    }
     // Build header, body and options
     const header = new HttpHeaders().set('Content-Type', 'application/json');
     const options: any = { header, responseType: 'application/json', observe: 'response', withCredentials: true };
@@ -141,6 +158,7 @@ export class PollComponent {
           poll.name = json.name;
           poll.startDate = new Date(json.startDate);
           poll.endDate = new Date(json.endDate);
+          poll.snippet = json.snippet;
           poll.pollItems = [];
           json.pollItems.forEach(item => {
             const pollItem = new PollItem();
@@ -204,11 +222,9 @@ export class PollComponent {
     const header = new HttpHeaders().set('Content-Type', 'application/json');
     const options: any = { header, observe: 'response', withCredentials: true };
     // Send request
-    this.http.delete<string>(env.apiBaseUrl + '/users/' + this.userData.id + '/polls/' + this.pollId + '/item' + pollItemId, options)
+    this.http.delete<string>(env.apiBaseUrl + '/users/' + this.userData.id + '/polls/' + this.pollId + '/item/' + pollItemId, options)
       .subscribe((response: HttpResponse<string>) => {
-        if (response.ok) {
-          this.loadPoll();
-        }
+        if (response.ok) this.loadPoll();
       });
   }
 
@@ -248,12 +264,13 @@ export class PollComponent {
     return this.getChartData(pollId).reduce((sum, current) => sum + current.value, 0);
   }
 
+  /**
+   * Calculates the status of the poll, based on the startDate and endDate
+   */
   refreshPollStatus(): void {
     const startDate = this.poll.startDate;
     const endDate = this.poll.endDate;
     const currentDate = this.currentDate = new Date();
-    console.log(startDate.getTime());
-    console.log(endDate.getTime());
 
     if (
       (startDate.getTime() === 0 && endDate.getTime() === 0) || // Manual opening, manual closing
@@ -278,6 +295,10 @@ export class PollComponent {
     }
   }
 
+  /**
+   * Generates the subtitle string for the poll, consisting of either start and end date or placeholder strings.
+   * The calculation is based on the status and the startDate and endDate
+   */
   getSubtitle(): string {
     const startDate = this.poll.startDate;
     const endDate = this.poll.endDate;
@@ -289,7 +310,7 @@ export class PollComponent {
         if (startDate.getTime() === 0 && endDate.getTime() === 0) return 'Manual opening, manual closing';
         if (startDate.getTime() === 0) return 'Manual opening, automatically closing at' + endDateString;
         if (endDate.getTime() === 0) return 'Automatically opening at ' + startDateString + ', manual closing';
-        return 'Automatically opening at ' + startDateString + ' automatically closing at ' + endDateString;
+        return 'Automatically opening at ' + startDateString + ', automatically closing at ' + endDateString;
       }
       case 2: { // Running
         if (endDate.getTime() === 0) return 'Running since ' + startDateString + ', manual closing';
@@ -298,11 +319,26 @@ export class PollComponent {
       case 3: { // Finished
         return 'Poll ran from ' + startDateString + ' to ' + endDateString;
       }
-      default: return '';
+      default: return ''; // Unknown state, return empty string
     }
   }
 
+  openEditPollDialog(): void {
+    // Open edit dialog
+    this.showEditPollDialog = true;
+  }
+
+  openEditPollItemDialog(event: any): void {
+    event.stopPropagation();
+    // Open edit dialog
+    this.showEditPollItemDialog = true;
+  }
+
+  /**
+   * Establish socket connection to the server to ensure data exchange in realtime
+   */
   setupResultObserver(): void {
+    // TODO: Remove this mocked data later on
     this.results = [];
     this.poll.pollItems.forEach(pollItem => {
       this.results.push({
