@@ -23,6 +23,7 @@ export class AppComponent implements OnInit {
 
   // Event Emitters
   onUserDataChanged: EventEmitter<User>;
+  onLoginResultChanged: EventEmitter<string>;
 
   // Variables
   currentPage: any;
@@ -69,6 +70,9 @@ export class AppComponent implements OnInit {
     if (child.onUserDataChanged) {
       this.onUserDataChanged = child.onUserDataChanged;
       if (this.userData) this.onUserDataChanged.emit(this.userData);
+    }
+    if (child.onLoginResultChanged) {
+      this.onLoginResultChanged = child.onLoginResultChanged;
     }
     if (child.onLogout) {
       child.onLogout.subscribe(_ => this.logout());
@@ -136,8 +140,10 @@ export class AppComponent implements OnInit {
     this.http.post<string>(env.apiBaseUrl + '/authenticate/login', body, options).subscribe((_: HttpResponse<string>) => {
       // Load user data
       this.loadUserData(true);
-    }, (_) => {
+    }, (error) => {
       this.showErrorMessage('Login failed.');
+      console.log(error);
+      this.onLoginResultChanged.emit(error);
     });
   }
 

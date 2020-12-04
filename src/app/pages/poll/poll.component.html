@@ -113,9 +113,11 @@
                 <!-- Header options -->
                 <ng-template #options>
                   <nz-tag nzColor="default">{{pollItem.type}}</nz-tag>
-                  <button  nz-button nzType="primary" [nzSize]="p.nzActive ? 'default' : 'small'"
-                           [routerLink]="'/dashboard/my-polls/poll/' + poll.id + '/' + pollItem.id">
-                    Details<i nz-icon nzType="right"></i>
+                  <button nz-button nzType="primary" [nzSize]="p.nzActive ? 'default' : 'small'">
+                    <i nz-icon nzType="edit"></i>Edit
+                  </button>
+                  <button nz-button nzType="dashed" nzShape="circle" nzDanger [nzSize]="p.nzActive ? 'default' : 'small'">
+                    <i nz-icon nzType="delete"></i>
                   </button>
                 </ng-template>
                 <!-- Expand icon -->
