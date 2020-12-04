@@ -2,7 +2,7 @@
  * Copyright © Live-Poll 2020. All rights reserved
  */
 
-import {Component, EventEmitter} from '@angular/core';
+import {Component, EventEmitter, Inject, LOCALE_ID} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Poll} from '../../model/poll';
 import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
@@ -11,6 +11,7 @@ import {User} from '../../model/user';
 import {PollItem} from '../../model/poll-item';
 import {NzNotificationService} from 'ng-zorro-antd/notification';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import {formatDate} from '@angular/common';
 
 @Component({
   selector: 'app-poll',
@@ -34,6 +35,7 @@ export class PollComponent {
   showNewPollItemDialog = false;
   error = false;
   results = [];
+  pollStatus = 1; // 1 = Planned; 2 = Running; 3 = Finished
 
   /**
    * Initialize component
@@ -42,12 +44,14 @@ export class PollComponent {
    * @param router Injected router
    * @param http Injected http client
    * @param notificationService Injected notification service
+   * @param locale Injected local id
    */
   constructor(
     private activeRoute: ActivatedRoute,
     private router: Router,
     private http: HttpClient,
-    private notificationService: NzNotificationService
+    private notificationService: NzNotificationService,
+    @Inject(LOCALE_ID) private locale: string
   ) {
     // Subscribe to own event emitters
     this.onUserDataChanged.subscribe(user => {
@@ -81,7 +85,7 @@ export class PollComponent {
    * @param url Customized input url
    */
   onUrlChange(url: string): void {
-    url = url === undefined ? '' : url;
+    if (!url || url.length === 0) return;
     this.poll.snippet = encodeURI(url.toLocaleLowerCase().split(' ').join('-'));
     // TODO: Commit changes to server
   }
@@ -94,11 +98,19 @@ export class PollComponent {
   changePollState(open: boolean): void {
     this.changingState = true;
     if (open) {
-      this.poll.startDate = this.poll.endDate = this.currentDate;
+      this.poll.startDate = this.currentDate;
+      if (this.poll.endDate.getTime() > 0) this.poll.endDate.setTime(0);
     } else {
       this.poll.endDate = this.currentDate;
     }
-    this.updatePoll(() => this.changingState = false);
+    this.updatePoll(() => {
+      this.changingState = false;
+      this.refreshPollStatus();
+    }, () => {
+      // TODO: Remove this later
+      this.changingState = false;
+      this.refreshPollStatus();
+    });
   }
 
   /**
@@ -115,7 +127,6 @@ export class PollComponent {
    * Loads a single poll from the server
    */
   loadPoll(): void {
-    console.log('Loading');
     // Build header, body and options
     const header = new HttpHeaders().set('Content-Type', 'application/json');
     const options: any = { header, responseType: 'application/json', observe: 'response', withCredentials: true };
@@ -235,6 +246,60 @@ export class PollComponent {
    */
   getAnswersCount(pollId: number): number {
     return this.getChartData(pollId).reduce((sum, current) => sum + current.value, 0);
+  }
+
+  refreshPollStatus(): void {
+    const startDate = this.poll.startDate;
+    const endDate = this.poll.endDate;
+    const currentDate = this.currentDate = new Date();
+    console.log(startDate.getTime());
+    console.log(endDate.getTime());
+
+    if (
+      (startDate.getTime() === 0 && endDate.getTime() === 0) || // Manual opening, manual closing
+      (startDate > currentDate) // Start date not reached
+    ) {
+      // Poll is pending
+      this.pollStatus = 1;
+    } else if (
+      (startDate <= currentDate && endDate > currentDate) || // We're in between of the two dates
+      (startDate <= currentDate && endDate.getTime() === 0) // Started, manual closing
+    ) {
+      // Poll is running
+      this.pollStatus = 2;
+    } else if (
+      (endDate < currentDate) // End date already reached
+    ) {
+      // Poll is finished
+      this.pollStatus = 3;
+    } else {
+      // Invalid status, something went wrong
+      this.pollStatus = 0;
+    }
+  }
+
+  getSubtitle(): string {
+    const startDate = this.poll.startDate;
+    const endDate = this.poll.endDate;
+    const startDateString = '<strong>' + formatDate(startDate, 'yyyy-MM-dd hh:mm a', this.locale) + '</strong>';
+    const endDateString = '<strong>' + formatDate(endDate, 'yyyy-MM-dd hh:mm a', this.locale) + '</strong>';
+
+    switch (this.pollStatus) {
+      case 1: { // Pending
+        if (startDate.getTime() === 0 && endDate.getTime() === 0) return 'Manual opening, manual closing';
+        if (startDate.getTime() === 0) return 'Manual opening, automatically closing at' + endDateString;
+        if (endDate.getTime() === 0) return 'Automatically opening at ' + startDateString + ', manual closing';
+        return 'Automatically opening at ' + startDateString + ' automatically closing at ' + endDateString;
+      }
+      case 2: { // Running
+        if (endDate.getTime() === 0) return 'Running since ' + startDateString + ', manual closing';
+        return 'Running since ' + startDateString + ', automatically closing at ' + endDateString;
+      }
+      case 3: { // Finished
+        return 'Poll ran from ' + startDateString + ' to ' + endDateString;
+      }
+      default: return '';
+    }
   }
 
   setupResultObserver(): void {

@@ -22,30 +22,19 @@
     <nz-page-header-title>{{poll.name}}</nz-page-header-title>
 
     <!--subtitle-->
-    <nz-page-header-subtitle *ngIf="poll.startDate.getTime() !== 0 && poll.endDate.getTime() !== 0">
-      {{poll.startDate | date:'short'}} - {{poll.endDate | date:'short'}}
-    </nz-page-header-subtitle>
-    <nz-page-header-subtitle *ngIf="poll.startDate.getTime() === 0 && poll.endDate.getTime() !== 0">
-      Manual opening, closing automatically at {{poll.endDate | date:'short'}}
-    </nz-page-header-subtitle>
-    <nz-page-header-subtitle *ngIf="poll.startDate.getTime() === 0 && poll.endDate.getTime() !== 0">
-      Opening automatically at {{poll.startDate | date:'short'}}, manual closing
-    </nz-page-header-subtitle>
-    <nz-page-header-subtitle *ngIf="poll.startDate.getTime() === 0 && poll.endDate.getTime() === 0">
-      Manual opening / closing
-    </nz-page-header-subtitle>
+    <nz-page-header-subtitle [innerHTML]="getSubtitle()"></nz-page-header-subtitle>
 
     <!--tags-->
     <nz-page-header-tags>
-      <nz-tag *ngIf="poll.startDate > currentDate || poll.endDate.getTime() === 0" nzColor="orange">
+      <nz-tag *ngIf="pollStatus === 1" nzColor="orange">
         <i nz-icon nzType="clock-circle"></i>
         <span>Planned</span>
       </nz-tag>
-      <nz-tag *ngIf="poll.startDate < currentDate && poll.endDate > currentDate" nzColor="green">
+      <nz-tag *ngIf="pollStatus === 2" nzColor="green">
         <i nz-icon nzType="loading"></i>
         <span>Running</span>
       </nz-tag>
-      <nz-tag *ngIf="poll.endDate < currentDate && poll.endDate.getTime() !== 0" nzColor="purple">
+      <nz-tag *ngIf="pollStatus === 3" nzColor="purple">
         <i nz-icon nzType="check"></i>
         <span>Finished</span>
       </nz-tag>
@@ -58,8 +47,8 @@
         <i nz-icon nzType="delete"></i>Delete
       </button>
       <button nz-button><i nz-icon nzType="edit"></i>Edit</button>
-      <button nz-button nzType="primary" [nzLoading]="changingState" (click)="changePollState(!poll.open)">
-        {{poll.open ? 'Close' : 'Open'}}
+      <button nz-button nzType="primary" [nzLoading]="changingState" (click)="changePollState(pollStatus !== 2)">
+        {{pollStatus === 1 ? 'Open' : (pollStatus === 2 ? 'Close' : 'Re-open')}}
       </button>
     </nz-page-header-extra>
 
@@ -105,6 +94,10 @@
                                                    xAxisLabel="Participants" yAxisLabel="Answers"></ngx-charts-bar-horizontal>
                       </div>
                     </div>
+                    <button nz-button nzType="default" class="preview-button"
+                            [routerLink]="'/p/' + poll.snippet + '/' + pollItem.pos">
+                      Preview Question<i nz-icon nzType="right"></i> {{'/p/' + poll.snippet + '/' + pollItem.pos}}
+                    </button>
 
                     <!-- Header -->
                     <ng-template #header>
