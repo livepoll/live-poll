@@ -33,39 +33,41 @@ import {NzCollapseModule} from 'ng-zorro-antd/collapse';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {NgxChartsModule} from '@swimlane/ngx-charts';
 import {NzStatisticModule} from 'ng-zorro-antd/statistic';
+import {NgScrollbarModule} from 'ngx-scrollbar';
 
 @NgModule({
   declarations: [PollComponent],
-  imports: [
-    PollRoutingModule,
-    CommonModule,
-    NzAvatarModule,
-    NzDropDownModule,
-    NzPageHeaderModule,
-    NzBreadCrumbModule,
-    NzButtonModule,
-    NzIconModule,
-    NzNoAnimationModule,
-    NzGridModule,
-    NzTagModule,
-    NzLayoutModule,
-    RouterModule,
-    MyPollsModule,
-    NzTabsModule,
-    ResultEmptyModule,
-    NzTypographyModule,
-    NzInputModule,
-    FormsModule,
-    NzToolTipModule,
-    NzCardModule,
-    NzListModule,
-    ResultErrorModule,
-    NzSpinModule,
-    NzPopconfirmModule,
-    NzCollapseModule,
-    DragDropModule,
-    NgxChartsModule,
-    NzStatisticModule
-  ]
+    imports: [
+        PollRoutingModule,
+        CommonModule,
+        NzAvatarModule,
+        NzDropDownModule,
+        NzPageHeaderModule,
+        NzBreadCrumbModule,
+        NzButtonModule,
+        NzIconModule,
+        NzNoAnimationModule,
+        NzGridModule,
+        NzTagModule,
+        NzLayoutModule,
+        RouterModule,
+        MyPollsModule,
+        NzTabsModule,
+        ResultEmptyModule,
+        NzTypographyModule,
+        NzInputModule,
+        FormsModule,
+        NzToolTipModule,
+        NzCardModule,
+        NzListModule,
+        ResultErrorModule,
+        NzSpinModule,
+        NzPopconfirmModule,
+        NzCollapseModule,
+        DragDropModule,
+        NgxChartsModule,
+        NzStatisticModule,
+        NgScrollbarModule
+    ]
 })
 export class PollModule { }

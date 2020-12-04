@@ -184,6 +184,24 @@ export class PollComponent {
   }
 
   /**
+   * Deletes a single poll item from the server
+   *
+   * @param pollItemId Id of the poll item
+   */
+  deletePollItem(pollItemId: number): void {
+    // Build header, body and options
+    const header = new HttpHeaders().set('Content-Type', 'application/json');
+    const options: any = { header, observe: 'response', withCredentials: true };
+    // Send request
+    this.http.delete<string>(env.apiBaseUrl + '/users/' + this.userData.id + '/polls/' + this.pollId + '/item' + pollItemId, options)
+      .subscribe((response: HttpResponse<string>) => {
+        if (response.ok) {
+          this.loadPoll();
+        }
+      });
+  }
+
+  /**
    * Shows an error message with a custom message
    *
    * @param message Custom error message

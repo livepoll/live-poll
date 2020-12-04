@@ -32,6 +32,7 @@ import {NzGridModule} from 'ng-zorro-antd/grid';
 import {NzCardModule} from 'ng-zorro-antd/card';
 import {NzStatisticModule} from 'ng-zorro-antd/statistic';
 import {NzFormModule} from 'ng-zorro-antd/form';
+import {NgScrollbarModule} from 'ngx-scrollbar';
 
 @NgModule({
   declarations: [MyPollsComponent, NewPollDialogComponent, NewPollItemDialogComponent],
@@ -59,7 +60,8 @@ import {NzFormModule} from 'ng-zorro-antd/form';
         NzGridModule,
         NzCardModule,
         NzStatisticModule,
-        NzFormModule
+        NzFormModule,
+        NgScrollbarModule
     ],
   providers: [],
     exports: [MyPollsComponent, NewPollItemDialogComponent]

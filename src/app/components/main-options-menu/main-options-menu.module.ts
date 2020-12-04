@@ -1,6 +1,10 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MainOptionsMenuComponent } from './main-options-menu.component';
+/*
+ * Copyright © Live-Poll 2020. All rights reserved
+ */
+
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {MainOptionsMenuComponent} from './main-options-menu.component';
 import {NzTabsModule} from 'ng-zorro-antd/tabs';
 import {NzUploadModule} from 'ng-zorro-antd/upload';
 import {NzAvatarModule} from 'ng-zorro-antd/avatar';
