@@ -23,6 +23,7 @@ export class AppComponent implements OnInit {
 
   // Event Emitters
   onUserDataChanged: EventEmitter<User>;
+  onLoginResultChanged: EventEmitter<string>;
 
   // Variables
   currentPage: any;
@@ -69,6 +70,9 @@ export class AppComponent implements OnInit {
     if (child.onUserDataChanged) {
       this.onUserDataChanged = child.onUserDataChanged;
       if (this.userData) this.onUserDataChanged.emit(this.userData);
+    }
+    if (child.onLoginResultChanged) {
+      this.onLoginResultChanged = child.onLoginResultChanged;
     }
     if (child.onLogout) {
       child.onLogout.subscribe(_ => this.logout());
@@ -136,8 +140,10 @@ export class AppComponent implements OnInit {
     this.http.post<string>(env.apiBaseUrl + '/authenticate/login', body, options).subscribe((_: HttpResponse<string>) => {
       // Load user data
       this.loadUserData(true);
-    }, (_) => {
+    }, (error) => {
       this.showErrorMessage('Login failed.');
+      console.log(error);
+      this.onLoginResultChanged.emit(error);
     });
   }
 
@@ -180,7 +186,7 @@ export class AppComponent implements OnInit {
     this.darkTheme = darkTheme;
     if (darkTheme) {
       // Remove light theme
-      const dom = document.getElementById('light-theme');
+      const dom = document.getElementById('dark-theme');
       if (dom) dom.remove();
       // Apply dark theme
       const style = document.createElement('link');
@@ -191,13 +197,13 @@ export class AppComponent implements OnInit {
       document.body.appendChild(style);
     } else {
       // Remove dark theme
-      const dom = document.getElementById('dark-theme');
+      const dom = document.getElementById('light-theme');
       if (dom) dom.remove();
       // Apply light theme
       const style = document.createElement('link');
       style.type = 'text/css';
       style.rel = 'stylesheet';
-      style.id = 'dark-theme';
+      style.id = 'light-theme';
       style.href = 'assets/themes/light.css';
       document.body.appendChild(style);
     }

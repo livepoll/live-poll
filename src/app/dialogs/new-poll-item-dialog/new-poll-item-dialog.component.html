@@ -2,8 +2,8 @@
   ~ Copyright © Live-Poll 2020. All rights reserved
   -->
 
-<nz-modal [(nzVisible)]="isVisible" (nzOnCancel)="handleCancel()" nzWidth="850px"
-          [nzTitle]="dialogTitle" [nzContent]="dialogContent" [nzFooter]="dialogFooter">
+<nz-modal [(nzVisible)]="isVisible" (nzOnCancel)="handleCancel()" nzWidth="850px" [nzTitle]="dialogTitle"
+          [nzContent]="dialogContent" [nzFooter]="dialogFooter">
   <!-- Header -->
   <ng-template #dialogTitle>
     New Poll Item - {{step > stepLabels.length ? 'Creating ...' : stepLabels[step -1]}}
@@ -11,7 +11,7 @@
 
   <!-- Content -->
   <ng-template #dialogContent>
-    <nz-layout style="margin: -24px">
+    <nz-layout class="dialog-content">
       <!-- Side bar with timeline -->
       <nz-sider class="dialog-sidebar" nzWidth="300px">
         <nz-steps [nzCurrent]="step -1" nzDirection="vertical" nzSize="small">
@@ -54,11 +54,11 @@
                 <input nz-input [(ngModel)]="answers[i]" />
               </nz-input-group>
               <ng-template #suffixTemplate>
-                <i nz-icon [nzType]="'delete'" style="cursor: pointer" (click)="answers.splice(i, 1)"></i>
+                <i nz-icon [nzType]="'delete'" class="cursor-pointer" (click)="answers.splice(i, 1)"></i>
               </ng-template>
             </label>
             <!-- Add answer button -->
-            <div style="padding-top: 10px; float: right;">
+            <div class="add-answer-button-container">
               <button [disabled]="answers.length >= 10" nz-button nzType="default" (click)="answers.push('')">
                 <i nz-icon nzType="plus-circle" nzTheme="outline"></i> Answer
               </button>
@@ -70,19 +70,19 @@
           <div *ngIf="itemType == 3">
             <!-- Answers -->
             <label *ngFor="let answer of answers; let i = index; trackBy:trackByFn">
-              <span class="input-label" [style]="i === 0 ? 'color: #4ca857;' : 'color: #ff194f;'">
+              <span class="input-label" [class]="i === 0 ? 'right-answer' : 'wrong-answer'">
                 {{i === 0 ? 'Right answer' : 'Wrong answer ' + i}}:
               </span>
               <nz-input-group [nzSuffix]="i < 2 ? null : suffixTemplate">
                 <input nz-input [(ngModel)]="answers[i]" [placeholder]="i === 0 ? 'Enter right answer ...' : 'Enter wrong answer ...'"/>
               </nz-input-group>
               <ng-template #suffixTemplate>
-                <i nz-icon [nzType]="'delete'" style="cursor: pointer" (click)="answers.splice(i, 1)"></i>
+                <i nz-icon [nzType]="'delete'" class="cursor-pointer" (click)="answers.splice(i, 1)"></i>
               </ng-template>
             </label>
             <!-- Add answer button -->
-            <div style="padding-top: 10px; float: right;">
-              <em style="margin-inline-end: 20px;">The answers are going to be randomized for each user.</em>
+            <div class="add-answer-button-container">
+              <em class="add-answer-button-label">The answers are going to be randomized for each user.</em>
               <button [disabled]="answers.length >= 5" nz-button nzType="default" (click)="answers.push('')">
                 <i nz-icon nzType="plus-circle" nzTheme="outline"></i> Answer
               </button>
@@ -103,12 +103,12 @@
             <!-- Type int -->
             <label *ngIf="option.type === optionTypes.INT">
               <span class="input-label">{{option.name}}:</span><br>
-              <input nz-input type="number" [min]="option.min" [max]="option.max" style="width: 100px" [(ngModel)]="option.value"/>
+              <input nz-input type="number" [min]="option.min" [max]="option.max" class="full-width" [(ngModel)]="option.value"/>
             </label>
             <!-- Type string -->
             <label *ngIf="option.type === optionTypes.STRING">
               <span class="input-label">{{option.name}}:</span><br>
-              <input nz-input style="width: 200px" [(ngModel)]="option.value"/>
+              <input nz-input width="200px" [(ngModel)]="option.value"/>
             </label>
           </div>
         </div>

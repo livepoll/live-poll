@@ -68,8 +68,12 @@
         </nz-form-control>
       </nz-form-item>
       <!-- Reset button -->
-      <button nz-button nzType="primary" style="float: right;" [nzLoading]="loading">{{loading ? 'Sending email ...' : 'Reset password'}}</button>
-      <button nz-button nzType="default" style="float: right; margin-right: 5px" [disabled]="loading" (click)="loginMode = true">Back</button>
+      <button nz-button nzType="primary" class="submit-button" [nzLoading]="loading">
+        {{loading ? 'Sending email ...' : 'Reset password'}}
+      </button>
+      <button nz-button nzType="default" class="back-button" [disabled]="loading" (click)="loginMode = true">
+        Back
+      </button>
     </form>
   </nz-card>
 

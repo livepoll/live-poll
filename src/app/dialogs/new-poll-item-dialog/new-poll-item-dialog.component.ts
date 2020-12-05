@@ -178,7 +178,7 @@ export class NewPollItemDialogComponent {
       .subscribe((response: HttpResponse<string>) => {
         if (response.ok) {
           // Request was successful, continue
-          this.onClose.emit(false);
+          this.onClose.emit(true);
           // Reset dialog
           this.step = 1;
           this.itemType = 0;
