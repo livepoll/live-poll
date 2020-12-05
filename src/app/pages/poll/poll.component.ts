@@ -2,7 +2,7 @@
  * Copyright © Live-Poll 2020. All rights reserved
  */
 
-import {Component, EventEmitter} from '@angular/core';
+import {Component, EventEmitter, Inject, LOCALE_ID} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Poll} from '../../model/poll';
 import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
@@ -11,6 +11,8 @@ import {User} from '../../model/user';
 import {PollItem} from '../../model/poll-item';
 import {NzNotificationService} from 'ng-zorro-antd/notification';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import {formatDate} from '@angular/common';
+import {CommonToolsService} from '../../service/common-tools.service';
 
 @Component({
   selector: 'app-poll',
@@ -34,6 +36,9 @@ export class PollComponent {
   showNewPollItemDialog = false;
   error = false;
   results = [];
+  pollStatus = 1; // 1 = Planned; 2 = Running; 3 = Finished
+  showEditPollDialog = false;
+  showEditPollItemDialog = false;
 
   /**
    * Initialize component
@@ -42,12 +47,16 @@ export class PollComponent {
    * @param router Injected router
    * @param http Injected http client
    * @param notificationService Injected notification service
+   * @param tools Injected tools service
+   * @param locale Injected local id
    */
   constructor(
     private activeRoute: ActivatedRoute,
     private router: Router,
     private http: HttpClient,
-    private notificationService: NzNotificationService
+    private notificationService: NzNotificationService,
+    private tools: CommonToolsService,
+    @Inject(LOCALE_ID) private locale: string
   ) {
     // Subscribe to own event emitters
     this.onUserDataChanged.subscribe(user => {
@@ -80,10 +89,20 @@ export class PollComponent {
    *
    * @param url Customized input url
    */
-  onUrlChange(url: string): void {
-    url = url === undefined ? '' : url;
-    this.poll.snippet = encodeURI(url.toLocaleLowerCase().split(' ').join('-'));
-    // TODO: Commit changes to server
+  onSnippetChange(url: string): void {
+    if (!url || url.length === 0) return;
+    const oldSnippet = this.poll.snippet;
+    const newSnippet = this.poll.snippet = encodeURI(url.toLocaleLowerCase().split(' ').join('-'));
+    // Commit changes to the server
+    // Build header, body and options
+    const header = new HttpHeaders().set('Content-Type', 'application/json');
+    const options: any = { header, observe: 'response', withCredentials: true };
+    const body = { newSnippet };
+    // Send request
+    this.http.put<string>(env.apiBaseUrl + '/users/' + this.userData.id + '/polls/' + this.pollId + '/snippet', body, options)
+      .subscribe((response: HttpResponse<string>) => {
+        if (!response.ok) this.poll.snippet = oldSnippet;
+      }, _ => this.poll.snippet = oldSnippet);
   }
 
   /**
@@ -94,15 +113,23 @@ export class PollComponent {
   changePollState(open: boolean): void {
     this.changingState = true;
     if (open) {
-      this.poll.startDate = this.poll.endDate = this.currentDate;
+      this.poll.startDate = this.currentDate;
+      if (this.poll.endDate.getTime() > 0) this.poll.endDate.setTime(0);
     } else {
       this.poll.endDate = this.currentDate;
     }
-    this.updatePoll(() => this.changingState = false);
+    this.updatePoll(() => {
+      this.changingState = false;
+      this.pollStatus = this.tools.getPollStatus(this.poll);
+    }, () => {
+      // TODO: Remove this later
+      this.changingState = false;
+      this.pollStatus = this.tools.getPollStatus(this.poll);
+    });
   }
 
   /**
-   * Is called when the NewPollItemDialog is closed. Triggers an poll reload, if the creation of an item was sucessful
+   * Is called when the NewPollItemDialog was closed. Triggers a poll reload, if the creation of an item was successful
    *
    * @param success Item successfully created
    */
@@ -115,7 +142,11 @@ export class PollComponent {
    * Loads a single poll from the server
    */
   loadPoll(): void {
-    console.log('Loading');
+    // Redirect to MyPolls page, if some data is missing to load the poll
+    if (!this.userData || !this.pollId) {
+      this.router.navigateByUrl('/dashboard/my-polls');
+      return;
+    }
     // Build header, body and options
     const header = new HttpHeaders().set('Content-Type', 'application/json');
     const options: any = { header, responseType: 'application/json', observe: 'response', withCredentials: true };
@@ -130,6 +161,7 @@ export class PollComponent {
           poll.name = json.name;
           poll.startDate = new Date(json.startDate);
           poll.endDate = new Date(json.endDate);
+          poll.snippet = json.snippet;
           poll.pollItems = [];
           json.pollItems.forEach(item => {
             const pollItem = new PollItem();
@@ -184,6 +216,22 @@ export class PollComponent {
   }
 
   /**
+   * Deletes a single poll item from the server
+   *
+   * @param pollItemId Id of the poll item
+   */
+  deletePollItem(pollItemId: number): void {
+    // Build header, body and options
+    const header = new HttpHeaders().set('Content-Type', 'application/json');
+    const options: any = { header, observe: 'response', withCredentials: true };
+    // Send request
+    this.http.delete<string>(env.apiBaseUrl + '/users/' + this.userData.id + '/polls/' + this.pollId + '/item/' + pollItemId, options)
+      .subscribe((response: HttpResponse<string>) => {
+        if (response.ok) this.loadPoll();
+      });
+  }
+
+  /**
    * Shows an error message with a custom message
    *
    * @param message Custom error message
@@ -219,7 +267,56 @@ export class PollComponent {
     return this.getChartData(pollId).reduce((sum, current) => sum + current.value, 0);
   }
 
+  /**
+   * Generates the subtitle string for the poll, consisting of either start and end date or placeholder strings.
+   * The calculation is based on the status and the startDate and endDate
+   */
+  getSubtitle(): string {
+    const startDate = this.poll.startDate;
+    const endDate = this.poll.endDate;
+    const startDateString = '<strong>' + formatDate(startDate, 'yyyy-MM-dd hh:mm a', this.locale) + '</strong>';
+    const endDateString = '<strong>' + formatDate(endDate, 'yyyy-MM-dd hh:mm a', this.locale) + '</strong>';
+
+    switch (this.pollStatus) {
+      case 1: { // Pending
+        if (startDate.getTime() === 0 && endDate.getTime() === 0) return 'Manual opening, manual closing';
+        if (startDate.getTime() === 0) return 'Manual opening, automatically closing at' + endDateString;
+        if (endDate.getTime() === 0) return 'Automatically opening at ' + startDateString + ', manual closing';
+        return 'Automatically opening at ' + startDateString + ', automatically closing at ' + endDateString;
+      }
+      case 2: { // Running
+        if (endDate.getTime() === 0) return 'Running since ' + startDateString + ', manual closing';
+        return 'Running since ' + startDateString + ', automatically closing at ' + endDateString;
+      }
+      case 3: { // Finished
+        return 'Poll ran from ' + startDateString + ' to ' + endDateString;
+      }
+      default: return ''; // Unknown state, return empty string
+    }
+  }
+
+  /**
+   * Shows the dialog for editing the current poll
+   */
+  openEditPollDialog(): void {
+    // Open edit dialog
+    this.showEditPollDialog = true;
+  }
+
+  /**
+   * Shows the dialog a specific poll item
+   */
+  openEditPollItemDialog(event: any): void {
+    event.stopPropagation();
+    // Open edit dialog
+    this.showEditPollItemDialog = true;
+  }
+
+  /**
+   * Establish socket connection to the server to ensure data exchange in realtime
+   */
   setupResultObserver(): void {
+    // TODO: Remove this mocked data later on
     this.results = [];
     this.poll.pollItems.forEach(pollItem => {
       this.results.push({

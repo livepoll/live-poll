@@ -8,89 +8,90 @@
     <a routerLink="/dashboard/home" nz-icon nzType="home"></a>
   </nz-breadcrumb-item>
   <nz-breadcrumb-item>
-    <a routerLink="/dashboard//my-polls"><em>My Polls</em></a>
+    <a routerLink="/dashboard/my-polls"><em>My Polls</em></a>
   </nz-breadcrumb-item>
 </nz-breadcrumb>
 
 <!-- Page content -->
-<nz-content style="margin-top: 10px">
-  <div>
-    <!-- Toolbar -->
-    <nz-page-header>
-      <nz-page-header-subtitle>Click on a poll for details</nz-page-header-subtitle>
-      <nz-page-header-extra>
-        <button nz-button nzType="primary" (click)="showNewPollDialog = true">New poll</button>
-      </nz-page-header-extra>
-    </nz-page-header>
+<nz-content class="page-content">
+  <!-- Toolbar -->
+  <nz-page-header>
+    <nz-page-header-subtitle>Click on a poll for details</nz-page-header-subtitle>
+    <nz-page-header-extra>
+      <button nz-button nzType="primary" (click)="showNewPollDialog = true">New poll</button>
+    </nz-page-header-extra>
+  </nz-page-header>
 
-    <!-- Poll list -->
-    <nz-collapse *ngIf="polls !== undefined && polls !== null && polls.length > 0" nzBordered="false" nzAccordion
-                 style="user-select: none;">
-      <nz-collapse-panel #p *ngFor="let poll of polls" [nzHeader]="header" [nzExtra]="options"
-                         [nzExpandedIcon]="expandedIcon">
-        <!-- Item content -->
-        <nz-row [nzGutter]="12">
-          <nz-col [nzSpan]="12">
-            <nz-card>
-              <nz-statistic [nzValue]="10" nzTitle="Participants"
-                [nzValueStyle]="{ color: '#3F8600' }">
-              </nz-statistic>
-            </nz-card>
-          </nz-col>
-          <nz-col [nzSpan]="12">
-            <nz-card>
-              <nz-statistic [nzValue]="5" nzTitle="Questions"
-                [nzValueStyle]="{ color: '#CF1322' }">
-              </nz-statistic>
-            </nz-card>
-          </nz-col>
-        </nz-row>
+  <!-- Poll list -->
+  <ng-scrollbar class="scrollbar">
+    <div class="poll-list-container" *ngIf="polls !== undefined && polls !== null && polls.length > 0">
+      <nz-collapse nzBordered="false" nzAccordion class="no-select">
+        <nz-collapse-panel #p *ngFor="let poll of polls" [nzHeader]="header" [nzExtra]="options"
+                           [nzExpandedIcon]="expandedIcon">
+          <!-- Item content -->
+          <nz-row [nzGutter]="12">
+            <nz-col [nzSpan]="12">
+              <nz-card>
+                <nz-statistic [nzValue]="10" nzTitle="Participants"
+                              [nzValueStyle]="{ color: '#3F8600' }">
+                </nz-statistic>
+              </nz-card>
+            </nz-col>
+            <nz-col [nzSpan]="12">
+              <nz-card>
+                <nz-statistic [nzValue]="5" nzTitle="Questions"
+                              [nzValueStyle]="{ color: '#CF1322' }">
+                </nz-statistic>
+              </nz-card>
+            </nz-col>
+          </nz-row>
 
-        <!-- Header -->
-        <ng-template #header>
-          <span [style]="p.nzActive ? 'font-size: large; transition: font-size 0.4s;' : 'font-size: small; transition: font-size 0.4s;'">{{poll.name}}</span>
-        </ng-template>
-        <!-- Header options -->
-        <ng-template #options>
-          <nz-tag *ngIf="poll.startDate > currentDate || poll.endDate.getTime() === 0" nzColor="orange">
-            <i nz-icon nzType="clock-circle"></i>
-            <span>Planned</span>
-          </nz-tag>
-          <nz-tag *ngIf="poll.startDate < currentDate && poll.endDate > currentDate" nzColor="green">
-            <i nz-icon nzType="loading"></i>
-            <span>Running</span>
-          </nz-tag>
-          <nz-tag *ngIf="poll.endDate < currentDate && poll.endDate.getTime() !== 0" nzColor="purple">
-            <i nz-icon nzType="check"></i>
-            <span>Finished</span>
-          </nz-tag>
-          <button  nz-button nzType="primary" [nzSize]="p.nzActive ? 'default' : 'small'"
-                   [routerLink]="'/dashboard/my-polls/poll/' + poll.id">
-            Details<i nz-icon nzType="right"></i>
-          </button>
-        </ng-template>
-        <!-- Expand icon -->
-        <ng-template #expandedIcon>
-          <i nz-icon nzType="right-circle" class="ant-collapse-arrow" [nzRotate]="p.nzActive ? 90 : 0"
-             style="font-size: 16px;"></i>
-        </ng-template>
-      </nz-collapse-panel>
-    </nz-collapse>
-
-    <!-- Empty result -->
-    <app-result-empty *ngIf="polls !== undefined && polls !== null && polls.length === 0"
-                      message="You do not have any polls yet. Click on the 'New poll' button above to create one."></app-result-empty>
-
-    <!-- Loading spinner -->
-    <div style="display: flex; align-items: center; justify-content: center;">
-      <nz-spin *ngIf="polls === undefined" nzSimple nzSize="large"></nz-spin>
+          <!-- Header -->
+          <ng-template #header>
+            <span>{{poll.name}}</span>
+          </ng-template>
+          <!-- Header options -->
+          <ng-template #options [ngSwitch]="tools.getPollStatus(poll)">
+            <nz-tag *ngSwitchCase="1" nzColor="orange">
+              <i nz-icon nzType="clock-circle"></i>
+              <span>Planned</span>
+            </nz-tag>
+            <nz-tag *ngSwitchCase="2" nzColor="green">
+              <i nz-icon nzType="loading"></i>
+              <span>Running</span>
+            </nz-tag>
+            <nz-tag *ngSwitchCase="3" nzColor="purple">
+              <i nz-icon nzType="check"></i>
+              <span>Finished</span>
+            </nz-tag>
+            <button  nz-button nzType="primary" [nzSize]="p.nzActive ? 'default' : 'small'"
+                     [routerLink]="'/dashboard/my-polls/poll/' + poll.id">
+              Details<i nz-icon nzType="right"></i>
+            </button>
+          </ng-template>
+          <!-- Expand icon -->
+          <ng-template #expandedIcon>
+            <i nz-icon nzType="right" class="ant-collapse-arrow" [nzRotate]="p.nzActive ? 90 : 0"></i>
+          </ng-template>
+        </nz-collapse-panel>
+      </nz-collapse>
     </div>
+  </ng-scrollbar>
 
-    <!-- Error result -->
-    <app-result-error *ngIf="polls === null"></app-result-error>
+  <!-- Empty result -->
+  <app-result-empty *ngIf="polls !== undefined && polls !== null && polls.length === 0"
+                    message="You do not have any polls yet. Click on the 'New poll' button above to create one.">
+  </app-result-empty>
 
-    <!-- New poll dialog -->
-    <app-new-poll-dialog [isVisible]="showNewPollDialog" (onClose)="handleNewPollDialogClose($event)"
-                         [userData]="userData"></app-new-poll-dialog>
+  <!-- Loading spinner -->
+  <div class="spin-container">
+    <nz-spin *ngIf="polls === undefined" nzSimple nzSize="large"></nz-spin>
   </div>
+
+  <!-- Error result -->
+  <app-result-error *ngIf="polls === null"></app-result-error>
+
+  <!-- New poll dialog -->
+  <app-new-poll-dialog [isVisible]="showNewPollDialog" (onClose)="handleNewPollDialogClose($event)"
+                       [userData]="userData"></app-new-poll-dialog>
 </nz-content>

@@ -5,6 +5,7 @@
 import {Component, EventEmitter} from '@angular/core';
 import {Poll} from '../../model/poll';
 import {User} from '../../model/user';
+import {CommonToolsService} from '../../service/common-tools.service';
 
 @Component({
   selector: 'app-my-polls',
@@ -29,8 +30,12 @@ export class MyPollsComponent {
 
   /**
    * Initialize MyPolls component
+   *
+   * @param tools Injected tools service
    */
-  constructor() {
+  constructor(
+    private tools: CommonToolsService
+  ) {
     // Subscribe to own event emitters
     this.onUserDataChanged.subscribe(user => this.userData = user);
     this.onPollsChanged.subscribe(polls => this.polls = polls);

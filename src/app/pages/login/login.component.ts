@@ -19,6 +19,7 @@ export class LoginComponent implements OnInit {
 
   // Event Emitters
   onLogin = new EventEmitter<User>();
+  onLoginResultChanged = new EventEmitter<string>();
 
   // Variables
   darkTheme = false;
@@ -45,6 +46,7 @@ export class LoginComponent implements OnInit {
    * Initialize form validation
    */
   ngOnInit(): void {
+    // Initialize form
     this.loginForm = this.formBuilder.group({
       username: [null, [Validators.required]],
       password: [null, [Validators.required]],
@@ -52,6 +54,12 @@ export class LoginComponent implements OnInit {
     });
     this.resetPasswordForm = this.formBuilder.group({
       username: [null, [Validators.required]]
+    });
+    // Wire up event emitters
+    this.onLoginResultChanged.subscribe(errorMessage => {
+      this.loginForm.controls.password.reset();
+      this.loading = false;
+      this.passwordVisible = false;
     });
   }
 
