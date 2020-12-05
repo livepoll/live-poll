@@ -51,16 +51,16 @@
             <span>{{poll.name}}</span>
           </ng-template>
           <!-- Header options -->
-          <ng-template #options>
-            <nz-tag *ngIf="poll.startDate > currentDate || poll.endDate.getTime() === 0" nzColor="orange">
+          <ng-template #options [ngSwitch]="tools.getPollStatus(poll)">
+            <nz-tag *ngSwitchCase="1" nzColor="orange">
               <i nz-icon nzType="clock-circle"></i>
               <span>Planned</span>
             </nz-tag>
-            <nz-tag *ngIf="poll.startDate < currentDate && poll.endDate > currentDate" nzColor="green">
+            <nz-tag *ngSwitchCase="2" nzColor="green">
               <i nz-icon nzType="loading"></i>
               <span>Running</span>
             </nz-tag>
-            <nz-tag *ngIf="poll.endDate < currentDate && poll.endDate.getTime() !== 0" nzColor="purple">
+            <nz-tag *ngSwitchCase="3" nzColor="purple">
               <i nz-icon nzType="check"></i>
               <span>Finished</span>
             </nz-tag>
@@ -80,7 +80,8 @@
 
   <!-- Empty result -->
   <app-result-empty *ngIf="polls !== undefined && polls !== null && polls.length === 0"
-                    message="You do not have any polls yet. Click on the 'New poll' button above to create one."></app-result-empty>
+                    message="You do not have any polls yet. Click on the 'New poll' button above to create one.">
+  </app-result-empty>
 
   <!-- Loading spinner -->
   <div class="spin-container">

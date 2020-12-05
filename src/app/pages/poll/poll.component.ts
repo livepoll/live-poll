@@ -12,6 +12,7 @@ import {PollItem} from '../../model/poll-item';
 import {NzNotificationService} from 'ng-zorro-antd/notification';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {formatDate} from '@angular/common';
+import {CommonToolsService} from '../../service/common-tools.service';
 
 @Component({
   selector: 'app-poll',
@@ -46,6 +47,7 @@ export class PollComponent {
    * @param router Injected router
    * @param http Injected http client
    * @param notificationService Injected notification service
+   * @param tools Injected tools service
    * @param locale Injected local id
    */
   constructor(
@@ -53,6 +55,7 @@ export class PollComponent {
     private router: Router,
     private http: HttpClient,
     private notificationService: NzNotificationService,
+    private tools: CommonToolsService,
     @Inject(LOCALE_ID) private locale: string
   ) {
     // Subscribe to own event emitters
@@ -117,11 +120,11 @@ export class PollComponent {
     }
     this.updatePoll(() => {
       this.changingState = false;
-      this.refreshPollStatus();
+      this.pollStatus = this.tools.getPollStatus(this.poll);
     }, () => {
       // TODO: Remove this later
       this.changingState = false;
-      this.refreshPollStatus();
+      this.pollStatus = this.tools.getPollStatus(this.poll);
     });
   }
 
@@ -265,37 +268,6 @@ export class PollComponent {
   }
 
   /**
-   * Calculates the status of the poll, based on the startDate and endDate
-   */
-  refreshPollStatus(): void {
-    const startDate = this.poll.startDate;
-    const endDate = this.poll.endDate;
-    const currentDate = this.currentDate = new Date();
-
-    if (
-      (startDate.getTime() === 0 && endDate.getTime() === 0) || // Manual opening, manual closing
-      (startDate > currentDate) // Start date not reached
-    ) {
-      // Poll is pending
-      this.pollStatus = 1;
-    } else if (
-      (startDate <= currentDate && endDate > currentDate) || // We're in between of the two dates
-      (startDate <= currentDate && endDate.getTime() === 0) // Started, manual closing
-    ) {
-      // Poll is running
-      this.pollStatus = 2;
-    } else if (
-      (endDate < currentDate) // End date already reached
-    ) {
-      // Poll is finished
-      this.pollStatus = 3;
-    } else {
-      // Invalid status, something went wrong
-      this.pollStatus = 0;
-    }
-  }
-
-  /**
    * Generates the subtitle string for the poll, consisting of either start and end date or placeholder strings.
    * The calculation is based on the status and the startDate and endDate
    */
@@ -323,11 +295,17 @@ export class PollComponent {
     }
   }
 
+  /**
+   * Shows the dialog for editing the current poll
+   */
   openEditPollDialog(): void {
     // Open edit dialog
     this.showEditPollDialog = true;
   }
 
+  /**
+   * Shows the dialog a specific poll item
+   */
   openEditPollItemDialog(event: any): void {
     event.stopPropagation();
     // Open edit dialog
