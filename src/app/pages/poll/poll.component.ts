@@ -280,16 +280,16 @@ export class PollComponent {
     switch (this.pollStatus) {
       case 1: { // Pending
         if (startDate.getTime() === 0 && endDate.getTime() === 0) return 'Manual opening, manual closing';
-        if (startDate.getTime() === 0) return 'Manual opening, automatically closing at' + endDateString;
-        if (endDate.getTime() === 0) return 'Automatically opening at ' + startDateString + ', manual closing';
-        return 'Automatically opening at ' + startDateString + ', automatically closing at ' + endDateString;
+        if (startDate.getTime() === 0) return 'Manual opening, auto closing at' + endDateString;
+        if (endDate.getTime() === 0) return 'Auto opening at ' + startDateString + ', manual closing';
+        return 'Auto opening at ' + startDateString + ', auto closing at ' + endDateString;
       }
       case 2: { // Running
         if (endDate.getTime() === 0) return 'Running since ' + startDateString + ', manual closing';
-        return 'Running since ' + startDateString + ', automatically closing at ' + endDateString;
+        return 'Running since ' + startDateString + ', auto closing at ' + endDateString;
       }
       case 3: { // Finished
-        return 'Poll ran from ' + startDateString + ' to ' + endDateString;
+        return 'Ran from ' + startDateString + ' to ' + endDateString;
       }
       default: return ''; // Unknown state, return empty string
     }
