@@ -19,6 +19,7 @@ import {IconsProviderModule} from './icons-provider.module';
 
 import {en_US, NZ_I18N} from 'ng-zorro-antd/i18n';
 import {environment} from '../environments/environment';
+import {ServiceWorkerModule} from '@angular/service-worker';
 
 registerLocaleData(en);
 
@@ -49,7 +50,8 @@ const cookieConfig: NgcCookieConsentConfig = {
         HttpClientModule,
         BrowserAnimationsModule,
         NzNotificationModule,
-        NgcCookieConsentModule.forRoot(cookieConfig)
+        NgcCookieConsentModule.forRoot(cookieConfig),
+        ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
     ],
   providers: [
     CookieService,
