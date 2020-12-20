@@ -1,3 +1,11 @@
+const CACHE_NAME = 'static-cache';
+const urlsToCache = [
+  '.',
+  'index.html',
+  'styles.css',
+  'assets/*'
+];
+
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.0.2/workbox-sw.js');
 
 workbox.routing.registerRoute(({request}) =>
@@ -27,3 +35,31 @@ self.addEventListener('notificationclick', function (event) {
     clients.openWindow('https://example.blog.com/2015/03/04/something-new.html');
   }
 })
+
+self.addEventListener('install', (event) => {
+  event.waitUntil(caches.open(cacheName).then((cache) => cache.addAll(urlsToCache)));
+});
+
+self.addEventListener('fetch', function(event) {
+  event.respondWith(
+    caches.match(event.request)
+      .then(function(response) {
+        return response || fetchAndCache(event.request);
+      })
+  );
+});
+
+function fetchAndCache(url) {
+  return fetch(url)
+    .then(function(response) {
+      if (!response.ok) throw Error(response.statusText);
+      return caches.open(CACHE_NAME)
+        .then(function(cache) {
+          cache.put(url, response.clone());
+          return response;
+        });
+    })
+    .catch(function(error) {
+      console.log('Request failed:', error);
+    });
+}
