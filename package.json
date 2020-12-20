@@ -14,8 +14,15 @@
     "Open Text",
     "Rating"
   ],
-  "repository": "https://github.com/livepoll/live-poll",
-  "author": "Marc Auberer",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/livepoll/live-poll.git"
+  },
+  "author": {
+    "name": "Marc Auberer",
+    "email": "support@live-poll.de",
+    "url": "www.live-poll.de"
+  },
   "license": "MIT",
   "scripts": {
     "ng": "ng",
