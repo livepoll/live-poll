@@ -48,3 +48,6 @@ Thumbs.db
 
 # Themes are generated at build time
 /src/assets/themes/
+
+# Logfiles
+debug.log
