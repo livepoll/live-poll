@@ -8,6 +8,7 @@ import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {environment as env} from '../../../environments/environment';
 import {NzNotificationService} from 'ng-zorro-antd/notification';
 import {Poll} from '../../model/poll';
+import {CommonToolsService} from '../../service/common-tools.service';
 
 // Constants
 const STEP_LABELS = [
@@ -82,11 +83,11 @@ export class NewPollItemDialogComponent {
    * Initialize the component
    *
    * @param http Injected http client
-   * @param notificationService Injected notification service
+   * @param tools Injected ToolsService
    */
   constructor(
     private http: HttpClient,
-    private notificationService: NzNotificationService
+    private tools: CommonToolsService
   ) {}
 
   /**
@@ -188,18 +189,9 @@ export class NewPollItemDialogComponent {
           this.loading = false;
         }
       }, (_) => {
-        this.showErrorMessage('An unknown error occurred. Please try again.');
+        this.tools.showErrorMessage('An unknown error occurred. Please try again.');
         this.loading = false;
         this.step--;
       });
-  }
-
-  /**
-   * Shows an error message with a custom message
-   *
-   * @param message Custom error message
-   */
-  showErrorMessage(message: string): void {
-    this.notificationService.error('An error occurred', message, { nzPlacement: 'topRight' });
   }
 }

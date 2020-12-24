@@ -1,26 +1,19 @@
-/*
- * Copyright © Live-Poll 2020. All rights reserved
- */
-
 import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Poll} from '../../model/poll';
 import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {environment as env} from '../../../environments/environment';
-import {NzNotificationService} from 'ng-zorro-antd/notification';
 import {User} from '../../model/user';
 import {CommonToolsService} from '../../service/common-tools.service';
 
-/**
- * Wizard dialog, which lets the user create a new poll.
- * The dialog shows an input field for the name of the poll.
- */
 @Component({
-  selector: 'app-new-poll-dialog',
-  templateUrl: './new-poll-dialog.component.html',
-  styleUrls: ['./new-poll-dialog.component.sass']
+  selector: 'app-edit-poll-dialog',
+  templateUrl: './edit-poll-dialog.component.html',
+  styleUrls: ['./edit-poll-dialog.component.sass']
 })
-export class NewPollDialogComponent {
+export class EditPollDialogComponent {
 
   // Event Emitters
+  @Input() poll: Poll;
   @Input() userData: User;
   @Input() isVisible: boolean;
   @Output() onClose = new EventEmitter<boolean>(); // true = success; false = cancel
@@ -28,6 +21,8 @@ export class NewPollDialogComponent {
   // Variables
   loading = false;
   name = '';
+  startDate = 0;
+  endDate = 0;
 
   /**
    * Initialize the component
@@ -39,19 +34,18 @@ export class NewPollDialogComponent {
     private tools: CommonToolsService
   ) {}
 
-  /**
-   * User clicked on the 'Create poll' button.
-   * Method executes validity checks for the user input and shows an
-   * error message or creates the poll on the server.
-   */
-  createPoll(name: string): void {
+  updatePoll(): void {
     this.loading = true;
+    const name = this.name;
+    const startDate = this.startDate;
+    const endDate = this.endDate;
+
     // Build header, body and options
     const header = new HttpHeaders().set('Content-Type', 'application/json');
     const options: any = { header, responseType: 'text', observe: 'response', withCredentials: true };
-    const body = { name, startDate: 0, endDate: 0 };
+    const body = { name, startDate, endDate };
     // Send request
-    this.http.post<string>(env.apiBaseUrl + '/users/' + this.userData.id + '/poll', body, options)
+    this.http.put<string>(env.apiBaseUrl + '/users/' + this.userData.id + '/poll/' + this.poll.id, body, options)
       .subscribe((_: HttpResponse<string>) => {
         // Reset values
         this.name = '';
@@ -60,7 +54,8 @@ export class NewPollDialogComponent {
         this.onClose.emit(true);
       }, (_) => {
         this.loading = false;
-        this.tools.showErrorMessage('An error occurred while creating the poll.');
+        this.tools.showErrorMessage('An error occurred while updating the poll.');
       });
   }
+
 }

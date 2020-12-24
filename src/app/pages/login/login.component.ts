@@ -9,6 +9,7 @@ import {User} from '../../model/user';
 import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {environment as env} from '../../../environments/environment';
 import {NzNotificationService} from 'ng-zorro-antd/notification';
+import {CommonToolsService} from '../../service/common-tools.service';
 
 @Component({
   selector: 'app-login',
@@ -34,12 +35,12 @@ export class LoginComponent implements OnInit {
    *
    * @param formBuilder Injected form builder
    * @param http Injected http client
-   * @param notificationService Injected notification service
+   * @param tools Injected ToolsService
    */
   constructor(
     private formBuilder: FormBuilder,
     private http: HttpClient,
-    private notificationService: NzNotificationService
+    private tools: CommonToolsService
   ) {}
 
   /**
@@ -117,7 +118,7 @@ export class LoginComponent implements OnInit {
           this.loading = false;
         }
       }, (_) => {
-        this.notificationService.error('An error occurred', 'Something went wrong.', { nzPlacement: 'topRight' });
+        this.tools.showErrorMessage('Something went wrong.')
         this.loading = false;
       });
   }

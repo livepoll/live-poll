@@ -8,6 +8,7 @@ import {FormsModule} from '@angular/forms';
 import {MyPollsRoutingModule} from './my-polls-routing.module';
 import {MyPollsComponent} from './my-polls.component';
 import {NewPollDialogComponent} from '../../dialogs/new-poll-dialog/new-poll-dialog.component';
+import {EditPollDialogComponent} from '../../dialogs/edit-poll-dialog/edit-poll-dialog.component';
 import {ResultErrorModule} from '../../components/result-error/result-error.module';
 import {ResultEmptyModule} from '../../components/result-empty/result-empty.module';
 
@@ -35,7 +36,7 @@ import {NzFormModule} from 'ng-zorro-antd/form';
 import {NgScrollbarModule} from 'ngx-scrollbar';
 
 @NgModule({
-  declarations: [MyPollsComponent, NewPollDialogComponent, NewPollItemDialogComponent],
+  declarations: [MyPollsComponent, NewPollDialogComponent, NewPollItemDialogComponent, EditPollDialogComponent],
     imports: [
         MyPollsRoutingModule,
         NzModalModule,

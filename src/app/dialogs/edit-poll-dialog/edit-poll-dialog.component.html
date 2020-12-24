@@ -1,0 +1,19 @@
+<!--
+  ~ Copyright © Live-Poll 2020. All rights reserved
+  -->
+
+<nz-modal [(nzVisible)]="isVisible" nzTitle="Edit Poll" (nzOnCancel)="onClose.emit(false)" (nzOnOk)="updatePoll()"
+          [nzOkLoading]="loading" nzAutofocus="ok" [nzOkDisabled]="name.length === 0"
+          [nzCancelDisabled]="loading" nzOkText="Create Poll" (close)="isVisible = false">
+  <form nz-form>
+    <nz-form-item>
+      <nz-form-control nzErrorTip="The poll name is mandatory!">
+        <label>
+          <span class="input-label">Name of the poll:</span>
+          <input nz-input placeholder="Name of your new poll" name="name" [(ngModel)]="name"
+                 (input)="name = $event.target.value" required />
+        </label>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</nz-modal>

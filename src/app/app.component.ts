@@ -10,6 +10,7 @@ import {environment as env} from '../environments/environment';
 import {NgcCookieConsentService} from 'ngx-cookieconsent';
 import {NzNotificationService} from 'ng-zorro-antd/notification';
 import {User} from './model/user';
+import {CommonToolsService} from './service/common-tools.service';
 
 // Constants
 const COOKIE_NAME_THEME = 'theme';
@@ -36,14 +37,14 @@ export class AppComponent implements OnInit {
    * @param cookieService Injected cookie service
    * @param http Injected http client
    * @param router Injected router
-   * @param notificationService Injected notification service
+   * @param tools Injected ToolsService
    * @param _ Injected CookieConsent manager (do not remove this import)
    */
   constructor(
     private cookieService: CookieService,
     private http: HttpClient,
     private router: Router,
-    private notificationService: NzNotificationService,
+    private tools: CommonToolsService,
     private _: NgcCookieConsentService
   ) {}
 
@@ -117,7 +118,7 @@ export class AppComponent implements OnInit {
       }
     }, (_) => {
       if (showErrorExplicitly) {
-        this.showErrorMessage('Loading user data failed.');
+        this.tools.showErrorMessage('Loading user data failed.');
       } else {
         if (location.href.includes('dashboard')) this.router.navigateByUrl('/login');
       }
@@ -141,7 +142,7 @@ export class AppComponent implements OnInit {
       // Load user data
       this.loadUserData(true);
     }, (error) => {
-      this.showErrorMessage('Login failed.');
+      this.tools.showErrorMessage('Login failed.');
       console.log(error);
       this.onLoginResultChanged.emit(error);
     });
@@ -159,17 +160,8 @@ export class AppComponent implements OnInit {
       // Redirect to login page
       this.router.navigateByUrl('/login');
     }, (_) => {
-      this.showErrorMessage('Logout failed.');
+      this.tools.showErrorMessage('Logout failed.');
     });
-  }
-
-  /**
-   * Shows an error message with a custom message
-   *
-   * @param message Custom error message
-   */
-  showErrorMessage(message: string): void {
-    this.notificationService.error('An error occurred', message, { nzPlacement: 'topRight' });
   }
 
   /**
