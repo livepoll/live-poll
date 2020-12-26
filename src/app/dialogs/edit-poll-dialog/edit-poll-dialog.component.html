@@ -1,0 +1,25 @@
+<!--
+  ~ Copyright © Live-Poll 2020. All rights reserved
+  -->
+
+<nz-modal [(nzVisible)]="isVisible" nzTitle="Edit Poll" (nzOnCancel)="onClose.emit(false)" (nzOnOk)="updatePoll()"
+          [nzOkLoading]="loading" nzAutofocus="ok" [nzOkDisabled]="name.length === 0"
+          [nzCancelDisabled]="loading" nzOkText="Save changes" (close)="onClose.emit(false)">
+  <form nz-form>
+    <nz-form-item>
+      <nz-form-control nzErrorTip="The poll name is mandatory!">
+        <label>
+          <span class="input-label">Name of the poll:</span>
+          <input nz-input placeholder="Name of your new poll" name="name" [(ngModel)]="name"
+                 (input)="name = $event.target.value" required />
+        </label>
+        <br><br>
+        <nz-range-picker nzShowTime nzShowNow [(ngModel)]="startDate" (ngModelChange)="onDatesChange($event)">
+        </nz-range-picker>
+        <br>
+        <span>The poll will be opened / closed automatically at the time you set here.
+          If you do not set a time, you have to manually open / close the poll.</span>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</nz-modal>

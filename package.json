@@ -10,7 +10,7 @@
     "Question",
     "Answer",
     "Quiz",
-    "Mulitple Choice",
+    "Multiple Choice",
     "Open Text",
     "Rating"
   ],
@@ -67,7 +67,6 @@
     "ng-zorro-antd": "^11.0.0",
     "ngx-cookie-service": "^11.0.2",
     "ngx-cookieconsent": "^2.2.3",
-    "ngx-scrollbar": "~7.5.3",
     "rxjs": "~6.6.3",
     "tslib": "^2.0.3",
     "workbox-core": "^6.0.2",

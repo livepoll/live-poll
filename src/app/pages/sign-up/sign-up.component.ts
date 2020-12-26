@@ -9,6 +9,7 @@ import {SHA256} from 'crypto-js';
 import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {environment as env} from '../../../environments/environment';
 import {Router} from '@angular/router';
+import {CommonToolsService} from '../../service/common-tools.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -28,13 +29,13 @@ export class SignUpComponent implements OnInit {
    *
    * @param formBuilder Injected form builder
    * @param http Injected http client
-   * @param notificationService Injected notification service
+   * @param tools Injected ToolsService
    * @param router Injected router service
    */
   constructor(
     private formBuilder: FormBuilder,
     private http: HttpClient,
-    private notificationService: NzNotificationService,
+    private tools: CommonToolsService,
     private router: Router
   ) {}
 
@@ -109,23 +110,12 @@ export class SignUpComponent implements OnInit {
     this.http.post<string>(env.apiBaseUrl + '/account/register', body, options).subscribe((response: HttpResponse<string>) => {
         if (response.ok) {
           // Request was successful, continue
-          this.displaySuccessNotification();
+          this.tools.showSuccessMessage('Please check your email inbox and confirm your email, by clicking on the confirmation link.');
           this.router.navigateByUrl('/login');
         }
     }, (_) => {
-      this.notificationService.error('An error occurred', 'Something went wrong.', { nzPlacement: 'topRight' });
+      this.tools.showErrorMessage('Something went wrong.')
       this.loading = false;
     });
-  }
-
-  /**
-   * Displays a notification with the mail confirm message
-   */
-  displaySuccessNotification(): void {
-    this.notificationService.success(
-      'Account creation successful',
-      'Please check your email inbox and confirm your email, by clicking on the confirmation link.',
-      { nzPlacement: 'topRight' }
-    );
   }
 }

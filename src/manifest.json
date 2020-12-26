@@ -6,6 +6,7 @@
   "display": "standalone",
   "scope": "./",
   "start_url": "./",
+  "categories": ["live", "poll", "survey", "question", "answer", "quiz", "multiple-choice", "open-text", "rating"],
   "icons": [
     {
       "src": "assets/icons/manifest-icon-192.png",
@@ -18,6 +19,32 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "My Polls",
+      "short_name": "My Polls",
+      "description": "View the list of polls, you have already created",
+      "url": "/my-polls",
+      "icons": [
+        {
+          "src": "assets/icons/manifest-icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Analytics",
+      "short_name": "Analytics",
+      "description": "View details analytics of your polls",
+      "url": "/analytics",
+      "icons": [
+        {
+          "src": "assets/icons/manifest-icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
     }
   ]
 }

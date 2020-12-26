@@ -8,6 +8,7 @@ import {FormsModule} from '@angular/forms';
 import {MyPollsRoutingModule} from './my-polls-routing.module';
 import {MyPollsComponent} from './my-polls.component';
 import {NewPollDialogComponent} from '../../dialogs/new-poll-dialog/new-poll-dialog.component';
+import {EditPollDialogComponent} from '../../dialogs/edit-poll-dialog/edit-poll-dialog.component';
 import {ResultErrorModule} from '../../components/result-error/result-error.module';
 import {ResultEmptyModule} from '../../components/result-empty/result-empty.module';
 
@@ -32,10 +33,10 @@ import {NzGridModule} from 'ng-zorro-antd/grid';
 import {NzCardModule} from 'ng-zorro-antd/card';
 import {NzStatisticModule} from 'ng-zorro-antd/statistic';
 import {NzFormModule} from 'ng-zorro-antd/form';
-import {NgScrollbarModule} from 'ngx-scrollbar';
+import {NzDatePickerModule} from 'ng-zorro-antd/date-picker';
 
 @NgModule({
-  declarations: [MyPollsComponent, NewPollDialogComponent, NewPollItemDialogComponent],
+  declarations: [MyPollsComponent, NewPollDialogComponent, NewPollItemDialogComponent, EditPollDialogComponent],
     imports: [
         MyPollsRoutingModule,
         NzModalModule,
@@ -61,9 +62,9 @@ import {NgScrollbarModule} from 'ngx-scrollbar';
         NzCardModule,
         NzStatisticModule,
         NzFormModule,
-        NgScrollbarModule
+        NzDatePickerModule
     ],
   providers: [],
-    exports: [MyPollsComponent, NewPollItemDialogComponent]
+  exports: [MyPollsComponent, NewPollItemDialogComponent, EditPollDialogComponent]
 })
 export class MyPollsModule { }
