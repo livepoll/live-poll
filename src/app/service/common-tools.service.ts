@@ -13,7 +13,7 @@ import {NzNotificationService} from 'ng-zorro-antd/notification';
 export class CommonToolsService {
 
   /**
-   * Initialize the component
+   * Initialize the service
    * @param notificationService Injected notification service
    */
   constructor(
