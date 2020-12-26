@@ -3,8 +3,8 @@
   -->
 
 <nz-modal [(nzVisible)]="isVisible" nzTitle="New Poll" (nzOnCancel)="onClose.emit(false)" (nzOnOk)="createPoll(name)"
-          [nzOkLoading]="loading" nzAutofocus="ok" [nzOkDisabled]="name.length === 0"
-          [nzCancelDisabled]="loading" nzOkText="Create Poll" (close)="isVisible = false">
+          [nzOkLoading]="loading" nzAutofocus="ok" [nzOkDisabled]="name.length === 0" [nzCancelDisabled]="loading"
+          nzOkText="Create Poll" (close)="onClose.emit(false)">
   <form nz-form>
     <nz-form-item>
       <nz-form-control nzErrorTip="The poll name is mandatory!">

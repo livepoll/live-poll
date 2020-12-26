@@ -127,13 +127,16 @@ export class PollComponent {
   }
 
   /**
-   * Is called when the NewPollItemDialog was closed. Triggers a poll reload, if the creation of an item was successful
+   * Is called when the NewPollItemDialog or the EditPollItemDialog was closed.
+   * Triggers a poll reload, if the creation of an item was successful
    *
-   * @param success Item successfully created
+   * @param success Item successfully created / edited
    */
-  handleNewPollItemDialogClose(success: boolean): void {
+  handleDialogClose(success: boolean): void {
     if (success) this.loadPoll();
     this.showNewPollItemDialog = false;
+    this.showEditPollDialog = false;
+    this.showEditPollItemDialog = false;
   }
 
   /**
@@ -290,6 +293,7 @@ export class PollComponent {
   openEditPollDialog(): void {
     // Open edit dialog
     this.showEditPollDialog = true;
+    console.log(this.showEditPollDialog);
   }
 
   /**

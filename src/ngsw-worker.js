@@ -1,16 +1,23 @@
 const CACHE_NAME = 'static-cache';
-const urlsToCache = [
-  '.',
-  'index.html',
-  'styles.css',
-  'assets/*'
+const URLS_TO_CACHE = [
+  '/',
+  '/index.html',
+  '/styles.css',
+  '/assets/themes/light.css',
+  '/assets/themes/dark.css',
+  '/assets/icons/apple-icon-180.png',
+  '/assets/icons/manifest-icon-192.png',
+  '/assets/icons/manifest-icon-512.png',
+  '/assets/images/drag_indicator.svg',
+  '/assets/images/empty.svg',
+  '/assets/images/logo.svg',
+  '/assets/images/light/wave-bot.svg',
+  '/assets/images/light/wave-mid.svg',
+  '/assets/images/light/wave-top.svg',
+  '/assets/images/dark/wave-bot.svg',
+  '/assets/images/dark/wave-mid.svg',
+  '/assets/images/dark/wave-top.svg'
 ];
-
-importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.0.2/workbox-sw.js');
-
-workbox.routing.registerRoute(({request}) =>
-  request.destination === 'image', new workbox.strategies.NetworkFirst()
-);
 
 self.addEventListener('push', function (event) {
   if (self.Notification && self.Notification.permission === 'granted') {
@@ -20,13 +27,13 @@ self.addEventListener('push', function (event) {
       registration.showNotification(data.title, {
         body: data.message,
         tag: 'push-notification',
-        icon: 'assets/icons/manifest-icon-192.png'
+        icon: 'assets/icons/manifest-icon-512.png'
       });
     } else {
       console.log('Push notification data parsing failed.');
     }
   }
-})
+});
 
 self.addEventListener('notificationclick', function (event) {
   const notification = event.notification;
@@ -34,32 +41,12 @@ self.addEventListener('notificationclick', function (event) {
   if (clients.openWindow) {
     clients.openWindow('https://example.blog.com/2015/03/04/something-new.html');
   }
-})
-
-self.addEventListener('install', (event) => {
-  event.waitUntil(caches.open(cacheName).then((cache) => cache.addAll(urlsToCache)));
 });
 
-self.addEventListener('fetch', function(event) {
-  event.respondWith(
-    caches.match(event.request)
-      .then(function(response) {
-        return response || fetchAndCache(event.request);
-      })
-  );
-});
+self.addEventListener('install', event => event.waitUntil(
+  caches.open(CACHE_NAME).then(cache => cache.addAll(URLS_TO_CACHE))
+));
 
-function fetchAndCache(url) {
-  return fetch(url)
-    .then(function(response) {
-      if (!response.ok) throw Error(response.statusText);
-      return caches.open(CACHE_NAME)
-        .then(function(cache) {
-          cache.put(url, response.clone());
-          return response;
-        });
-    })
-    .catch(function(error) {
-      console.log('Request failed:', error);
-    });
-}
+self.addEventListener('fetch', event => event.respondWith(
+  fetch(event.request).catch(() => caches.match(event.request))
+));
