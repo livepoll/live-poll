@@ -1,5 +1,5 @@
 /*
- * Copyright © Live-Poll 2020. All rights reserved
+ * Copyright © Live-Poll 2020-2021. All rights reserved
  */
 
 import {TestBed} from '@angular/core/testing';

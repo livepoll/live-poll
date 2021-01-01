@@ -1,3 +1,7 @@
+/*
+ * Copyright © Live-Poll 2020-2021. All rights reserved
+ */
+
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Poll} from '../model/poll';

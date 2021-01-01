@@ -1,3 +1,7 @@
+/*
+ * Copyright © Live-Poll 2020-2021. All rights reserved
+ */
+
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Poll} from '../../model/poll';
 import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';

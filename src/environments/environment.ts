@@ -1,5 +1,5 @@
 /*
- * Copyright © Live-Poll 2020. All rights reserved
+ * Copyright © Live-Poll 2020-2021. All rights reserved
  */
 
 // This file can be replaced during build by using the `fileReplacements` array.

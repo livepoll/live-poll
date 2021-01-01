@@ -1,3 +1,7 @@
+/*
+ * Copyright © Live-Poll 2020-2021. All rights reserved
+ */
+
 const CACHE_NAME = 'static-cache';
 const URLS_TO_CACHE = [
   '/',
