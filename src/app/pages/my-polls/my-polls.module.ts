@@ -1,5 +1,5 @@
 /*
- * Copyright © Live-Poll 2020. All rights reserved
+ * Copyright © Live-Poll 2020-2021. All rights reserved
  */
 
 import {NgModule} from '@angular/core';
@@ -34,36 +34,38 @@ import {NzCardModule} from 'ng-zorro-antd/card';
 import {NzStatisticModule} from 'ng-zorro-antd/statistic';
 import {NzFormModule} from 'ng-zorro-antd/form';
 import {NzDatePickerModule} from 'ng-zorro-antd/date-picker';
+import {NzToolTipModule} from 'ng-zorro-antd/tooltip';
 
 @NgModule({
   declarations: [MyPollsComponent, NewPollDialogComponent, NewPollItemDialogComponent, EditPollDialogComponent],
-    imports: [
-        MyPollsRoutingModule,
-        NzModalModule,
-        NzInputModule,
-        NzAlertModule,
-        NzStepsModule,
-        NzDividerModule,
-        NzSwitchModule,
-        FormsModule,
-        CommonModule,
-        NzLayoutModule,
-        NzRadioModule,
-        NzButtonModule,
-        NzIconModule,
-        NzBreadCrumbModule,
-        NzCollapseModule,
-        ResultErrorModule,
-        ResultEmptyModule,
-        NzSpinModule,
-        NzPageHeaderModule,
-        NzTagModule,
-        NzGridModule,
-        NzCardModule,
-        NzStatisticModule,
-        NzFormModule,
-        NzDatePickerModule
-    ],
+  imports: [
+    MyPollsRoutingModule,
+    NzModalModule,
+    NzInputModule,
+    NzAlertModule,
+    NzStepsModule,
+    NzDividerModule,
+    NzSwitchModule,
+    FormsModule,
+    CommonModule,
+    NzLayoutModule,
+    NzRadioModule,
+    NzButtonModule,
+    NzIconModule,
+    NzBreadCrumbModule,
+    NzCollapseModule,
+    ResultErrorModule,
+    ResultEmptyModule,
+    NzSpinModule,
+    NzPageHeaderModule,
+    NzTagModule,
+    NzGridModule,
+    NzCardModule,
+    NzStatisticModule,
+    NzFormModule,
+    NzDatePickerModule,
+    NzToolTipModule
+  ],
   providers: [],
   exports: [MyPollsComponent, NewPollItemDialogComponent, EditPollDialogComponent]
 })

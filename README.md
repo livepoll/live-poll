@@ -17,4 +17,4 @@ The development version is live here: [dev.live-poll.de](https://dev.live-poll.d
 ## Security policy
 If you want to report a security vulnerability, please read our security policy in the [SECURITY.md](https://github.com/StudentsAgainstCovid19/corona-aid/blob/master/SECURITY.md) file.
 
-© Live-Poll 2020
+© Live-Poll 2020-2021

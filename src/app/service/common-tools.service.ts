@@ -1,5 +1,5 @@
 /*
- * Copyright © Live-Poll 2020. All rights reserved
+ * Copyright © Live-Poll 2020-2021. All rights reserved
  */
 
 import {Injectable} from '@angular/core';
@@ -13,7 +13,7 @@ import {NzNotificationService} from 'ng-zorro-antd/notification';
 export class CommonToolsService {
 
   /**
-   * Initialize the component
+   * Initialize the service
    * @param notificationService Injected notification service
    */
   constructor(
