@@ -68,7 +68,7 @@
     "ngx-cookie-service": "^11.0.2",
     "ngx-cookieconsent": "^2.2.3",
     "rxjs": "~6.6.3",
-    "tslib": "^2.0.3",
+    "tslib": "^2.1.0",
     "workbox-core": "^6.0.2",
     "workbox-precaching": "^6.0.2",
     "workbox-routing": "^6.0.2",
