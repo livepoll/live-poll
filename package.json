@@ -71,7 +71,7 @@
     "tslib": "^2.1.0",
     "workbox-core": "^6.1.2",
     "workbox-precaching": "^6.1.1",
-    "workbox-routing": "^6.1.1",
+    "workbox-routing": "^6.1.2",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
