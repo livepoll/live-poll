@@ -67,7 +67,7 @@
     "ng-zorro-antd": "^11.3.0",
     "ngx-cookie-service": "^11.0.2",
     "ngx-cookieconsent": "^2.2.3",
-    "rxjs": "~6.6.6",
+    "rxjs": "~6.6.7",
     "tslib": "^2.1.0",
     "workbox-core": "^6.1.2",
     "workbox-precaching": "^6.1.2",
