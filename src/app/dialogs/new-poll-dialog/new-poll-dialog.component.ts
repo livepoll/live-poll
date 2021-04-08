@@ -1,5 +1,5 @@
 /*
- * Copyright © Live-Poll 2020. All rights reserved
+ * Copyright © Live-Poll 2020-2021. All rights reserved
  */
 
 import {Component, EventEmitter, Input, Output} from '@angular/core';
@@ -7,6 +7,7 @@ import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {environment as env} from '../../../environments/environment';
 import {NzNotificationService} from 'ng-zorro-antd/notification';
 import {User} from '../../model/user';
+import {CommonToolsService} from '../../service/common-tools.service';
 
 /**
  * Wizard dialog, which lets the user create a new poll.
@@ -31,11 +32,11 @@ export class NewPollDialogComponent {
   /**
    * Initialize the component
    * @param http Injected http client
-   * @param notificationService Injected notification service
+   * @param tools Injected ToolsService
    */
   constructor(
     private http: HttpClient,
-    private notificationService: NzNotificationService
+    private tools: CommonToolsService
   ) {}
 
   /**
@@ -59,16 +60,7 @@ export class NewPollDialogComponent {
         this.onClose.emit(true);
       }, (_) => {
         this.loading = false;
-        this.showErrorMessage('An error occurred while creating the poll.');
+        this.tools.showErrorMessage('An error occurred while creating the poll.');
       });
-  }
-
-  /**
-   * Shows an error message with a custom message
-   *
-   * @param message Custom error message
-   */
-  showErrorMessage(message: string): void {
-    this.notificationService.error('An error occurred', message, { nzPlacement: 'topRight' });
   }
 }

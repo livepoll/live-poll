@@ -1,5 +1,5 @@
 /*
- * Copyright © Live-Poll 2020. All rights reserved
+ * Copyright © Live-Poll 2020-2021. All rights reserved
  */
 
 import {NgModule} from '@angular/core';
@@ -8,6 +8,7 @@ import {FormsModule} from '@angular/forms';
 import {MyPollsRoutingModule} from './my-polls-routing.module';
 import {MyPollsComponent} from './my-polls.component';
 import {NewPollDialogComponent} from '../../dialogs/new-poll-dialog/new-poll-dialog.component';
+import {EditPollDialogComponent} from '../../dialogs/edit-poll-dialog/edit-poll-dialog.component';
 import {ResultErrorModule} from '../../components/result-error/result-error.module';
 import {ResultEmptyModule} from '../../components/result-empty/result-empty.module';
 
@@ -32,38 +33,40 @@ import {NzGridModule} from 'ng-zorro-antd/grid';
 import {NzCardModule} from 'ng-zorro-antd/card';
 import {NzStatisticModule} from 'ng-zorro-antd/statistic';
 import {NzFormModule} from 'ng-zorro-antd/form';
-import {NgScrollbarModule} from 'ngx-scrollbar';
+import {NzDatePickerModule} from 'ng-zorro-antd/date-picker';
+import {NzToolTipModule} from 'ng-zorro-antd/tooltip';
 
 @NgModule({
-  declarations: [MyPollsComponent, NewPollDialogComponent, NewPollItemDialogComponent],
-    imports: [
-        MyPollsRoutingModule,
-        NzModalModule,
-        NzInputModule,
-        NzAlertModule,
-        NzStepsModule,
-        NzDividerModule,
-        NzSwitchModule,
-        FormsModule,
-        CommonModule,
-        NzLayoutModule,
-        NzRadioModule,
-        NzButtonModule,
-        NzIconModule,
-        NzBreadCrumbModule,
-        NzCollapseModule,
-        ResultErrorModule,
-        ResultEmptyModule,
-        NzSpinModule,
-        NzPageHeaderModule,
-        NzTagModule,
-        NzGridModule,
-        NzCardModule,
-        NzStatisticModule,
-        NzFormModule,
-        NgScrollbarModule
-    ],
+  declarations: [MyPollsComponent, NewPollDialogComponent, NewPollItemDialogComponent, EditPollDialogComponent],
+  imports: [
+    MyPollsRoutingModule,
+    NzModalModule,
+    NzInputModule,
+    NzAlertModule,
+    NzStepsModule,
+    NzDividerModule,
+    NzSwitchModule,
+    FormsModule,
+    CommonModule,
+    NzLayoutModule,
+    NzRadioModule,
+    NzButtonModule,
+    NzIconModule,
+    NzBreadCrumbModule,
+    NzCollapseModule,
+    ResultErrorModule,
+    ResultEmptyModule,
+    NzSpinModule,
+    NzPageHeaderModule,
+    NzTagModule,
+    NzGridModule,
+    NzCardModule,
+    NzStatisticModule,
+    NzFormModule,
+    NzDatePickerModule,
+    NzToolTipModule
+  ],
   providers: [],
-    exports: [MyPollsComponent, NewPollItemDialogComponent]
+  exports: [MyPollsComponent, NewPollItemDialogComponent, EditPollDialogComponent]
 })
 export class MyPollsModule { }

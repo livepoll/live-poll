@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright © Live-Poll 2020. All rights reserved
+  ~ Copyright © Live-Poll 2020-2021. All rights reserved
   -->
 
 <!-- Navigation breadcrumb -->
@@ -43,10 +43,12 @@
     <!--extra-->
     <nz-page-header-extra>
       <button nz-button nzType="dashed" nz-popconfirm nzPopconfirmTitle="Are you sure you want to delete this poll?"
-              nzPopconfirmPlacement="bottom" (nzOnConfirm)="deletePoll()" nzDanger>
+              nzPopconfirmPlacement="bottom" [nzLoading]="changingState" (nzOnConfirm)="deletePoll()" nzDanger>
         <i nz-icon nzType="delete"></i>Delete
       </button>
-      <button nz-button><i nz-icon nzType="edit"></i>Edit</button>
+      <button nz-button [nzLoading]="changingState" (click)="openEditPollDialog()">
+        <i nz-icon nzType="edit"></i>Edit
+      </button>
       <button nz-button nzType="primary" [nzLoading]="changingState" (click)="changePollState(pollStatus !== 2)">
         {{pollStatus === 1 ? 'Open' : (pollStatus === 2 ? 'Close' : 'Re-open')}}
       </button>
@@ -78,65 +80,62 @@
               </nz-page-header-extra>
             </nz-page-header>
             <!-- Poll item list -->
-            <ng-scrollbar class="scrollbar">
-              <div class="poll-item-list-container no-select" *ngIf="poll.pollItems.length > 0">
-                <nz-collapse class="poll-item-list" nzBordered="false" nzAccordion
-                             *ngIf="poll.pollItems !== undefined && poll.pollItems !== null && poll.pollItems.length > 0"
-                             cdkDropList (cdkDropListDropped)="drop($event)">
-                  <nz-collapse-panel class="poll-item" #p *ngFor="let pollItem of poll.pollItems" [nzHeader]="header"
-                                     [nzExtra]="options" [nzExpandedIcon]="expandedIcon" cdkDrag cdkDragLockAxis="y">
-                    <!-- Item content -->
-                    <div nz-row>
-                      <div nz-col nzSpan="9" class="stats-column">
-                        <nz-statistic [nzValue]="(getAnswersCount(pollItem.id) | number)!" nzTitle="Total answers">
-                        </nz-statistic>
-                      </div>
-                      <div nz-col nzSpan="15">
-                        <ngx-charts-bar-horizontal class="chart" [view]="[0, 300]" [results]="getChartData(pollItem.id)"
-                                                   scheme="forest" xAxis="true" yAxis="true" legend="true"
-                                                   showXAxisLabel="true" showYAxisLabel="true" animations="true"
-                                                   xAxisLabel="Participants" yAxisLabel="Answers">
-                        </ngx-charts-bar-horizontal>
-                      </div>
+            <div class="poll-item-list-container no-select" *ngIf="poll?.pollItems?.length">
+              <nz-collapse class="poll-item-list" nzBordered="false" nzAccordion *ngIf="poll.pollItems?.length"
+                           cdkDropList (cdkDropListDropped)="drop($event)">
+                <nz-collapse-panel class="poll-item" #p *ngFor="let pollItem of poll.pollItems" [nzHeader]="header"
+                                   [nzExtra]="options" [nzExpandedIcon]="expandedIcon" cdkDrag cdkDragLockAxis="y">
+                  <!-- Item content -->
+                  <div nz-row>
+                    <div nz-col nzSpan="9" class="stats-column">
+                      <nz-statistic [nzValue]="(getAnswersCount(pollItem.id) | number)!" nzTitle="Total answers">
+                      </nz-statistic>
                     </div>
-                    <button nz-button nzType="default" class="preview-button"
-                            [routerLink]="'/p/' + poll.snippet + '/' + pollItem.pos">
-                      Preview Question<i nz-icon nzType="right"></i>
-                    </button>
+                    <div nz-col nzSpan="15">
+                      <ngx-charts-bar-horizontal class="chart" [view]="[0, 300]" [results]="getChartData(pollItem.id)"
+                                                 scheme="forest" xAxis="true" yAxis="true" legend="true"
+                                                 showXAxisLabel="true" showYAxisLabel="true" animations="true"
+                                                 xAxisLabel="Participants" yAxisLabel="Answers">
+                      </ngx-charts-bar-horizontal>
+                    </div>
+                  </div>
+                  <button nz-button nzType="default" class="preview-button"
+                          [routerLink]="'/p/' + poll.snippet + '/' + pollItem.pos">
+                    Preview Question<i nz-icon nzType="right"></i>
+                  </button>
 
-                    <!-- Header -->
-                    <ng-template #header>
-                      <span class="poll-item-title">{{pollItem.question}}</span>
-                    </ng-template>
-                    <!-- Header options -->
-                    <ng-template #options>
-                      <nz-tag nzColor="default">{{pollItem.type}}</nz-tag>
-                      <button nz-button nzType="primary" [nzSize]="p.nzActive ? 'default' : 'small'"
-                              (click)="openEditPollItemDialog($event)">
-                        <i nz-icon nzType="edit"></i>Edit
-                      </button>
-                      <button nz-button nzType="dashed" nzDanger nz-popconfirm (click)="$event.stopPropagation()"
-                              nzPopconfirmTitle="Are you sure you want to delete this question?"
-                              (nzOnConfirm)="deletePollItem(pollItem.id)" nzPopconfirmPlacement="topLeft"
-                              [nzSize]="p.nzActive ? 'default' : 'small'" class="poll-item-delete">
-                        <i nz-icon nzType="delete"></i>Delete
-                      </button>
-                    </ng-template>
-                    <!-- Expand icon -->
-                    <ng-template #expandedIcon>
-                      <i nz-icon class="ant-collapse-arrow drag-handle" cdkDragHandle>
-                        <img width="16" height="16" src="assets/images/drag_indicator.svg" alt="drag">
-                      </i>
-                      <i nz-icon nzType="right" class="ant-collapse-arrow expand-icon"
-                         [nzRotate]="p.nzActive ? 90 : 0"></i>
-                    </ng-template>
-                  </nz-collapse-panel>
-                </nz-collapse>
-              </div>
-            </ng-scrollbar>
+                  <!-- Header -->
+                  <ng-template #header>
+                    <span class="poll-item-title">{{pollItem.question}}</span>
+                  </ng-template>
+                  <!-- Header options -->
+                  <ng-template #options>
+                    <nz-tag nzColor="default">{{pollItem.type}}</nz-tag>
+                    <button nz-button nzType="primary" [nzSize]="p.nzActive ? 'default' : 'small'"
+                            (click)="openEditPollItemDialog($event)">
+                      <i nz-icon nzType="edit"></i>Edit
+                    </button>
+                    <button nz-button nzType="dashed" nzDanger nz-popconfirm (click)="$event.stopPropagation()"
+                            nzPopconfirmTitle="Are you sure you want to delete this question?"
+                            (nzOnConfirm)="deletePollItem(pollItem.id)" nzPopconfirmPlacement="topLeft"
+                            [nzSize]="p.nzActive ? 'default' : 'small'" class="poll-item-delete">
+                      <i nz-icon nzType="delete"></i>Delete
+                    </button>
+                  </ng-template>
+                  <!-- Expand icon -->
+                  <ng-template #expandedIcon>
+                    <i nz-icon class="ant-collapse-arrow drag-handle" cdkDragHandle>
+                      <img width="16" height="16" src="assets/images/drag_indicator.svg" alt="drag">
+                    </i>
+                    <i nz-icon nzType="right" class="ant-collapse-arrow expand-icon"
+                       [nzRotate]="p.nzActive ? 90 : 0"></i>
+                  </ng-template>
+                </nz-collapse-panel>
+              </nz-collapse>
+            </div>
 
             <!-- No poll items -->
-            <app-result-empty *ngIf="poll.pollItems === undefined || poll.pollItems.length === 0"
+            <app-result-empty *ngIf="!poll.pollItems?.length"
                               message="You do not have any questions yet."></app-result-empty>
           </nz-tab>
           <nz-tab [nzTitle]="titleAnalytics">
@@ -145,7 +144,7 @@
             </ng-template>
 
             <!-- No results -->
-            <app-result-empty *ngIf="poll.pollItems === undefined || poll.pollItems.length === 0 || poll.startDate > currentDate || poll.startDate.getTime() === 0"
+            <app-result-empty *ngIf="!poll.pollItems?.length || poll.startDate > currentDate || poll.startDate.getTime() === 0"
                               message="The analytics of your poll are not yet available."></app-result-empty>
           </nz-tab>
           <nz-tab [nzTitle]="titleQA">
@@ -158,13 +157,18 @@
         </nz-tabset>
       </div>
 
-      <app-new-poll-item-dialog [isVisible]="showNewPollItemDialog" (onClose)="handleNewPollItemDialogClose($event)"
+      <!-- New Poll Dialog -->
+      <app-new-poll-item-dialog [isVisible]="showNewPollItemDialog" (onClose)="handleDialogClose($event)"
                                 [poll]="poll"></app-new-poll-item-dialog>
+
+      <!-- Edit Poll Dialog -->
+      <app-edit-poll-dialog [isVisible]="showEditPollDialog" (onClose)="handleDialogClose($event)"
+                            [poll]="poll" [userData]="userData"></app-edit-poll-dialog>
     </nz-page-header-content>
   </nz-page-header>
 
   <!-- Loading indicator -->
-  <nz-spin *ngIf="!error && poll === undefined" nzSize="large"></nz-spin>
+  <nz-spin *ngIf="!error && !poll" nzSize="large"></nz-spin>
 
   <!-- Error message -->
   <app-result-error *ngIf="error" title="Error" subtitle="An error occurred while loading the poll"></app-result-error>

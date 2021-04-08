@@ -1,5 +1,5 @@
 /*
- * Copyright © Live-Poll 2020. All rights reserved
+ * Copyright © Live-Poll 2020-2021. All rights reserved
  */
 
 import {Component, EventEmitter, Inject, LOCALE_ID} from '@angular/core';
@@ -46,15 +46,13 @@ export class PollComponent {
    * @param activeRoute Injected active route
    * @param router Injected router
    * @param http Injected http client
-   * @param notificationService Injected notification service
-   * @param tools Injected tools service
+   * @param tools Injected ToolsService
    * @param locale Injected local id
    */
   constructor(
     private activeRoute: ActivatedRoute,
     private router: Router,
     private http: HttpClient,
-    private notificationService: NzNotificationService,
     private tools: CommonToolsService,
     @Inject(LOCALE_ID) private locale: string
   ) {
@@ -129,13 +127,16 @@ export class PollComponent {
   }
 
   /**
-   * Is called when the NewPollItemDialog was closed. Triggers a poll reload, if the creation of an item was successful
+   * Is called when the NewPollItemDialog or the EditPollItemDialog was closed.
+   * Triggers a poll reload, if the creation of an item was successful
    *
-   * @param success Item successfully created
+   * @param success Item successfully created / edited
    */
-  handleNewPollItemDialogClose(success: boolean): void {
+  handleDialogClose(success: boolean): void {
     if (success) this.loadPoll();
     this.showNewPollItemDialog = false;
+    this.showEditPollDialog = false;
+    this.showEditPollItemDialog = false;
   }
 
   /**
@@ -177,7 +178,7 @@ export class PollComponent {
         }
       }, (_) => {
         this.error = true;
-        this.showErrorMessage('Something went wrong, loading the poll.');
+        this.tools.showErrorMessage('Something went wrong, loading the poll.');
       });
   }
 
@@ -186,7 +187,7 @@ export class PollComponent {
    */
   updatePoll(callback: () => void, error?: () => void): void {
     error = error ?? function(): void {
-      this.showErrorMessage('The change could not be committed on the server. Please try again later.');
+      this.tools.showErrorMessage('The change could not be committed on the server. Please try again later.');
     };
     // Build header, body and options
     const header = new HttpHeaders().set('Content-Type', 'application/json');
@@ -229,15 +230,6 @@ export class PollComponent {
       .subscribe((response: HttpResponse<string>) => {
         if (response.ok) this.loadPoll();
       });
-  }
-
-  /**
-   * Shows an error message with a custom message
-   *
-   * @param message Custom error message
-   */
-  showErrorMessage(message: string): void {
-    this.notificationService.error('An error occurred', message, { nzPlacement: 'topRight' });
   }
 
   /**
@@ -301,6 +293,7 @@ export class PollComponent {
   openEditPollDialog(): void {
     // Open edit dialog
     this.showEditPollDialog = true;
+    console.log(this.showEditPollDialog);
   }
 
   /**

@@ -1,24 +1,46 @@
 <!--
-  ~ Copyright © Live-Poll 2020. All rights reserved
+  ~ Copyright © Live-Poll 2020-2021. All rights reserved
   -->
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <title>LivePoll - Create live polls for your presentation</title>
     <base href="/">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="apple-touch-icon" href="assets/icons/apple-icon-180.png"/>
     <!-- Theme tab color for Chrome mobile -->
     <meta name="theme-color" content="#38C6BC">
+    <!-- PWA web manifest -->
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Set initial scale factor depending on device size -->
+    <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1.1">
+    <script>
+      let [sw, sh] = [screen.width, screen.height];
+      let fw = window.matchMedia("(orientation: landscape)").matches ? sh : sw;
+      if (fw < 768) {
+        let mvp = document.getElementById("viewport");
+        mvp.setAttribute("content","width=device-width,initial-scale=0.9");
+      }
+    </script>
   </head>
   <body>
     <!-- Main app -->
     <app-root></app-root>
+
+    <!-- Message, when JavaScript is not enabled in the browser -->
+    <noscript>Please enable JavaScript to continue using this application.</noscript>
+
     <!-- Themes, the second is the default one, because it overrides the first. Both stylesheets are included
     initially for fast theme changes -->
     <link type="text/css" rel="stylesheet" id="dark-theme" href="assets/themes/dark.css">
     <link type="text/css" rel="stylesheet" id="light-theme" href="assets/themes/light.css">
+
+    <script>
+      self.Notification.requestPermission();
+    </script>
   </body>
 </html>

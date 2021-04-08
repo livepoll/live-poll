@@ -1,5 +1,5 @@
 /*
- * Copyright © Live-Poll 2020. All rights reserved
+ * Copyright © Live-Poll 2020-2021. All rights reserved
  */
 
 import {NgModule} from '@angular/core';
@@ -33,7 +33,6 @@ import {NzCollapseModule} from 'ng-zorro-antd/collapse';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {NgxChartsModule} from '@swimlane/ngx-charts';
 import {NzStatisticModule} from 'ng-zorro-antd/statistic';
-import {NgScrollbarModule} from 'ngx-scrollbar';
 
 @NgModule({
   declarations: [PollComponent],
@@ -66,8 +65,7 @@ import {NgScrollbarModule} from 'ngx-scrollbar';
         NzCollapseModule,
         DragDropModule,
         NgxChartsModule,
-        NzStatisticModule,
-        NgScrollbarModule
+        NzStatisticModule
     ]
 })
 export class PollModule { }

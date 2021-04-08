@@ -1,9 +1,9 @@
 <!--
-  ~ Copyright © Live-Poll 2020. All rights reserved
+  ~ Copyright © Live-Poll 2020-2021. All rights reserved
   -->
 
-<nz-modal [(nzVisible)]="isVisible" (nzOnCancel)="handleCancel()" nzWidth="850px" [nzTitle]="dialogTitle"
-          [nzContent]="dialogContent" [nzFooter]="dialogFooter">
+<nz-modal [(nzVisible)]="isVisible" (nzOnCancel)="handleCancel()" nzWidth="800px" [nzTitle]="dialogTitle"
+          [nzContent]="dialogContent" [nzFooter]="dialogFooter" (close)="handleCancel()">
   <!-- Header -->
   <ng-template #dialogTitle>
     New Poll Item - {{step > stepLabels.length ? 'Creating ...' : stepLabels[step -1]}}
@@ -13,7 +13,7 @@
   <ng-template #dialogContent>
     <nz-layout class="dialog-content">
       <!-- Side bar with timeline -->
-      <nz-sider class="dialog-sidebar" nzWidth="300px">
+      <nz-sider class="dialog-sidebar" nzWidth="250px">
         <nz-steps [nzCurrent]="step -1" nzDirection="vertical" nzSize="small">
           <nz-step *ngFor="let name of stepLabels" nzTitle="{{name}}"></nz-step>
           <nz-step *ngIf="step === 4" nzTitle="Creating ..." nzStatus="process" nzIcon="loading"></nz-step>
