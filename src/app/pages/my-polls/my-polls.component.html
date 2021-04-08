@@ -23,7 +23,7 @@
   </nz-page-header>
 
   <!-- Poll list -->
-  <div class="poll-list-container" *ngIf="polls !== undefined && polls !== null && polls.length > 0">
+  <div class="poll-list-container" *ngIf="polls?.length">
     <nz-collapse nzBordered="false" nzAccordion class="no-select">
       <nz-collapse-panel #p *ngFor="let poll of polls" [nzHeader]="header" [nzExtra]="options"
                          [nzExpandedIcon]="expandedIcon">
@@ -75,7 +75,7 @@
   </div>
 
   <!-- Empty result -->
-  <app-result-empty *ngIf="polls !== undefined && polls !== null && polls.length === 0"
+  <app-result-empty *ngIf="!polls?.length"
                     message="You do not have any polls yet. Click on the 'New poll' button above to create one.">
   </app-result-empty>
 

@@ -80,9 +80,8 @@
               </nz-page-header-extra>
             </nz-page-header>
             <!-- Poll item list -->
-            <div class="poll-item-list-container no-select" *ngIf="poll.pollItems.length > 0">
-              <nz-collapse class="poll-item-list" nzBordered="false" nzAccordion
-                           *ngIf="poll.pollItems !== undefined && poll.pollItems !== null && poll.pollItems.length > 0"
+            <div class="poll-item-list-container no-select" *ngIf="poll?.pollItems?.length">
+              <nz-collapse class="poll-item-list" nzBordered="false" nzAccordion *ngIf="poll.pollItems?.length"
                            cdkDropList (cdkDropListDropped)="drop($event)">
                 <nz-collapse-panel class="poll-item" #p *ngFor="let pollItem of poll.pollItems" [nzHeader]="header"
                                    [nzExtra]="options" [nzExpandedIcon]="expandedIcon" cdkDrag cdkDragLockAxis="y">
@@ -136,7 +135,7 @@
             </div>
 
             <!-- No poll items -->
-            <app-result-empty *ngIf="poll.pollItems === undefined || poll.pollItems.length === 0"
+            <app-result-empty *ngIf="!poll.pollItems?.length"
                               message="You do not have any questions yet."></app-result-empty>
           </nz-tab>
           <nz-tab [nzTitle]="titleAnalytics">
@@ -145,7 +144,7 @@
             </ng-template>
 
             <!-- No results -->
-            <app-result-empty *ngIf="poll.pollItems === undefined || poll.pollItems.length === 0 || poll.startDate > currentDate || poll.startDate.getTime() === 0"
+            <app-result-empty *ngIf="!poll.pollItems?.length || poll.startDate > currentDate || poll.startDate.getTime() === 0"
                               message="The analytics of your poll are not yet available."></app-result-empty>
           </nz-tab>
           <nz-tab [nzTitle]="titleQA">
@@ -169,7 +168,7 @@
   </nz-page-header>
 
   <!-- Loading indicator -->
-  <nz-spin *ngIf="!error && poll === undefined" nzSize="large"></nz-spin>
+  <nz-spin *ngIf="!error && !poll" nzSize="large"></nz-spin>
 
   <!-- Error message -->
   <app-result-error *ngIf="error" title="Error" subtitle="An error occurred while loading the poll"></app-result-error>

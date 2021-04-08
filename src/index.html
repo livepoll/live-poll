@@ -8,13 +8,24 @@
     <meta charset="utf-8">
     <title>LivePoll - Create live polls for your presentation</title>
     <base href="/">
-    <meta name="viewport" content="width=device-width, initial-scale=0.9">
+
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="apple-touch-icon" href="assets/icons/apple-icon-180.png"/>
     <!-- Theme tab color for Chrome mobile -->
     <meta name="theme-color" content="#38C6BC">
     <!-- PWA web manifest -->
     <link rel="manifest" href="manifest.json">
+
+    <!-- Set initial scale factor depending on device size -->
+    <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1.1">
+    <script>
+      let [sw, sh] = [screen.width, screen.height];
+      let fw = window.matchMedia("(orientation: landscape)").matches ? sh : sw;
+      if (fw < 768) {
+        let mvp = document.getElementById("viewport");
+        mvp.setAttribute("content","width=device-width,initial-scale=0.9");
+      }
+    </script>
   </head>
   <body>
     <!-- Main app -->

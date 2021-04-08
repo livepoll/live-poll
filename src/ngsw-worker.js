@@ -43,7 +43,7 @@ self.addEventListener('notificationclick', function (event) {
   const notification = event.notification;
   notification.close();
   if (clients.openWindow) {
-    clients.openWindow('https://example.blog.com/2015/03/04/something-new.html');
+    clients.openWindow('https://www.live-poll.de/login');
   }
 });
 

@@ -25,7 +25,7 @@
     {
       "name": "My Polls",
       "short_name": "My Polls",
-      "description": "View the list of polls, you have already created",
+      "description": "View the list of polls you have already created",
       "url": "/my-polls",
       "icons": [
         {
