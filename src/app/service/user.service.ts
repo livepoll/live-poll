@@ -4,7 +4,7 @@
 
 import {Injectable} from '@angular/core';
 import {environment as env} from '../../environments/environment';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpResponse} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {User} from '../model/user';
 
@@ -24,11 +24,9 @@ export class UserService {
   ) {}
 
   /**
-   * Retrieves a user from the server
-   *
-   * @param id Id of the user
+   * Retrieves the current user from the server
    */
-  get(id: number): Observable<User> {
-    return this.http.get<User>(ENDPOINT_URL + `/${id}`);
+  get(): Observable<HttpResponse<User>> {
+    return this.http.get<User>(ENDPOINT_URL, { observe: 'response', responseType: 'json', withCredentials: true });
   }
 }

@@ -4,12 +4,14 @@
 
 import {Component, EventEmitter, OnInit} from '@angular/core';
 import {CookieService} from 'ngx-cookie-service';
-import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {environment as env} from '../environments/environment';
 import {NgcCookieConsentService} from 'ngx-cookieconsent';
 import {User} from './model/user';
 import {CommonToolsService} from './service/common-tools.service';
+import {UserService} from './service/user.service';
+import {AccountService} from './service/account.service';
 
 // Constants
 const COOKIE_NAME_THEME = 'theme';
@@ -28,7 +30,7 @@ export class AppComponent implements OnInit {
   // Variables
   currentPage: any;
   darkTheme = false;
-  userData: User;
+  user: User;
 
   /**
    * Initialize app component
@@ -37,6 +39,8 @@ export class AppComponent implements OnInit {
    * @param http Injected http client
    * @param router Injected router
    * @param tools Injected ToolsService
+   * @param accountService Injected AccountService
+   * @param userService Injected UserService
    * @param _ Injected CookieConsent manager (do not remove this import)
    */
   constructor(
@@ -44,6 +48,8 @@ export class AppComponent implements OnInit {
     private http: HttpClient,
     private router: Router,
     private tools: CommonToolsService,
+    private accountService: AccountService,
+    private userService: UserService,
     private _: NgcCookieConsentService
   ) {}
 
@@ -69,7 +75,7 @@ export class AppComponent implements OnInit {
     // Wire up Event Emitters
     if (child.onUserDataChanged) {
       this.onUserDataChanged = child.onUserDataChanged;
-      if (this.userData) this.onUserDataChanged.emit(this.userData);
+      if (this.user) this.onUserDataChanged.emit(this.user);
     }
     if (child.onLoginResultChanged) {
       this.onLoginResultChanged = child.onLoginResultChanged;
@@ -98,20 +104,37 @@ export class AppComponent implements OnInit {
    * If the request fails with a http error 403, then the user has to log in first
    */
   loadUserData(showErrorExplicitly: boolean): void {
-    // Build header, body and options
+    this.userService.get().subscribe((response) => {
+      this.user = response.body;
+      // Redirect to dashboard if necessary, otherwise apply userData to dashboard
+      if (location.href.includes('dashboard')) {
+        if (this.onUserDataChanged) this.onUserDataChanged.emit(this.user);
+      } else {
+        this.router.navigateByUrl('/dashboard');
+      }
+    }, (err) => {
+      console.log(err);
+      if (showErrorExplicitly) {
+        this.tools.showErrorMessage('Loading user data failed.');
+      } else {
+        if (location.href.includes('dashboard')) this.router.navigateByUrl('/login');
+      }
+    });
+
+    /*// Build header, body and options
     const header = new HttpHeaders().set('Content-Type', 'application/json');
     const options: any = { header, responseType: 'application/json', observe: 'response', withCredentials: true };
     // Send request
     this.http.get<string>(env.apiBaseUrl + '/user', options).subscribe((response: HttpResponse<string>) => {
       const user = JSON.parse(response.body);
       // Build user object
-      this.userData = new User();
-      this.userData.id = user.id;
-      this.userData.username = user.username;
-      this.userData.email = user.email;
+      this.user = new User();
+      this.user.id = user.id;
+      this.user.username = user.username;
+      this.user.email = user.email;
       // Redirect to dashboard if necessary, otherwise apply userData to dashboard
       if (location.href.includes('dashboard')) {
-        if (this.onUserDataChanged) this.onUserDataChanged.emit(this.userData);
+        if (this.onUserDataChanged) this.onUserDataChanged.emit(this.user);
       } else {
         this.router.navigateByUrl('/dashboard');
       }
@@ -121,7 +144,7 @@ export class AppComponent implements OnInit {
       } else {
         if (location.href.includes('dashboard')) this.router.navigateByUrl('/login');
       }
-    });
+    });*/
   }
 
   /**
@@ -132,12 +155,8 @@ export class AppComponent implements OnInit {
    * @param remember Remember user
    */
   login(username: string, password: string, remember: boolean): void {
-    // Build header, body and options
-    const header = new HttpHeaders().set('Content-Type', 'application/json');
-    const options: any = { header, responseType: 'text', observe: 'response', withCredentials: true };
     const body = { username, password };
-    // Send request
-    this.http.post<string>(env.apiBaseUrl + '/account/login', body, options).subscribe((_: HttpResponse<string>) => {
+    this.accountService.login(body).subscribe((_) => {
       // Load user data
       this.loadUserData(true);
     }, (error) => {
@@ -151,11 +170,7 @@ export class AppComponent implements OnInit {
    * Executes the logout of the current user
    */
   logout(): void {
-    // Build header, body and options
-    const header = new HttpHeaders().set('Content-Type', 'application/json');
-    const options: any = { header, responseType: 'text', observe: 'response', withCredentials: true };
-    // Send request
-    this.http.put<string>(env.apiBaseUrl + '/account/logout', null, options).subscribe((_: HttpResponse<string>) => {
+    this.accountService.logout(this.user).subscribe((_) => {
       // Redirect to login page
       this.router.navigateByUrl('/login');
     }, (_) => {

@@ -37,8 +37,8 @@ export class AccountService {
    *
    * @param user Affected user
    */
-  login(user: User): Observable<User> {
-    return this.http.post<User>(ENDPOINT_URL + `/login`, user);
+  login(user: object): Observable<User> {
+    return this.http.post<User>(ENDPOINT_URL + `/login`, user, { withCredentials: true });
   }
 
   /**
@@ -47,7 +47,7 @@ export class AccountService {
    * @param user Affected user
    */
   logout(user: User): Observable<void> {
-    return this.http.put<void>(ENDPOINT_URL + `/logout`, user);
+    return this.http.put<void>(ENDPOINT_URL + `/logout`, user, { withCredentials: true });
   }
 
   /**
