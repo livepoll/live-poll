@@ -4,7 +4,6 @@
 
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {NzNotificationService} from 'ng-zorro-antd/notification';
 import {SHA256} from 'crypto-js';
 import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {environment as env} from '../../../environments/environment';
@@ -37,7 +36,8 @@ export class SignUpComponent implements OnInit {
     private http: HttpClient,
     private tools: CommonToolsService,
     private router: Router
-  ) {}
+  ) {
+  }
 
   /**
    * Initialize form validation
@@ -60,12 +60,12 @@ export class SignUpComponent implements OnInit {
    */
   confirmationValidator = (control: FormControl): { [s: string]: boolean } => {
     if (!control.value) {
-      return { required: true };
+      return {required: true};
     } else if (control.value !== this.signUpForm.controls.password.value) {
-      return { confirm: true, error: true };
+      return {confirm: true, error: true};
     }
     return {};
-  }
+  };
 
   /**
    * Validates the login form
@@ -104,17 +104,19 @@ export class SignUpComponent implements OnInit {
   signUp(username: string, email: string, password: string, newsletter: boolean): void {
     // Build header, body and options
     const header = new HttpHeaders().set('Content-Type', 'application/json');
-    const options: any = { header, observe: 'response', withCredentials: false };
+    const options: any = {header, observe: 'response', withCredentials: false};
     const body = { email, username, password };
     // Send request
     this.http.post<string>(env.apiBaseUrl + '/account/register', body, options).subscribe((response: HttpResponse<string>) => {
-        if (response.ok) {
-          // Request was successful, continue
-          this.tools.showSuccessMessage('Please check your email inbox and confirm your email, by clicking on the confirmation link.');
-          this.router.navigateByUrl('/login');
-        }
-    }, (_) => {
-      this.tools.showErrorMessage('Something went wrong.')
+      console.log(response);
+      if (response.ok) {
+        // Request was successful, continue
+        this.tools.showSuccessMessage('Please check your email inbox and confirm your email, by clicking on the confirmation link.');
+        this.router.navigateByUrl('/login');
+      }
+    }, (error) => {
+      console.log(error);
+      this.tools.showErrorMessage('Something went wrong.');
       this.loading = false;
     });
   }

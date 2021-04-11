@@ -9,7 +9,7 @@
 export const environment = {
   name: 'dev',
   production: false,
-  apiBaseUrl: 'https://localhost:8080/v0',
+  apiBaseUrl: 'https://localhost:8080/v1',
   apiVersion: 'v0',
   useSecureCookies: false,
   cookieConsentUrl: 'localhost'

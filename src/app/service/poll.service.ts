@@ -2,18 +2,18 @@
  * Copyright © Live-Poll 2020-2021. All rights reserved
  */
 
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
+import {environment as env} from '../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {Poll} from '../model/poll';
 import {Observable} from 'rxjs';
-import {environment as env} from '../../environments/environment';
 
 const ENDPOINT_URL = env.apiBaseUrl + '/polls';
 
 @Injectable({
   providedIn: 'root'
 })
-export class PollServiceService {
+export class PollService {
 
   /**
    * Initialize the service

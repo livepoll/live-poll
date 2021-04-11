@@ -8,7 +8,6 @@ import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {environment as env} from '../environments/environment';
 import {NgcCookieConsentService} from 'ngx-cookieconsent';
-import {NzNotificationService} from 'ng-zorro-antd/notification';
 import {User} from './model/user';
 import {CommonToolsService} from './service/common-tools.service';
 
@@ -103,7 +102,7 @@ export class AppComponent implements OnInit {
     const header = new HttpHeaders().set('Content-Type', 'application/json');
     const options: any = { header, responseType: 'application/json', observe: 'response', withCredentials: true };
     // Send request
-    this.http.get<string>(env.apiBaseUrl + '/authenticate/init', options).subscribe((response: HttpResponse<string>) => {
+    this.http.get<string>(env.apiBaseUrl + '/user', options).subscribe((response: HttpResponse<string>) => {
       const user = JSON.parse(response.body);
       // Build user object
       this.userData = new User();
@@ -138,7 +137,7 @@ export class AppComponent implements OnInit {
     const options: any = { header, responseType: 'text', observe: 'response', withCredentials: true };
     const body = { username, password };
     // Send request
-    this.http.post<string>(env.apiBaseUrl + '/authenticate/login', body, options).subscribe((_: HttpResponse<string>) => {
+    this.http.post<string>(env.apiBaseUrl + '/account/login', body, options).subscribe((_: HttpResponse<string>) => {
       // Load user data
       this.loadUserData(true);
     }, (error) => {
@@ -156,7 +155,7 @@ export class AppComponent implements OnInit {
     const header = new HttpHeaders().set('Content-Type', 'application/json');
     const options: any = { header, responseType: 'text', observe: 'response', withCredentials: true };
     // Send request
-    this.http.put<string>(env.apiBaseUrl + '/authenticate/logout', null, options).subscribe((_: HttpResponse<string>) => {
+    this.http.put<string>(env.apiBaseUrl + '/account/logout', null, options).subscribe((_: HttpResponse<string>) => {
       // Redirect to login page
       this.router.navigateByUrl('/login');
     }, (_) => {
