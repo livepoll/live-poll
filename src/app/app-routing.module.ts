@@ -19,7 +19,7 @@ const routes: Routes = [
       { path: 'analytics', loadChildren: () => import('./pages/analytics/analytics.module').then(m => m.AnalyticsModule) }
     ]
   },
-  { path: 'p/:snippet', loadChildren: () => import('./pages/poll-participants/poll-participants.module')
+  { path: 'p/:slug', loadChildren: () => import('./pages/poll-participants/poll-participants.module')
       .then(m => m.PollParticipantsModule) },
   { path: '**', pathMatch: 'full', redirectTo: '/error' },
   { path: 'error', loadChildren: () => import('./pages/error/error.module').then(m => m.ErrorModule) },

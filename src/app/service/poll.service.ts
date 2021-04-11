@@ -29,7 +29,7 @@ export class PollService {
    * @param poll Affected poll
    */
   create(poll: Poll): Observable<Poll> {
-    return this.http.post<Poll>(ENDPOINT_URL, poll);
+    return this.http.post<Poll>(ENDPOINT_URL, poll, { withCredentials: true });
   }
 
   /**
@@ -38,14 +38,14 @@ export class PollService {
    * @param id Id of the affected poll
    */
   get(id: number): Observable<Poll> {
-    return this.http.get<Poll>(ENDPOINT_URL + `/${id}`);
+    return this.http.get<Poll>(ENDPOINT_URL + `/${id}`, { withCredentials: true });
   }
 
   /**
    * Retrieves all polls of a specific user from the server
    */
   getAll(): Observable<Poll[]> {
-    return this.http.get<Poll[]>(ENDPOINT_URL);
+    return this.http.get<Poll[]>(ENDPOINT_URL, { withCredentials: true });
   }
 
   /**
@@ -54,7 +54,7 @@ export class PollService {
    * @param poll Affected poll
    */
   update(poll: Poll): Observable<void> {
-    return this.http.put<void>(ENDPOINT_URL, poll);
+    return this.http.put<void>(ENDPOINT_URL, poll, { withCredentials: true });
   }
 
   /**
@@ -63,6 +63,6 @@ export class PollService {
    * @param id Id of the affected poll
    */
   delete(id: number): Observable<void> {
-    return this.http.delete<void>(ENDPOINT_URL + `/${id}`);
+    return this.http.delete<void>(ENDPOINT_URL + `/${id}`, { withCredentials: true });
   }
 }

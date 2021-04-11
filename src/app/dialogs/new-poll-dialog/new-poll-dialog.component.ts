@@ -3,11 +3,10 @@
  */
 
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
-import {environment as env} from '../../../environments/environment';
-import {NzNotificationService} from 'ng-zorro-antd/notification';
 import {User} from '../../model/user';
 import {CommonToolsService} from '../../service/common-tools.service';
+import {PollService} from '../../service/poll.service';
+import {Poll} from '../../model/poll';
 
 /**
  * Wizard dialog, which lets the user create a new poll.
@@ -31,11 +30,11 @@ export class NewPollDialogComponent {
 
   /**
    * Initialize the component
-   * @param http Injected http client
+   * @param pollService Injected PollService
    * @param tools Injected ToolsService
    */
   constructor(
-    private http: HttpClient,
+    private pollService: PollService,
     private tools: CommonToolsService
   ) {}
 
@@ -46,7 +45,24 @@ export class NewPollDialogComponent {
    */
   createPoll(name: string): void {
     this.loading = true;
-    // Build header, body and options
+
+    // Build poll object
+    const poll = new Poll();
+    poll.name = name;
+    poll.startDate = poll.endDate = new Date(0);
+
+    // Send request
+    this.pollService.create(poll).subscribe((_) => {
+      // Reset values
+      this.name = '';
+      this.loading = false;
+      // Close dialog
+      this.onClose.emit(true);
+    }, (_) => {
+      this.loading = false;
+      this.tools.showErrorMessage('An error occurred while creating the poll.');
+    });
+    /*// Build header, body and options
     const header = new HttpHeaders().set('Content-Type', 'application/json');
     const options: any = { header, responseType: 'text', observe: 'response', withCredentials: true };
     const body = { name, startDate: 0, endDate: 0 };
@@ -61,6 +77,6 @@ export class NewPollDialogComponent {
       }, (_) => {
         this.loading = false;
         this.tools.showErrorMessage('An error occurred while creating the poll.');
-      });
+      });*/
   }
 }

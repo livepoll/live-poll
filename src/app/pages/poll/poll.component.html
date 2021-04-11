@@ -60,8 +60,8 @@
         You can share this URL with your participants:&nbsp;
         <span class="text-primary">
           {{host}}/p/
-          <span nz-typography nzCopyable nzEditable [nzContent]="poll.snippet" (nzContentChange)="onSnippetChange($event)"
-                [nzCopyText]="host + '/' + poll.snippet" class="snippet text-primary"></span>
+          <span nz-typography nzCopyable nzEditable [nzContent]="poll.slug" (nzContentChange)="onSlugChange($event)"
+                [nzCopyText]="host + '/' + poll.slug" class="slug text-primary"></span>
         </span>
         <nz-tabset class="full-width">
           <nz-tab [nzTitle]="titleQuestions" class="tab">
@@ -100,7 +100,7 @@
                     </div>
                   </div>
                   <button nz-button nzType="default" class="preview-button"
-                          [routerLink]="'/p/' + poll.snippet + '/' + pollItem.pos">
+                          [routerLink]="'/p/' + poll.slug + '/' + pollItem.pos">
                     Preview Question<i nz-icon nzType="right"></i>
                   </button>
 

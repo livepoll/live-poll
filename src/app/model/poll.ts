@@ -13,6 +13,7 @@ export class Poll {
   name: string;
   startDate: Date;
   endDate: Date;
-  snippet: string;
+  slug: string;
+  currentItem: number;
   pollItems: PollItem[];
 }

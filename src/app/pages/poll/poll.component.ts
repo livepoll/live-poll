@@ -9,7 +9,6 @@ import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {environment as env} from '../../../environments/environment';
 import {User} from '../../model/user';
 import {PollItem} from '../../model/poll-item';
-import {NzNotificationService} from 'ng-zorro-antd/notification';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {formatDate} from '@angular/common';
 import {CommonToolsService} from '../../service/common-tools.service';
@@ -87,20 +86,20 @@ export class PollComponent {
    *
    * @param url Customized input url
    */
-  onSnippetChange(url: string): void {
+  onSlugChange(url: string): void {
     if (!url || url.length === 0) return;
-    const oldSnippet = this.poll.snippet;
-    const newSnippet = this.poll.snippet = encodeURI(url.toLocaleLowerCase().split(' ').join('-'));
+    const oldSlug = this.poll.slug;
+    const newSlug = this.poll.slug = encodeURI(url.toLocaleLowerCase().split(' ').join('-'));
     // Commit changes to the server
     // Build header, body and options
     const header = new HttpHeaders().set('Content-Type', 'application/json');
     const options: any = { header, observe: 'response', withCredentials: true };
-    const body = { newSnippet };
+    const body = { newSlug };
     // Send request
-    this.http.put<string>(env.apiBaseUrl + '/users/' + this.userData.id + '/polls/' + this.pollId + '/snippet', body, options)
+    this.http.put<string>(env.apiBaseUrl + '/users/' + this.userData.id + '/polls/' + this.pollId + '/slug', body, options)
       .subscribe((response: HttpResponse<string>) => {
-        if (!response.ok) this.poll.snippet = oldSnippet;
-      }, _ => this.poll.snippet = oldSnippet);
+        if (!response.ok) this.poll.slug = oldSlug;
+      }, _ => this.poll.slug = oldSlug);
   }
 
   /**
@@ -162,7 +161,7 @@ export class PollComponent {
           poll.name = json.name;
           poll.startDate = new Date(json.startDate);
           poll.endDate = new Date(json.endDate);
-          poll.snippet = json.snippet;
+          poll.slug = json.slug;
           poll.pollItems = [];
           json.pollItems.forEach(item => {
             const pollItem = new PollItem();
