@@ -4,7 +4,6 @@
 
 import {Injectable} from '@angular/core';
 import {Poll} from '../model/poll';
-import {HttpClient} from '@angular/common/http';
 import {NzNotificationService} from 'ng-zorro-antd/notification';
 
 @Injectable({
@@ -26,17 +25,17 @@ export class CommonToolsService {
   getPollStatus(poll: Poll): number {
     const startDate = poll.startDate;
     const endDate = poll.endDate;
-    const currentDate = new Date();
+    const currentDate = new Date().getTime();
 
     if (
-      (startDate.getTime() === 0 && endDate.getTime() === 0) || // Manual opening, manual closing
+      (startDate === 0 && endDate === 0) || // Manual opening, manual closing
       (startDate > currentDate) // Start date not reached
     ) {
       // Poll is pending
       return 1;
     } else if (
       (startDate <= currentDate && endDate > currentDate) || // We're in between of the two dates
-      (startDate <= currentDate && endDate.getTime() === 0) // Started, manual closing
+      (startDate <= currentDate && endDate === 0) // Started, manual closing
     ) {
       // Poll is running
       return 2;

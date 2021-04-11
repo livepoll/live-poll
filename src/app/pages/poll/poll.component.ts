@@ -22,7 +22,7 @@ export class PollComponent {
 
   // Constants
   host = location.protocol + '//' + location.host;
-  currentDate = new Date();
+  currentDate = new Date().getTime();
 
   // Event Emitters
   onUserDataChanged = new EventEmitter<User>();
@@ -70,7 +70,7 @@ export class PollComponent {
 
     // Keep the current time in sync
     setInterval(() => {
-      this.currentDate = new Date();
+      this.currentDate = new Date().getTime();
     }, 1000);
   }
 
@@ -111,7 +111,7 @@ export class PollComponent {
     this.changingState = true;
     if (open) {
       this.poll.startDate = this.currentDate;
-      if (this.poll.endDate.getTime() > 0) this.poll.endDate.setTime(0);
+      if (this.poll.endDate > 0) this.poll.endDate = 0;
     } else {
       this.poll.endDate = this.currentDate;
     }
@@ -159,8 +159,8 @@ export class PollComponent {
           const poll = new Poll();
           poll.id = json.id;
           poll.name = json.name;
-          poll.startDate = new Date(json.startDate);
-          poll.endDate = new Date(json.endDate);
+          poll.startDate = json.startDate;
+          poll.endDate = json.endDate;
           poll.slug = json.slug;
           poll.pollItems = [];
           json.pollItems.forEach(item => {
@@ -270,13 +270,13 @@ export class PollComponent {
 
     switch (this.pollStatus) {
       case 1: { // Pending
-        if (startDate.getTime() === 0 && endDate.getTime() === 0) return 'Manual opening, manual closing';
-        if (startDate.getTime() === 0) return 'Manual opening, auto closing at' + endDateString;
-        if (endDate.getTime() === 0) return 'Auto opening at ' + startDateString + ', manual closing';
+        if (startDate === 0 && endDate === 0) return 'Manual opening, manual closing';
+        if (startDate === 0) return 'Manual opening, auto closing at' + endDateString;
+        if (endDate === 0) return 'Auto opening at ' + startDateString + ', manual closing';
         return 'Auto opening at ' + startDateString + ', auto closing at ' + endDateString;
       }
       case 2: { // Running
-        if (endDate.getTime() === 0) return 'Running since ' + startDateString + ', manual closing';
+        if (endDate === 0) return 'Running since ' + startDateString + ', manual closing';
         return 'Running since ' + startDateString + ', auto closing at ' + endDateString;
       }
       case 3: { // Finished

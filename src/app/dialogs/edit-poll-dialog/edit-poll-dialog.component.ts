@@ -40,8 +40,8 @@ export class EditPollDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.name = this.poll.name;
-    this.startDate = this.poll.startDate;
-    this.endDate = this.poll.endDate;
+    this.startDate = new Date(this.poll.startDate);
+    this.endDate = new Date(this.poll.endDate);
   }
 
   updatePoll(): void {

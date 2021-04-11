@@ -49,7 +49,7 @@ export class NewPollDialogComponent {
     // Build poll object
     const poll = new Poll();
     poll.name = name;
-    poll.startDate = poll.endDate = new Date(0);
+    poll.startDate = poll.endDate = 0;
 
     // Send request
     this.pollService.create(poll).subscribe((_) => {
