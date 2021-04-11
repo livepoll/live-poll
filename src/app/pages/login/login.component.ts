@@ -6,10 +6,9 @@ import {Component, EventEmitter, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {SHA256} from 'crypto-js';
 import {User} from '../../model/user';
-import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
-import {environment as env} from '../../../environments/environment';
-import {NzNotificationService} from 'ng-zorro-antd/notification';
+import {HttpClient} from '@angular/common/http';
 import {CommonToolsService} from '../../service/common-tools.service';
+import {AccountService} from '../../service/account.service';
 
 @Component({
   selector: 'app-login',
@@ -36,11 +35,13 @@ export class LoginComponent implements OnInit {
    * @param formBuilder Injected form builder
    * @param http Injected http client
    * @param tools Injected ToolsService
+   * @param accountService Injected AccountService
    */
   constructor(
     private formBuilder: FormBuilder,
     private http: HttpClient,
-    private tools: CommonToolsService
+    private tools: CommonToolsService,
+    private accountService: AccountService
   ) {}
 
   /**
@@ -105,7 +106,8 @@ export class LoginComponent implements OnInit {
    * @param username Username of user
    */
   resetPassword(username: string): void {
-    // Build header, body and options
+    this.accountService.reset(username);
+    /*// Build header, body and options
     const header = new HttpHeaders().set('Content-Type', 'application/json');
     const options: any = { header, responseType: 'application/json', observe: 'response', withCredentials: false };
     const body = { username };
@@ -120,6 +122,6 @@ export class LoginComponent implements OnInit {
       }, (_) => {
         this.tools.showErrorMessage('Something went wrong.')
         this.loading = false;
-      });
+      });*/
   }
 }

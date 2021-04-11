@@ -51,11 +51,20 @@ export class AccountService {
   }
 
   /**
+   * Requests a password reset on the server
+   *
+   * @param username Username of the affected user
+   */
+  reset(username: string): Observable<void> {
+    return this.http.get<void>(ENDPOINT_URL + `/reset/${username}`);
+  }
+
+  /**
    * Creates a user on the server and sends a confirmation mail
    *
    * @param user Affected user
    */
-  register(user: User): Observable<User> {
-    return this.http.post<User>(ENDPOINT_URL + `/register`, user);
+  register(user: object): Observable<string> {
+    return this.http.post<string>(ENDPOINT_URL + `/register`, user, { observe: 'body', responseType: 'text' as 'json' });
   }
 }

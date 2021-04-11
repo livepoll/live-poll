@@ -4,7 +4,6 @@
 
 import {Component, EventEmitter, OnInit} from '@angular/core';
 import {CookieService} from 'ngx-cookie-service';
-import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {environment as env} from '../environments/environment';
 import {NgcCookieConsentService} from 'ngx-cookieconsent';
@@ -36,7 +35,6 @@ export class AppComponent implements OnInit {
    * Initialize app component
    *
    * @param cookieService Injected cookie service
-   * @param http Injected http client
    * @param router Injected router
    * @param tools Injected ToolsService
    * @param accountService Injected AccountService
@@ -45,7 +43,6 @@ export class AppComponent implements OnInit {
    */
   constructor(
     private cookieService: CookieService,
-    private http: HttpClient,
     private router: Router,
     private tools: CommonToolsService,
     private accountService: AccountService,
@@ -120,31 +117,6 @@ export class AppComponent implements OnInit {
         if (location.href.includes('dashboard')) this.router.navigateByUrl('/login');
       }
     });
-
-    /*// Build header, body and options
-    const header = new HttpHeaders().set('Content-Type', 'application/json');
-    const options: any = { header, responseType: 'application/json', observe: 'response', withCredentials: true };
-    // Send request
-    this.http.get<string>(env.apiBaseUrl + '/user', options).subscribe((response: HttpResponse<string>) => {
-      const user = JSON.parse(response.body);
-      // Build user object
-      this.user = new User();
-      this.user.id = user.id;
-      this.user.username = user.username;
-      this.user.email = user.email;
-      // Redirect to dashboard if necessary, otherwise apply userData to dashboard
-      if (location.href.includes('dashboard')) {
-        if (this.onUserDataChanged) this.onUserDataChanged.emit(this.user);
-      } else {
-        this.router.navigateByUrl('/dashboard');
-      }
-    }, (_) => {
-      if (showErrorExplicitly) {
-        this.tools.showErrorMessage('Loading user data failed.');
-      } else {
-        if (location.href.includes('dashboard')) this.router.navigateByUrl('/login');
-      }
-    });*/
   }
 
   /**
@@ -195,23 +167,27 @@ export class AppComponent implements OnInit {
       const dom = document.getElementById('dark-theme');
       if (dom) dom.remove();
       // Apply dark theme
-      const style = document.createElement('link');
-      style.type = 'text/css';
-      style.rel = 'stylesheet';
-      style.id = 'dark-theme';
-      style.href = 'assets/themes/dark.css';
-      document.body.appendChild(style);
+      this.applyTheme('dark');
     } else {
       // Remove dark theme
       const dom = document.getElementById('light-theme');
       if (dom) dom.remove();
       // Apply light theme
-      const style = document.createElement('link');
-      style.type = 'text/css';
-      style.rel = 'stylesheet';
-      style.id = 'light-theme';
-      style.href = 'assets/themes/light.css';
-      document.body.appendChild(style);
+      this.applyTheme('light');
     }
+  }
+
+  /**
+   * Sets a theme to the app
+   *
+   * @param name Name of the theme. Either 'light' or 'dark'
+   */
+  applyTheme(name: string): void {
+    const style = document.createElement('link');
+    style.type = 'text/css';
+    style.rel = 'stylesheet';
+    style.id = `${name}-theme`;
+    style.href = `assets/themes/${name}.css`;
+    document.body.appendChild(style);
   }
 }
