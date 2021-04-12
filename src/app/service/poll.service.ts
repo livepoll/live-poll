@@ -7,6 +7,7 @@ import {environment as env} from '../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {Poll} from '../model/poll';
 import {Observable} from 'rxjs';
+import {PollItem} from '../model/poll-item';
 
 const ENDPOINT_URL = env.apiBaseUrl + '/polls';
 
@@ -46,6 +47,13 @@ export class PollService {
    */
   getAll(): Observable<Poll[]> {
     return this.http.get<Poll[]>(ENDPOINT_URL, { withCredentials: true });
+  }
+
+  /**
+   * Retrieves all poll items of a specific poll from the server
+   */
+  getAllItems(pollId: number): Observable<PollItem[]> {
+    return this.http.get<PollItem[]>(ENDPOINT_URL + `/${pollId}/poll-items`, { withCredentials: true });
   }
 
   /**

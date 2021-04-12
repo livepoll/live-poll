@@ -5,13 +5,12 @@
 import {Component, EventEmitter, Inject, LOCALE_ID} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Poll} from '../../model/poll';
-import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
-import {environment as env} from '../../../environments/environment';
 import {User} from '../../model/user';
-import {PollItem} from '../../model/poll-item';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {formatDate} from '@angular/common';
 import {CommonToolsService} from '../../service/common-tools.service';
+import {PollService} from '../../service/poll.service';
+import {PollItemService} from '../../service/poll-item.service';
 
 @Component({
   selector: 'app-poll',
@@ -44,14 +43,16 @@ export class PollComponent {
    *
    * @param activeRoute Injected active route
    * @param router Injected router
-   * @param http Injected http client
+   * @param pollService Injected PollService
+   * @param pollItemService Injected PollItemService
    * @param tools Injected ToolsService
    * @param locale Injected local id
    */
   constructor(
     private activeRoute: ActivatedRoute,
     private router: Router,
-    private http: HttpClient,
+    private pollService: PollService,
+    private pollItemService: PollItemService,
     private tools: CommonToolsService,
     @Inject(LOCALE_ID) private locale: string
   ) {
@@ -89,9 +90,14 @@ export class PollComponent {
   onSlugChange(url: string): void {
     if (!url || url.length === 0) return;
     const oldSlug = this.poll.slug;
-    const newSlug = this.poll.slug = encodeURI(url.toLocaleLowerCase().split(' ').join('-'));
+    this.poll.slug = encodeURI(url.toLocaleLowerCase().split(' ').join('-'));
+
     // Commit changes to the server
-    // Build header, body and options
+    this.pollService.update(this.poll).subscribe((_) => {}, (_) => {
+      this.poll.slug = oldSlug;
+    });
+
+    /*// Build header, body and options
     const header = new HttpHeaders().set('Content-Type', 'application/json');
     const options: any = { header, observe: 'response', withCredentials: true };
     const body = { newSlug };
@@ -99,7 +105,7 @@ export class PollComponent {
     this.http.put<string>(env.apiBaseUrl + '/users/' + this.userData.id + '/polls/' + this.pollId + '/slug', body, options)
       .subscribe((response: HttpResponse<string>) => {
         if (!response.ok) this.poll.slug = oldSlug;
-      }, _ => this.poll.slug = oldSlug);
+      }, _ => this.poll.slug = oldSlug);*/
   }
 
   /**
@@ -147,7 +153,22 @@ export class PollComponent {
       this.router.navigateByUrl('/dashboard/my-polls');
       return;
     }
-    // Build header, body and options
+
+    this.pollService.get(this.pollId).subscribe((poll) => {
+      this.poll = poll;
+      this.pollService.getAllItems(poll.id).subscribe(items => {
+        this.poll.pollItems = items;
+        this.setupResultObserver();
+      }, (_) => {
+        this.error = true;
+        this.tools.showErrorMessage('Something went wrong, loading the poll items.');
+      });
+    }, (_) => {
+      this.error = true;
+      this.tools.showErrorMessage('Something went wrong, loading the poll.');
+    });
+
+    /*// Build header, body and options
     const header = new HttpHeaders().set('Content-Type', 'application/json');
     const options: any = { header, responseType: 'application/json', observe: 'response', withCredentials: true };
     // Send request
@@ -178,7 +199,7 @@ export class PollComponent {
       }, (_) => {
         this.error = true;
         this.tools.showErrorMessage('Something went wrong, loading the poll.');
-      });
+      });*/
   }
 
   /**
@@ -188,7 +209,10 @@ export class PollComponent {
     error = error ?? function(): void {
       this.tools.showErrorMessage('The change could not be committed on the server. Please try again later.');
     };
-    // Build header, body and options
+
+    this.pollService.update(this.poll).subscribe(callback, error);
+
+    /*// Build header, body and options
     const header = new HttpHeaders().set('Content-Type', 'application/json');
     const options: any = { header, observe: 'response', withCredentials: true };
     const body = {  };
@@ -196,14 +220,18 @@ export class PollComponent {
     this.http.put<string>(env.apiBaseUrl + '/users/' + this.userData.id + '/polls/' + this.pollId, body, options)
       .subscribe((response: HttpResponse<string>) => {
         if (response.ok) callback();
-      }, (_) => error());
+      }, (_) => error());*/
   }
 
   /**
    * Deletes the current poll from the server and redirects the user back to the my polls list
    */
   deletePoll(): void {
-    // Build header, body and options
+    this.pollService.delete(this.pollId).subscribe((_) => {
+      this.router.navigateByUrl('/dashboard/my-polls');
+    });
+
+    /*// Build header, body and options
     const header = new HttpHeaders().set('Content-Type', 'application/json');
     const options: any = { header, observe: 'response', withCredentials: true };
     // Send request
@@ -212,7 +240,7 @@ export class PollComponent {
         if (response.ok) {
           this.router.navigateByUrl('/dashboard/my-polls');
         }
-      });
+      });*/
   }
 
   /**
@@ -221,14 +249,18 @@ export class PollComponent {
    * @param pollItemId Id of the poll item
    */
   deletePollItem(pollItemId: number): void {
-    // Build header, body and options
+    this.pollItemService.delete(pollItemId).subscribe((_) => {
+      this.loadPoll();
+    });
+
+    /*// Build header, body and options
     const header = new HttpHeaders().set('Content-Type', 'application/json');
     const options: any = { header, observe: 'response', withCredentials: true };
     // Send request
     this.http.delete<string>(env.apiBaseUrl + '/users/' + this.userData.id + '/polls/' + this.pollId + '/item/' + pollItemId, options)
       .subscribe((response: HttpResponse<string>) => {
         if (response.ok) this.loadPoll();
-      });
+      });*/
   }
 
   /**

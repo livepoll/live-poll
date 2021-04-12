@@ -53,13 +53,6 @@ export class PollItemService {
   }
 
   /**
-   * Retrieves all poll items of a specific poll from the server
-   */
-  getAll(): Observable<PollItem[]> {
-    return this.http.get<PollItem[]>(ENDPOINT_URL);
-  }
-
-  /**
    * Updates a poll item on the server
    *
    * @param pollItem Affected poll item
