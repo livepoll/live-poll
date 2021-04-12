@@ -4,10 +4,9 @@
 
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Poll} from '../../model/poll';
-import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
-import {environment as env} from '../../../environments/environment';
 import {User} from '../../model/user';
 import {CommonToolsService} from '../../service/common-tools.service';
+import {PollService} from '../../service/poll.service';
 
 @Component({
   selector: 'app-edit-poll-dialog',
@@ -30,11 +29,11 @@ export class EditPollDialogComponent implements OnInit {
 
   /**
    * Initialize the component
-   * @param http Injected http client
+   * @param pollService Injected PollService
    * @param tools Injected ToolsService
    */
   constructor(
-    private http: HttpClient,
+    private pollService: PollService,
     private tools: CommonToolsService
   ) {}
 
@@ -46,11 +45,18 @@ export class EditPollDialogComponent implements OnInit {
 
   updatePoll(): void {
     this.loading = true;
-    const name = this.name;
-    const startDate = this.startDate;
-    const endDate = this.endDate;
+    this.pollService.update(this.poll).subscribe((_) => {
+      // Reset values
+      this.name = '';
+      this.loading = false;
+      // Close dialog
+      this.onClose.emit(true);
+    }, (_) => {
+      this.loading = false;
+      this.tools.showErrorMessage('An error occurred while updating the poll.');
+    });
 
-    // Build header, body and options
+    /*// Build header, body and options
     const header = new HttpHeaders().set('Content-Type', 'application/json');
     const options: any = { header, responseType: 'text', observe: 'response', withCredentials: true };
     const body = { name, startDate, endDate };
@@ -65,7 +71,7 @@ export class EditPollDialogComponent implements OnInit {
       }, (_) => {
         this.loading = false;
         this.tools.showErrorMessage('An error occurred while updating the poll.');
-      });
+      });*/
   }
 
   onDatesChange(result: Date[]): void {

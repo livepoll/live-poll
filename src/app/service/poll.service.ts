@@ -62,7 +62,7 @@ export class PollService {
    * @param poll Affected poll
    */
   update(poll: Poll): Observable<void> {
-    return this.http.put<void>(ENDPOINT_URL, poll, { withCredentials: true });
+    return this.http.put<void>(ENDPOINT_URL + `/${poll.id}`, poll, { withCredentials: true });
   }
 
   /**

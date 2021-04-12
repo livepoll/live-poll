@@ -4,11 +4,14 @@
 
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {OPTIONS_DATA, OptionType} from '../../shared/poll-item-options';
-import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
-import {environment as env} from '../../../environments/environment';
-import {NzNotificationService} from 'ng-zorro-antd/notification';
 import {Poll} from '../../model/poll';
 import {CommonToolsService} from '../../service/common-tools.service';
+import {PollItemService} from '../../service/poll-item.service';
+import {OpenTextItem} from '../../model/open-text-item';
+import {MultipleChoiceItem} from '../../model/multiple-choice-item';
+import {QuizItem} from '../../model/quiz-item';
+import {MultipleChoiceItemAnswer} from '../../model/multiple-choice-item-answer';
+import {QuizItemAnswer} from '../../model/quiz-item-answer';
 
 // Constants
 const STEP_LABELS = [
@@ -20,33 +23,28 @@ const ITEM_TYPES = [
   {
     id: 1,
     name: 'Open Text Question',
-    description: 'Enables the user to fill in a text as answer',
-    endpointFraction: 'opentextitem'
+    description: 'Enables the user to fill in a text as answer'
   },
   {
     id: 2,
     name: 'Multiple Choice Question',
-    description: 'Lets the user choose between several, pre-defined answers',
-    endpointFraction: 'multiplechoiceitem'
+    description: 'Lets the user choose between several, pre-defined answers'
   },
   {
     id: 3,
     name: 'Quiz Question',
-    description: 'Multiple choice question, which displays the right answer afterwards',
-    endpointFraction: 'quizitem'
+    description: 'Multiple choice question, which displays the right answer afterwards'
   },
   {
     id: 4,
     name: 'Word Cloud Question',
-    description: 'Single word can be entered. The words will be arranged in form of clouds',
-    endpointFraction: 'wordclouditem'
+    description: 'Single word can be entered. The words will be arranged in form of clouds'
   },
   {
     id: 5,
     name: 'Rating Question',
-    description: 'Star rating.',
-    endpointFraction: 'ratingitem'
-  },
+    description: 'Star rating.'
+  }
 ];
 
 /**
@@ -68,7 +66,7 @@ export class NewPollItemDialogComponent {
   // Event Emitters
   @Input() isVisible: boolean;
   @Input() poll: Poll;
-  @Output() onClose = new EventEmitter<boolean>(); // true = success; false = cancel
+  @Output() finish = new EventEmitter<boolean>(); // true = success; false = cancel
 
   // Variables
   step = 1;
@@ -82,11 +80,11 @@ export class NewPollItemDialogComponent {
   /**
    * Initialize the component
    *
-   * @param http Injected http client
+   * @param pollItemService Injected PollItemService
    * @param tools Injected ToolsService
    */
   constructor(
-    private http: HttpClient,
+    private pollItemService: PollItemService,
     private tools: CommonToolsService
   ) {}
 
@@ -147,7 +145,7 @@ export class NewPollItemDialogComponent {
    * Method closes the dialog to cancel the creation operation.
    */
   handleCancel(): void {
-    if (!this.loading) this.onClose.emit(false);
+    if (!this.loading) this.finish.emit(false);
   }
 
   /**
@@ -167,9 +165,42 @@ export class NewPollItemDialogComponent {
     return index;
   }
 
-  createPollItem(pollId: number, question: string, position: number, answers: string[]): void {
+  createPollItem(pollId: number, question: string, position: number, answerStrings: string[]): void {
     this.loading = true;
-    // Build header, body and options
+
+    let pollItem;
+    switch (this.itemType) {
+      case 1: // Open text item
+        pollItem = new OpenTextItem({ pollId, position, question });
+        break;
+      case 2: // Multiple choice item
+        const mcAnswers: MultipleChoiceItemAnswer[] = answerStrings.map(a => ({ selectionOption: a, answerCount: 0 }));
+        pollItem = new MultipleChoiceItem({ pollId, position, question, answers: mcAnswers });
+        break;
+      case 3: // Quiz item
+        const qAnswers: QuizItemAnswer[] = answerStrings.map((a, index) =>
+          ({ selectionOption: a, isCorrect: index === 0, answerCount: 0,  })
+        );
+        pollItem = new QuizItem({ pollId, position, question, answers: qAnswers });
+        break;
+    }
+
+    this.pollItemService.create(pollItem).subscribe((_) => {
+      this.finish.emit(true);
+      // Reset dialog
+      this.step = 1;
+      this.itemType = 0;
+      this.question = '';
+      this.answers = ['', ''];
+      this.options = [];
+      this.loading = false;
+    }, (_) => {
+      this.tools.showErrorMessage('An unknown error occurred. Please try again.');
+      this.loading = false;
+      this.step--;
+    });
+
+    /*// Build header, body and options
     const header = new HttpHeaders().set('Content-Type', 'application/json');
     const options: any = { header, observe: 'response', withCredentials: true };
     const body = { pollId, question, position, answers };
@@ -192,6 +223,6 @@ export class NewPollItemDialogComponent {
         this.tools.showErrorMessage('An unknown error occurred. Please try again.');
         this.loading = false;
         this.step--;
-      });
+      });*/
   }
 }

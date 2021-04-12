@@ -72,7 +72,7 @@
             <!-- List header -->
             <nz-page-header class="tab">
               <nz-page-header-subtitle>
-                {{poll.pollItems.length > 0 ? 'Click on a question for details' :
+                {{poll.pollItems?.length > 0 ? 'Click on a question for details' :
                 'No questions yet. Click on the right to create one!'}}
               </nz-page-header-subtitle>
               <nz-page-header-extra>
@@ -100,7 +100,7 @@
                     </div>
                   </div>
                   <button nz-button nzType="default" class="preview-button"
-                          [routerLink]="'/p/' + poll.slug + '/' + pollItem.pos">
+                          [routerLink]="'/p/' + poll.slug + '/' + pollItem.position">
                     Preview Question<i nz-icon nzType="right"></i>
                   </button>
 
@@ -158,7 +158,7 @@
       </div>
 
       <!-- New Poll Dialog -->
-      <app-new-poll-item-dialog [isVisible]="showNewPollItemDialog" (onClose)="handleDialogClose($event)"
+      <app-new-poll-item-dialog [isVisible]="showNewPollItemDialog" (finish)="handleDialogClose($event)"
                                 [poll]="poll"></app-new-poll-item-dialog>
 
       <!-- Edit Poll Dialog -->

@@ -8,19 +8,20 @@
  */
 export class PollItem {
   id: number;
+  pollId: number;
   question: string;
-  pos: number;
-  type: ItemType;
+  position: number;
+  // type: ItemType;
 }
 
 /**
  * Item type enumeration.
  * Represents the type of a poll item.
  */
-export enum ItemType {
+/*export enum ItemType {
   MultipleChoice = 'MultipleChoiceItem',
   Quiz = 'QuizItem',
   OpenText = 'OpenTextItem',
   WordCloud = 'WordCloudItem',
   Rating = 'RatingItem'
-}
+}*/

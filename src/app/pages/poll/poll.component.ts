@@ -25,6 +25,7 @@ export class PollComponent {
 
   // Event Emitters
   onUserDataChanged = new EventEmitter<User>();
+  onReloadPolls = new EventEmitter();
 
   // Variables
   userData: User;
@@ -79,6 +80,7 @@ export class PollComponent {
    * Is called when the user clicks back in the poll detail view to come back to the poll list
    */
   onBack(): void {
+    this.onReloadPolls.emit();
     this.router.navigateByUrl('/dashboard/my-polls');
   }
 
@@ -150,7 +152,7 @@ export class PollComponent {
   loadPoll(): void {
     // Redirect to MyPolls page, if some data is missing to load the poll
     if (!this.userData || !this.pollId) {
-      this.router.navigateByUrl('/dashboard/my-polls');
+      this.onBack();
       return;
     }
 
@@ -228,7 +230,9 @@ export class PollComponent {
    */
   deletePoll(): void {
     this.pollService.delete(this.pollId).subscribe((_) => {
-      this.router.navigateByUrl('/dashboard/my-polls');
+      this.onBack();
+    }, (_) => {
+      this.tools.showErrorMessage('An error occurred while deleting the poll.');
     });
 
     /*// Build header, body and options
@@ -324,7 +328,6 @@ export class PollComponent {
   openEditPollDialog(): void {
     // Open edit dialog
     this.showEditPollDialog = true;
-    console.log(this.showEditPollDialog);
   }
 
   /**
