@@ -4,10 +4,10 @@
 
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Poll} from '../../model/poll';
-import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
-import {environment as env} from '../../../environments/environment';
 import {User} from '../../model/user';
 import {CommonToolsService} from '../../service/common-tools.service';
+import {PollService} from '../../service/poll.service';
+import {FormBuilder, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-edit-poll-dialog',
@@ -24,33 +24,49 @@ export class EditPollDialogComponent implements OnInit {
 
   // Variables
   loading = false;
-  name = '';
-  startDate = new Date();
-  endDate = new Date();
+  validateForm!: FormGroup;
 
   /**
    * Initialize the component
-   * @param http Injected http client
+   *
+   * @param formBuilder Injected FormBuilder
+   * @param pollService Injected PollService
    * @param tools Injected ToolsService
    */
   constructor(
-    private http: HttpClient,
+    private formBuilder: FormBuilder,
+    private pollService: PollService,
     private tools: CommonToolsService
   ) {}
 
   ngOnInit(): void {
-    this.name = this.poll.name;
-    this.startDate = this.poll.startDate;
-    this.endDate = this.poll.endDate;
+    this.validateForm = this.formBuilder.group({
+      name: [this.poll.name],
+      date: [[new Date(this.poll.startDate), new Date(this.poll.endDate)]]
+    });
   }
 
   updatePoll(): void {
     this.loading = true;
-    const name = this.name;
-    const startDate = this.startDate;
-    const endDate = this.endDate;
 
-    // Build header, body and options
+    this.poll.name = this.validateForm.controls.name.value;
+    this.poll.startDate = this.validateForm.controls.date.value[0];
+    this.poll.endDate = this.validateForm.controls.date.value[1];
+
+    console.log(this.poll);
+
+    // Commit to server
+    this.pollService.update(this.poll).subscribe((_) => {
+      // Reset values
+      this.loading = false;
+      // Close dialog
+      this.onClose.emit(true);
+    }, (_) => {
+      this.loading = false;
+      this.tools.showErrorMessage('An error occurred while updating the poll.');
+    });
+
+    /*// Build header, body and options
     const header = new HttpHeaders().set('Content-Type', 'application/json');
     const options: any = { header, responseType: 'text', observe: 'response', withCredentials: true };
     const body = { name, startDate, endDate };
@@ -65,10 +81,6 @@ export class EditPollDialogComponent implements OnInit {
       }, (_) => {
         this.loading = false;
         this.tools.showErrorMessage('An error occurred while updating the poll.');
-      });
-  }
-
-  onDatesChange(result: Date[]): void {
-    console.log(result);
+      });*/
   }
 }

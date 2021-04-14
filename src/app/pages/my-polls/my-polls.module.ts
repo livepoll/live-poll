@@ -3,7 +3,7 @@
  */
 
 import {NgModule} from '@angular/core';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import {MyPollsRoutingModule} from './my-polls-routing.module';
 import {MyPollsComponent} from './my-polls.component';
@@ -38,34 +38,35 @@ import {NzToolTipModule} from 'ng-zorro-antd/tooltip';
 
 @NgModule({
   declarations: [MyPollsComponent, NewPollDialogComponent, NewPollItemDialogComponent, EditPollDialogComponent],
-  imports: [
-    MyPollsRoutingModule,
-    NzModalModule,
-    NzInputModule,
-    NzAlertModule,
-    NzStepsModule,
-    NzDividerModule,
-    NzSwitchModule,
-    FormsModule,
-    CommonModule,
-    NzLayoutModule,
-    NzRadioModule,
-    NzButtonModule,
-    NzIconModule,
-    NzBreadCrumbModule,
-    NzCollapseModule,
-    ResultErrorModule,
-    ResultEmptyModule,
-    NzSpinModule,
-    NzPageHeaderModule,
-    NzTagModule,
-    NzGridModule,
-    NzCardModule,
-    NzStatisticModule,
-    NzFormModule,
-    NzDatePickerModule,
-    NzToolTipModule
-  ],
+    imports: [
+        MyPollsRoutingModule,
+        NzModalModule,
+        NzInputModule,
+        NzAlertModule,
+        NzStepsModule,
+        NzDividerModule,
+        NzSwitchModule,
+        FormsModule,
+        CommonModule,
+        NzLayoutModule,
+        NzRadioModule,
+        NzButtonModule,
+        NzIconModule,
+        NzBreadCrumbModule,
+        NzCollapseModule,
+        ResultErrorModule,
+        ResultEmptyModule,
+        NzSpinModule,
+        NzPageHeaderModule,
+        NzTagModule,
+        NzGridModule,
+        NzCardModule,
+        NzStatisticModule,
+        NzFormModule,
+        NzDatePickerModule,
+        NzToolTipModule,
+        ReactiveFormsModule
+    ],
   providers: [],
   exports: [MyPollsComponent, NewPollItemDialogComponent, EditPollDialogComponent]
 })

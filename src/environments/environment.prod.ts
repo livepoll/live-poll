@@ -5,7 +5,7 @@
 export const environment = {
   name: 'production',
   production: true,
-  apiBaseUrl: `https://api.live-poll.de/v0`,
+  apiBaseUrl: `https://api.live-poll.de/v1`,
   useSecureCookies: true,
   cookieConsentUrl: 'www.live-poll.de'
 };

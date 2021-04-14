@@ -49,7 +49,7 @@
           <div *ngIf="itemType == 2">
             <!-- Answers -->
             <label *ngFor="let answer of answers; let i = index; trackBy:trackByFn">
-              <span class="input-label">Answer {{i +1}}:</span>
+              <span class="input-label">OpenTextItemAnswer {{i +1}}:</span>
               <nz-input-group [nzSuffix]="i < 2 ? null : suffixTemplate">
                 <input nz-input [(ngModel)]="answers[i]" />
               </nz-input-group>
@@ -60,7 +60,7 @@
             <!-- Add answer button -->
             <div class="add-answer-button-container">
               <button [disabled]="answers.length >= 10" nz-button nzType="default" (click)="answers.push('')">
-                <i nz-icon nzType="plus-circle" nzTheme="outline"></i> Answer
+                <i nz-icon nzType="plus-circle" nzTheme="outline"></i> OpenTextItemAnswer
               </button>
             </div>
             <br><br>
@@ -84,7 +84,7 @@
             <div class="add-answer-button-container">
               <em class="add-answer-button-label">The answers are going to be randomized for each user.</em>
               <button [disabled]="answers.length >= 5" nz-button nzType="default" (click)="answers.push('')">
-                <i nz-icon nzType="plus-circle" nzTheme="outline"></i> Answer
+                <i nz-icon nzType="plus-circle" nzTheme="outline"></i> OpenTextItemAnswer
               </button>
             </div>
             <br><br>
