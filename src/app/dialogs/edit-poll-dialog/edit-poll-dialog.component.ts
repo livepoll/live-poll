@@ -7,6 +7,7 @@ import {Poll} from '../../model/poll';
 import {User} from '../../model/user';
 import {CommonToolsService} from '../../service/common-tools.service';
 import {PollService} from '../../service/poll.service';
+import {FormBuilder, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-edit-poll-dialog',
@@ -23,31 +24,40 @@ export class EditPollDialogComponent implements OnInit {
 
   // Variables
   loading = false;
-  name = '';
-  startDate = new Date();
-  endDate = new Date();
+  validateForm!: FormGroup;
 
   /**
    * Initialize the component
+   *
+   * @param formBuilder Injected FormBuilder
    * @param pollService Injected PollService
    * @param tools Injected ToolsService
    */
   constructor(
+    private formBuilder: FormBuilder,
     private pollService: PollService,
     private tools: CommonToolsService
   ) {}
 
   ngOnInit(): void {
-    this.name = this.poll.name;
-    this.startDate = new Date(this.poll.startDate);
-    this.endDate = new Date(this.poll.endDate);
+    this.validateForm = this.formBuilder.group({
+      name: [this.poll.name],
+      date: [[new Date(this.poll.startDate), new Date(this.poll.endDate)]]
+    });
   }
 
   updatePoll(): void {
     this.loading = true;
+
+    this.poll.name = this.validateForm.controls.name.value;
+    this.poll.startDate = this.validateForm.controls.date.value[0];
+    this.poll.endDate = this.validateForm.controls.date.value[1];
+
+    console.log(this.poll);
+
+    // Commit to server
     this.pollService.update(this.poll).subscribe((_) => {
       // Reset values
-      this.name = '';
       this.loading = false;
       // Close dialog
       this.onClose.emit(true);
@@ -72,9 +82,5 @@ export class EditPollDialogComponent implements OnInit {
         this.loading = false;
         this.tools.showErrorMessage('An error occurred while updating the poll.');
       });*/
-  }
-
-  onDatesChange(result: Date[]): void {
-    console.log(result);
   }
 }

@@ -234,37 +234,17 @@ export class PollComponent {
     }, (_) => {
       this.tools.showErrorMessage('An error occurred while deleting the poll.');
     });
-
-    /*// Build header, body and options
-    const header = new HttpHeaders().set('Content-Type', 'application/json');
-    const options: any = { header, observe: 'response', withCredentials: true };
-    // Send request
-    this.http.delete<string>(env.apiBaseUrl + '/users/' + this.userData.id + '/polls/' + this.pollId, options)
-      .subscribe((response: HttpResponse<string>) => {
-        if (response.ok) {
-          this.router.navigateByUrl('/dashboard/my-polls');
-        }
-      });*/
   }
 
   /**
    * Deletes a single poll item from the server
    *
-   * @param pollItemId Id of the poll item
+   * @param id Id of the poll item
    */
-  deletePollItem(pollItemId: number): void {
-    this.pollItemService.delete(pollItemId).subscribe((_) => {
+  deletePollItem(id: number): void {
+    this.pollItemService.delete(id).subscribe((_) => {
       this.loadPoll();
     });
-
-    /*// Build header, body and options
-    const header = new HttpHeaders().set('Content-Type', 'application/json');
-    const options: any = { header, observe: 'response', withCredentials: true };
-    // Send request
-    this.http.delete<string>(env.apiBaseUrl + '/users/' + this.userData.id + '/polls/' + this.pollId + '/item/' + pollItemId, options)
-      .subscribe((response: HttpResponse<string>) => {
-        if (response.ok) this.loadPoll();
-      });*/
   }
 
   /**
@@ -347,7 +327,7 @@ export class PollComponent {
     this.results = [];
     this.poll.pollItems.forEach(pollItem => {
       this.results.push({
-        id: pollItem.id,
+        id: pollItem.itemId,
         data: [
           {
             name: 'Noodles',

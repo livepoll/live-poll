@@ -10,8 +10,6 @@ import {PollItemService} from '../../service/poll-item.service';
 import {OpenTextItem} from '../../model/open-text-item';
 import {MultipleChoiceItem} from '../../model/multiple-choice-item';
 import {QuizItem} from '../../model/quiz-item';
-import {MultipleChoiceItemAnswer} from '../../model/multiple-choice-item-answer';
-import {QuizItemAnswer} from '../../model/quiz-item-answer';
 
 // Constants
 const STEP_LABELS = [
@@ -165,7 +163,7 @@ export class NewPollItemDialogComponent {
     return index;
   }
 
-  createPollItem(pollId: number, question: string, position: number, answerStrings: string[]): void {
+  createPollItem(pollId: number, question: string, position: number, answers): void {
     this.loading = true;
 
     let pollItem;
@@ -174,14 +172,10 @@ export class NewPollItemDialogComponent {
         pollItem = new OpenTextItem({ pollId, position, question });
         break;
       case 2: // Multiple choice item
-        const mcAnswers: MultipleChoiceItemAnswer[] = answerStrings.map(a => ({ selectionOption: a, answerCount: 0 }));
-        pollItem = new MultipleChoiceItem({ pollId, position, question, answers: mcAnswers });
+        pollItem = new MultipleChoiceItem({ pollId, position, question, answers });
         break;
       case 3: // Quiz item
-        const qAnswers: QuizItemAnswer[] = answerStrings.map((a, index) =>
-          ({ selectionOption: a, isCorrect: index === 0, answerCount: 0,  })
-        );
-        pollItem = new QuizItem({ pollId, position, question, answers: qAnswers });
+        pollItem = new QuizItem({ pollId, position, question, answers });
         break;
     }
 

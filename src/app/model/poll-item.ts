@@ -7,21 +7,21 @@
  * Represents a question / poll item within a poll. It holds the question itself and a position for ordering the questions.
  */
 export class PollItem {
-  id: number;
+  itemId: number;
   pollId: number;
   question: string;
   position: number;
-  // type: ItemType;
+  type: ItemType;
 }
 
 /**
  * Item type enumeration.
  * Represents the type of a poll item.
  */
-/*export enum ItemType {
-  MultipleChoice = 'MultipleChoiceItem',
-  Quiz = 'QuizItem',
-  OpenText = 'OpenTextItem',
-  WordCloud = 'WordCloudItem',
-  Rating = 'RatingItem'
-}*/
+export enum ItemType {
+  MultipleChoice = 'multiple-choice',
+  Quiz = 'quiz',
+  OpenText = 'open-text',
+  WordCloud = 'word-cloud',
+  Rating = 'rating'
+}

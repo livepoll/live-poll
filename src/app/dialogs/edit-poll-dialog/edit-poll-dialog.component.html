@@ -2,16 +2,15 @@
   ~ Copyright © Live-Poll 2020-2021. All rights reserved
   -->
 
-<nz-modal [(nzVisible)]="isVisible" nzTitle="Edit Poll" (nzOnCancel)="onClose.emit(false)" (nzOnOk)="updatePoll()"
-          [nzOkLoading]="loading" nzAutofocus="ok" [nzOkDisabled]="name.length === 0"
+<nz-modal [(nzVisible)]="isVisible" nzTitle="Edit Poll" (nzOnCancel)="onClose.emit(false)" (nzOnOk)="form.ngSubmit.emit()"
+          [nzOkLoading]="loading" nzAutofocus="ok" [nzOkDisabled]="!validateForm.valid"
           [nzCancelDisabled]="loading" nzOkText="Save changes" (close)="onClose.emit(false)">
-  <form nz-form>
+  <form nz-form #form="ngForm" [formGroup]="validateForm" (ngSubmit)="updatePoll()">
     <nz-form-item>
       <nz-form-control nzErrorTip="The poll name is mandatory!">
         <label>
           <span class="input-label">Name of the poll:</span>
-          <input nz-input placeholder="Name of your new poll" name="name" [(ngModel)]="name"
-                 (input)="name = $event.target.value" required />
+          <input nz-input placeholder="Name of your new poll" formControlName="name" required />
         </label>
       </nz-form-control>
     </nz-form-item>
@@ -19,7 +18,7 @@
       <nz-form-control>
         <label>
           <span class="input-label">Start / End time of your poll:</span>
-          <nz-range-picker nzShowTime nzShowNow [(ngModel)]="startDate" (ngModelChange)="onDatesChange($event)"
+          <nz-range-picker nzShowTime nzShowNow formControlName="date"
                            nz-tooltip="The poll will be opened / closed automatically at the time you set here.
                            If you do not set a time, you have to manually open / close the poll.">
           </nz-range-picker>
