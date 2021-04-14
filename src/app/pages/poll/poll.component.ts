@@ -98,16 +98,6 @@ export class PollComponent {
     this.pollService.update(this.poll).subscribe((_) => {}, (_) => {
       this.poll.slug = oldSlug;
     });
-
-    /*// Build header, body and options
-    const header = new HttpHeaders().set('Content-Type', 'application/json');
-    const options: any = { header, observe: 'response', withCredentials: true };
-    const body = { newSlug };
-    // Send request
-    this.http.put<string>(env.apiBaseUrl + '/users/' + this.userData.id + '/polls/' + this.pollId + '/slug', body, options)
-      .subscribe((response: HttpResponse<string>) => {
-        if (!response.ok) this.poll.slug = oldSlug;
-      }, _ => this.poll.slug = oldSlug);*/
   }
 
   /**
