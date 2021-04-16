@@ -2,7 +2,7 @@
  * Copyright © Live-Poll 2020-2021. All rights reserved
  */
 
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Poll} from '../../model/poll';
 import {MultipleChoiceItem} from '../../model/multiple-choice-item';
@@ -13,7 +13,7 @@ import {ItemType} from '../../model/poll-item';
   templateUrl: './poll-participants.component.html',
   styleUrls: ['./poll-participants.component.sass']
 })
-export class PollParticipantsComponent {
+export class PollParticipantsComponent implements OnInit {
 
   // Variables
   poll: Poll = { id: 1, name: 'Test Poll', pollItems: [], currentItem: 1, slug: 'test', startDate: 0, endDate: 0 };
@@ -41,11 +41,19 @@ export class PollParticipantsComponent {
     private route: ActivatedRoute
   ) {
     this.route.params.subscribe( params => console.log(params));
+  }
 
+  /**
+   * Initialize the participants page
+   */
+  ngOnInit(): void {
     // Connect to WebSocket
     this.initializeWebSocketConnection();
   }
 
+  /**
+   * Setup the real-time web socket connection
+   */
   initializeWebSocketConnection(): void {
 
   }
