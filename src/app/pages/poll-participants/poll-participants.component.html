@@ -12,35 +12,32 @@
     <h1 class="poll-name">{{poll.name}}</h1>
   </nz-header>
   <nz-content>
-    <div class="inner-content">
-      <div class="poll-container" [ngSwitch]="'multiple-choice'">
-        <h1>{{activeItemType}}</h1>
+      <div class="poll-container" [ngSwitch]="activeItemType">
+        <h2>{{activeItem.question}}</h2>
+
         <!-- Multiple Choice Question -->
-        <div *ngSwitchCase="'multiple-choice'">
-          <h1>{{activeItem.question}}</h1>
+        <div class="poll-item-selection-options" *ngSwitchCase="'multiple-choice'">
           <nz-radio-group [(ngModel)]="answer">
             <label *ngFor="let answer of activeItem.answers; let i = index" nz-radio nzValue="{{i}}">{{answer.selectionOption}}</label>
             <!--<label *ngIf="activeItem.options" nz-radio nzValue="M">Custom answer... <input type="text" nz-input *ngIf="answer === 'M'" /></label>-->
           </nz-radio-group>
-          <button nz-button nzType="primary" nzSize="large">
-            Submit Answer
-            <i nz-icon nzType="right"></i>
-          </button>
         </div>
 
         <!-- Open Text Question -->
-        <div *ngSwitchCase="'open-text'">
+        <div class="poll-item-selection-options" *ngSwitchCase="'open-text'">
           <h1>{{activeItem.question}}</h1>
-
         </div>
 
         <!-- Quiz Question -->
-        <div *ngSwitchCase="'quiz'">
+        <div class="poll-item-selection-options" *ngSwitchCase="'quiz'">
           <h1>{{activeItem.question}}</h1>
-
         </div>
+
+        <button nz-button nzType="primary" nzSize="large" [disabled]="answer == -1" nzBlock>
+          Submit Answer
+          <i nz-icon nzType="right"></i>
+        </button>
       </div>
-    </div>
   </nz-content>
   <nz-footer class="participants-footer">Provided with ❤ by <a href="https://www.live-poll.de" target="_blank">Live-Poll</a></nz-footer>
 </nz-layout>

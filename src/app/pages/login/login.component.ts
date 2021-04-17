@@ -74,9 +74,9 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       this.loading = true;
       // Create user instance and trigger login
-      const user = new User();
-      user.username = this.loginForm.controls.username.value;
-      user.password = SHA256(this.loginForm.controls.password.value).toString();
+      const username = this.loginForm.controls.username.value;
+      const password = SHA256(this.loginForm.controls.password.value).toString();
+      const user = new User(username, password);
       user.accountState = this.loginForm.controls.remember.value ? 1 : 0;
       this.onLogin.emit(user);
     }

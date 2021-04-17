@@ -1,7 +1,6 @@
 /*
  * Copyright © Live-Poll 2020-2021. All rights reserved
  */
-
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Poll} from '../../model/poll';
@@ -16,7 +15,7 @@ import {ItemType} from '../../model/poll-item';
 export class PollParticipantsComponent implements OnInit {
 
   // Variables
-  poll: Poll = { id: 1, name: 'Test Poll', pollItems: [], currentItem: 1, slug: 'test', startDate: 0, endDate: 0 };
+  poll: Poll = {id: 1, name: 'Test Poll', pollItems: [], currentItem: 1, slug: 'test', startDate: 0, endDate: 0};
   activeItem: MultipleChoiceItem = {
     itemId: 1,
     pollId: 1,
@@ -24,13 +23,13 @@ export class PollParticipantsComponent implements OnInit {
     position: 1,
     type: ItemType.MultipleChoice,
     answers: [
-      { selectionOption: 'Option 1', answerCount: 1 },
-      { selectionOption: 'Option 2', answerCount: 10 },
-      { selectionOption: 'Option 3', answerCount: 4 }
+      {selectionOption: 'Option 1', answerCount: 1},
+      {selectionOption: 'Option 2', answerCount: 10},
+      {selectionOption: 'Option 3', answerCount: 4}
     ]
   };
-  activeItemType: 'multiple-choice';
-  answer = '';
+  activeItemType = 'multiple-choice';
+  answer = -1;
 
   /**
    * Initialize component
@@ -40,7 +39,7 @@ export class PollParticipantsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute
   ) {
-    this.route.params.subscribe( params => console.log(params));
+    this.route.params.subscribe(params => console.log(params));
   }
 
   /**

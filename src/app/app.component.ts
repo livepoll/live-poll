@@ -127,13 +127,12 @@ export class AppComponent implements OnInit {
    * @param remember Remember user
    */
   login(username: string, password: string, remember: boolean): void {
-    const body = { username, password };
+    const body = new User(username, password);
     this.accountService.login(body).subscribe((_) => {
       // Load user data
       this.loadUserData(true);
     }, (error) => {
       this.tools.showErrorMessage('Login failed.');
-      console.log(error);
       this.onLoginResultChanged.emit(error);
     });
   }
