@@ -10,12 +10,19 @@ import {UserAttribute} from './user-attribute';
  * which can be set later on individually on the server side.
  */
 export class User {
+
   id: number;
   username: string;
   email: string;
   password: string;
   accountState: AccountState;
   userAttributes: UserAttribute[];
+
+  constructor(username, password) {
+    this.username = username;
+    this.password = password;
+  }
+
 }
 
 /**

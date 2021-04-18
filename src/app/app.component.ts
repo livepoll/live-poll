@@ -104,7 +104,7 @@ export class AppComponent implements OnInit {
     this.userService.get().subscribe((response) => {
       this.user = response.body;
       // Redirect to dashboard if necessary, otherwise apply userData to dashboard
-      if (location.href.includes('dashboard')) {
+      if (location.href.includes('dashboard') || location.href.includes('/p/')) {
         if (this.onUserDataChanged) this.onUserDataChanged.emit(this.user);
       } else {
         this.router.navigateByUrl('/dashboard');
@@ -127,13 +127,12 @@ export class AppComponent implements OnInit {
    * @param remember Remember user
    */
   login(username: string, password: string, remember: boolean): void {
-    const body = { username, password };
+    const body = new User(username, password);
     this.accountService.login(body).subscribe((_) => {
       // Load user data
       this.loadUserData(true);
     }, (error) => {
       this.tools.showErrorMessage('Login failed.');
-      console.log(error);
       this.onLoginResultChanged.emit(error);
     });
   }
