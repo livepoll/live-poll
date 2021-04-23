@@ -35,6 +35,7 @@ import {NzStatisticModule} from 'ng-zorro-antd/statistic';
 import {NzFormModule} from 'ng-zorro-antd/form';
 import {NzDatePickerModule} from 'ng-zorro-antd/date-picker';
 import {NzToolTipModule} from 'ng-zorro-antd/tooltip';
+import {NzListModule} from 'ng-zorro-antd/list';
 
 @NgModule({
   declarations: [MyPollsComponent, NewPollDialogComponent, NewPollItemDialogComponent, EditPollDialogComponent],
@@ -65,7 +66,8 @@ import {NzToolTipModule} from 'ng-zorro-antd/tooltip';
         NzFormModule,
         NzDatePickerModule,
         NzToolTipModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        NzListModule
     ],
   providers: [],
   exports: [MyPollsComponent, NewPollItemDialogComponent, EditPollDialogComponent]
