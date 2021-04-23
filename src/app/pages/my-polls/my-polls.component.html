@@ -24,54 +24,48 @@
 
   <!-- Poll list -->
   <div class="poll-list-container" *ngIf="polls?.length">
-    <nz-collapse nzBordered="false" nzAccordion class="no-select">
-      <nz-collapse-panel #p *ngFor="let poll of polls" [nzHeader]="header" [nzExtra]="options"
-                         [nzExpandedIcon]="expandedIcon">
-        <!-- Item content -->
-        <nz-row [nzGutter]="12">
-          <nz-col [nzSpan]="12">
-            <nz-card>
-              <nz-statistic [nzValue]="10" nzTitle="Participants" [nzValueStyle]="{ color: '#3F8600' }">
-              </nz-statistic>
+    <nz-list nzGrid>
+      <div nz-row [nzGutter]="16">
+        <div nz-col [nzXXl]="8" [nzXl]="12" [nzLg]="12" [nzMd]="24" [nzSm]="24" [nzXs]="24" *ngFor="let poll of polls">
+          <nz-list-item>
+            <nz-card [nzTitle]="poll.name" [nzExtra]="pollOptions">
+              <nz-row [nzGutter]="12">
+                <nz-col [nzSpan]="12">
+                  <nz-card>
+                    <nz-statistic [nzValue]="10" nzTitle="Participants" [nzValueStyle]="{ color: '#3F8600' }">
+                    </nz-statistic>
+                  </nz-card>
+                </nz-col>
+                <nz-col [nzSpan]="12">
+                  <nz-card>
+                    <nz-statistic [nzValue]="5" nzTitle="Questions" [nzValueStyle]="{ color: '#CF1322' }">
+                    </nz-statistic>
+                  </nz-card>
+                </nz-col>
+              </nz-row>
             </nz-card>
-          </nz-col>
-          <nz-col [nzSpan]="12">
-            <nz-card>
-              <nz-statistic [nzValue]="5" nzTitle="Questions" [nzValueStyle]="{ color: '#CF1322' }">
-              </nz-statistic>
-            </nz-card>
-          </nz-col>
-        </nz-row>
 
-        <!-- Header -->
-        <ng-template #header>
-          <span>{{poll.name}}</span>
-        </ng-template>
-        <!-- Header options -->
-        <ng-template #options [ngSwitch]="tools.getPollStatus(poll)">
-          <nz-tag *ngSwitchCase="1" nzColor="orange">
-            <i nz-icon nzType="clock-circle"></i>
-            <span>Planned</span>
-          </nz-tag>
-          <nz-tag *ngSwitchCase="2" nzColor="green">
-            <i nz-icon nzType="loading"></i>
-            <span>Running</span>
-          </nz-tag>
-          <nz-tag *ngSwitchCase="3" nzColor="purple">
-            <i nz-icon nzType="check"></i>
-            <span>Finished</span>
-          </nz-tag>
-          <button  nz-button nzType="primary" [nzSize]="p.nzActive ? 'default' : 'small'"
-                   [routerLink]="'/dashboard/my-polls/poll/' + poll.id">
-            Details<i nz-icon nzType="right"></i>
-          </button>
-        </ng-template>
-        <!-- Expand icon -->
-        <ng-template #expandedIcon>
-          <i nz-icon nzType="right" class="ant-collapse-arrow" [nzRotate]="p.nzActive ? 90 : 0"></i>
-        </ng-template>
-      </nz-collapse-panel>
-    </nz-collapse>
+            <ng-template #pollOptions [ngSwitch]="tools.getPollStatus(poll)">
+              <nz-tag *ngSwitchCase="1" nzColor="orange">
+                <i nz-icon nzType="clock-circle"></i>
+                <span>Planned</span>
+              </nz-tag>
+              <nz-tag *ngSwitchCase="2" nzColor="green">
+                <i nz-icon nzType="loading"></i>
+                <span>Running</span>
+              </nz-tag>
+              <nz-tag *ngSwitchCase="3" nzColor="purple">
+                <i nz-icon nzType="check"></i>
+                <span>Finished</span>
+              </nz-tag>
+              <button  nz-button nzType="primary" [routerLink]="'/dashboard/my-polls/poll/' + poll.id">
+                Details<i nz-icon nzType="right"></i>
+              </button>
+            </ng-template>
+          </nz-list-item>
+        </div>
+      </div>
+    </nz-list>
   </div>
 
   <!-- Empty result -->
