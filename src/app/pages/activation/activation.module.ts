@@ -18,15 +18,10 @@ import {NzSpinModule} from 'ng-zorro-antd/spin';
 @NgModule({
   imports: [
     ActivationRoutingModule,
-    NzButtonModule,
-    NzEmptyModule,
-    CommonModule,
-    NzBreadCrumbModule,
-    NzLayoutModule,
-    NzIconModule,
-    ResultEmptyModule,
     NzResultModule,
-    NzSpinModule
+    NzSpinModule,
+    CommonModule,
+    NzButtonModule
   ],
   declarations: [ActivationComponent],
   exports: [ActivationComponent]
