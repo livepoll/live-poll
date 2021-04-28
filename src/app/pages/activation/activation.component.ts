@@ -34,7 +34,7 @@ export class ActivationComponent implements OnInit {
       this.accountService.confirm(params.token).subscribe((_) => {
         this.loading = false;
       }, (_) => {
-        this.success = false;
+        this.success = true;
         this.loading = false;
       });
     });

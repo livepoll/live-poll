@@ -2,26 +2,31 @@
   ~ Copyright © Live-Poll 2020-2021. All rights reserved
   -->
 
-<nz-spin *ngIf="loading" nzSimple nzSize="large"></nz-spin>
+<div class="page">
+  <!-- Spinner -->
+  <nz-spin *ngIf="loading" nzSimple nzSize="large" class="spinner"></nz-spin>
 
-<nz-result
-  *ngIf="!loading && success"
-  nzStatus="success"
-  nzTitle="Successfully activated your account!"
-  nzSubTitle="You can now continue by logging in to your account. To log in, click below.">
-  <div nz-result-extra>
-    <button nz-button nzType="primary" routerLink="/login">Continue to login</button>
-    <button nz-button routerLink="/">Go to main page</button>
-  </div>
-</nz-result>
+  <!-- Success message -->
+  <nz-result
+    *ngIf="!loading && success"
+    nzStatus="success"
+    nzTitle="Successfully activated your account!"
+    nzSubTitle="You can now continue by logging in to your account. To log in, click below.">
+    <div nz-result-extra>
+      <button nz-button nzType="primary" routerLink="/login">Continue to login</button>
+      <button nz-button routerLink="/">Go to main page</button>
+    </div>
+  </nz-result>
 
-<nz-result
-  *ngIf="!loading && !success"
-  nzStatus="error"
-  nzTitle="An error occurred while activating your account!"
-  nzSubTitle="Maybe you're using an expired link or you changed it somehow.">
-  <div nz-result-extra>
-    <button nz-button nzType="primary" routerLink="/sign-up">Retry registration</button>
-    <button nz-button routerLink="/login">Go to main page</button>
-  </div>
-</nz-result>
+  <!-- Error message -->
+  <nz-result
+    *ngIf="!loading && !success"
+    nzStatus="error"
+    nzTitle="An error occurred while activating your account!"
+    nzSubTitle="Maybe you're using an expired link or you changed it somehow.">
+    <div nz-result-extra>
+      <button nz-button nzType="primary" routerLink="/signup">Retry registration</button>
+      <button nz-button routerLink="/login">Go to main page</button>
+    </div>
+  </nz-result>
+</div>
