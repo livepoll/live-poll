@@ -55,7 +55,7 @@
     "@angular/forms": "~11.2.11",
     "@angular/localize": "^11.2.11",
     "@angular/platform-browser": "~11.2.11",
-    "@angular/platform-browser-dynamic": "~11.2.11",
+    "@angular/platform-browser-dynamic": "~11.2.12",
     "@angular/router": "~11.2.11",
     "@angular/service-worker": "~11.2.11",
     "@swimlane/ngx-charts": "^17.0.1",
