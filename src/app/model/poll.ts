@@ -11,8 +11,9 @@ import {PollItem} from './poll-item';
 export class Poll {
   id: number;
   name: string;
-  startDate: Date;
-  endDate: Date;
-  snippet: string;
+  startDate: number;
+  endDate: number;
+  slug: string;
+  currentItem: number;
   pollItems: PollItem[];
 }

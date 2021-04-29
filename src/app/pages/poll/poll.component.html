@@ -60,8 +60,8 @@
         You can share this URL with your participants:&nbsp;
         <span class="text-primary">
           {{host}}/p/
-          <span nz-typography nzCopyable nzEditable [nzContent]="poll.snippet" (nzContentChange)="onSnippetChange($event)"
-                [nzCopyText]="host + '/' + poll.snippet" class="snippet text-primary"></span>
+          <span nz-typography nzCopyable nzEditable [nzContent]="poll.slug" (nzContentChange)="onSlugChange($event)"
+                [nzCopyText]="host + '/' + poll.slug" class="slug text-primary"></span>
         </span>
         <nz-tabset class="full-width">
           <nz-tab [nzTitle]="titleQuestions" class="tab">
@@ -72,7 +72,7 @@
             <!-- List header -->
             <nz-page-header class="tab">
               <nz-page-header-subtitle>
-                {{poll.pollItems.length > 0 ? 'Click on a question for details' :
+                {{poll.pollItems?.length > 0 ? 'Click on a question for details' :
                 'No questions yet. Click on the right to create one!'}}
               </nz-page-header-subtitle>
               <nz-page-header-extra>
@@ -88,11 +88,11 @@
                   <!-- Item content -->
                   <div nz-row>
                     <div nz-col nzSpan="9" class="stats-column">
-                      <nz-statistic [nzValue]="(getAnswersCount(pollItem.id) | number)!" nzTitle="Total answers">
+                      <nz-statistic [nzValue]="(getAnswersCount(pollItem.itemId) | number)!" nzTitle="Total answers">
                       </nz-statistic>
                     </div>
                     <div nz-col nzSpan="15">
-                      <ngx-charts-bar-horizontal class="chart" [view]="[0, 300]" [results]="getChartData(pollItem.id)"
+                      <ngx-charts-bar-horizontal class="chart" [view]="[0, 300]" [results]="getChartData(pollItem.itemId)"
                                                  scheme="forest" xAxis="true" yAxis="true" legend="true"
                                                  showXAxisLabel="true" showYAxisLabel="true" animations="true"
                                                  xAxisLabel="Participants" yAxisLabel="Answers">
@@ -100,7 +100,7 @@
                     </div>
                   </div>
                   <button nz-button nzType="default" class="preview-button"
-                          [routerLink]="'/p/' + poll.snippet + '/' + pollItem.pos">
+                          [routerLink]="'/p/' + poll.slug + '/' + pollItem.position">
                     Preview Question<i nz-icon nzType="right"></i>
                   </button>
 
@@ -117,7 +117,7 @@
                     </button>
                     <button nz-button nzType="dashed" nzDanger nz-popconfirm (click)="$event.stopPropagation()"
                             nzPopconfirmTitle="Are you sure you want to delete this question?"
-                            (nzOnConfirm)="deletePollItem(pollItem.id)" nzPopconfirmPlacement="topLeft"
+                            (nzOnConfirm)="deletePollItem(pollItem.itemId)" nzPopconfirmPlacement="topLeft"
                             [nzSize]="p.nzActive ? 'default' : 'small'" class="poll-item-delete">
                       <i nz-icon nzType="delete"></i>Delete
                     </button>
@@ -144,7 +144,7 @@
             </ng-template>
 
             <!-- No results -->
-            <app-result-empty *ngIf="!poll.pollItems?.length || poll.startDate > currentDate || poll.startDate.getTime() === 0"
+            <app-result-empty *ngIf="!poll.pollItems?.length || poll.startDate > currentDate || poll.startDate === 0"
                               message="The analytics of your poll are not yet available."></app-result-empty>
           </nz-tab>
           <nz-tab [nzTitle]="titleQA">
@@ -158,7 +158,7 @@
       </div>
 
       <!-- New Poll Dialog -->
-      <app-new-poll-item-dialog [isVisible]="showNewPollItemDialog" (onClose)="handleDialogClose($event)"
+      <app-new-poll-item-dialog [isVisible]="showNewPollItemDialog" (finish)="handleDialogClose($event)"
                                 [poll]="poll"></app-new-poll-item-dialog>
 
       <!-- Edit Poll Dialog -->

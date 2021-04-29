@@ -4,12 +4,10 @@
 
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {NzNotificationService} from 'ng-zorro-antd/notification';
 import {SHA256} from 'crypto-js';
-import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
-import {environment as env} from '../../../environments/environment';
 import {Router} from '@angular/router';
 import {CommonToolsService} from '../../service/common-tools.service';
+import {AccountService} from '../../service/account.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -28,16 +26,17 @@ export class SignUpComponent implements OnInit {
    * Initialize sign up component
    *
    * @param formBuilder Injected form builder
-   * @param http Injected http client
    * @param tools Injected ToolsService
+   * @param accountService Injected AccountService
    * @param router Injected router service
    */
   constructor(
     private formBuilder: FormBuilder,
-    private http: HttpClient,
     private tools: CommonToolsService,
+    private accountService: AccountService,
     private router: Router
-  ) {}
+  ) {
+  }
 
   /**
    * Initialize form validation
@@ -60,12 +59,12 @@ export class SignUpComponent implements OnInit {
    */
   confirmationValidator = (control: FormControl): { [s: string]: boolean } => {
     if (!control.value) {
-      return { required: true };
+      return {required: true};
     } else if (control.value !== this.signUpForm.controls.password.value) {
-      return { confirm: true, error: true };
+      return {confirm: true, error: true};
     }
     return {};
-  }
+  };
 
   /**
    * Validates the login form
@@ -102,19 +101,16 @@ export class SignUpComponent implements OnInit {
    * @param newsletter Subscribe to the newsletter
    */
   signUp(username: string, email: string, password: string, newsletter: boolean): void {
-    // Build header, body and options
-    const header = new HttpHeaders().set('Content-Type', 'application/json');
-    const options: any = { header, observe: 'response', withCredentials: false };
-    const body = { email, username, password };
+    // Build user object
+    const body = { username, email, password };
     // Send request
-    this.http.post<string>(env.apiBaseUrl + '/account/register', body, options).subscribe((response: HttpResponse<string>) => {
-        if (response.ok) {
-          // Request was successful, continue
-          this.tools.showSuccessMessage('Please check your email inbox and confirm your email, by clicking on the confirmation link.');
-          this.router.navigateByUrl('/login');
-        }
-    }, (_) => {
-      this.tools.showErrorMessage('Something went wrong.')
+    this.accountService.register(body).subscribe((_) => {
+      // Request was successful, continue
+      this.tools.showSuccessMessage('Please check your email inbox and confirm your email, by clicking on the confirmation link.');
+      this.router.navigateByUrl('/login');
+    }, (error) => {
+      console.log(error);
+      this.tools.showErrorMessage('Something went wrong.');
       this.loading = false;
     });
   }

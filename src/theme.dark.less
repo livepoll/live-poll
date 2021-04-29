@@ -22,10 +22,12 @@
 @normal-color: #d9d9d9;
 @white: #fff;
 @black: #000;
+@transparent: #0000;
+@dark-mode-background: #222;
 
 .sidebar-logo {
-  background: #222;
-  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3);
+  background: @dark-mode-background;
+  box-shadow: 0 2px 5px 0 @dark-mode-background;
   h1 {
     color: @white;
   }
@@ -37,12 +39,16 @@
   }
 }
 
+.header-logo {
+  background: @transparent;
+}
+
 .app-header, .main-menu {
   background: transparent;
 }
 
 .ant-menu-submenu .ant-menu {
-  background: #222;
+  background: @dark-mode-background;
 }
 
 body, nz-content {

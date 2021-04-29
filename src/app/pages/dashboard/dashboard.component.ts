@@ -4,10 +4,9 @@
 
 import {Component, EventEmitter} from '@angular/core';
 import {Router} from '@angular/router';
-import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
-import {environment as env} from '../../../environments/environment';
 import {User} from '../../model/user';
 import {Poll} from '../../model/poll';
+import {PollService} from '../../service/poll.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -50,11 +49,11 @@ export class DashboardComponent {
    * Initialize the dashboard component
    *
    * @param router Injected router
-   * @param http Injected http client
+   * @param pollService Injected PollService
    */
   constructor(
     private router: Router,
-    private http: HttpClient
+    private pollService: PollService
   ) {
     // Subscribe to own Event Emitters
     this.onUserDataChanged.subscribe(userData => {
@@ -88,7 +87,14 @@ export class DashboardComponent {
    * Loads all polls of the current user
    */
   loadPolls(): void {
-    // Build header, body and options
+    this.pollService.getAll().subscribe((polls) => {
+      this.polls = polls;
+      if (this.onPollsChanged) this.onPollsChanged.emit(polls);
+    }, (_) => {
+      if (this.onPollsChanged) this.onPollsChanged.emit(null); // Error == null
+    });
+
+    /*// Build header, body and options
     const header = new HttpHeaders().set('Content-Type', 'application/json');
     const options: any = { header, responseType: 'application/json', observe: 'response', withCredentials: true };
     // Send request
@@ -108,7 +114,7 @@ export class DashboardComponent {
         if (this.onPollsChanged) this.onPollsChanged.emit(this.polls);
       }, (_) => {
         if (this.onPollsChanged) this.onPollsChanged.emit(null); // Error == null
-      });
+      });*/
   }
 
   /**

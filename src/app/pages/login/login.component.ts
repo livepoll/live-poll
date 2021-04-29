@@ -6,10 +6,8 @@ import {Component, EventEmitter, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {SHA256} from 'crypto-js';
 import {User} from '../../model/user';
-import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
-import {environment as env} from '../../../environments/environment';
-import {NzNotificationService} from 'ng-zorro-antd/notification';
 import {CommonToolsService} from '../../service/common-tools.service';
+import {AccountService} from '../../service/account.service';
 
 @Component({
   selector: 'app-login',
@@ -34,13 +32,13 @@ export class LoginComponent implements OnInit {
    * Initialize login component
    *
    * @param formBuilder Injected form builder
-   * @param http Injected http client
    * @param tools Injected ToolsService
+   * @param accountService Injected AccountService
    */
   constructor(
     private formBuilder: FormBuilder,
-    private http: HttpClient,
-    private tools: CommonToolsService
+    private tools: CommonToolsService,
+    private accountService: AccountService
   ) {}
 
   /**
@@ -76,9 +74,9 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       this.loading = true;
       // Create user instance and trigger login
-      const user = new User();
-      user.username = this.loginForm.controls.username.value;
-      user.password = SHA256(this.loginForm.controls.password.value).toString();
+      const username = this.loginForm.controls.username.value;
+      const password = SHA256(this.loginForm.controls.password.value).toString();
+      const user = new User(username, password);
       user.accountState = this.loginForm.controls.remember.value ? 1 : 0;
       this.onLogin.emit(user);
     }
@@ -105,21 +103,13 @@ export class LoginComponent implements OnInit {
    * @param username Username of user
    */
   resetPassword(username: string): void {
-    // Build header, body and options
-    const header = new HttpHeaders().set('Content-Type', 'application/json');
-    const options: any = { header, responseType: 'application/json', observe: 'response', withCredentials: false };
-    const body = { username };
-    // Send request
-    this.http.put<string>(env.apiBaseUrl + '/account/reset', body, options)
-      .subscribe((response: HttpResponse<string>) => {
-        if (response.ok) {
-          // Request was successful, continue
-          this.loginMode = true;
-          this.loading = false;
-        }
-      }, (_) => {
-        this.tools.showErrorMessage('Something went wrong.')
-        this.loading = false;
-      });
+    this.accountService.reset(username).subscribe((_) => {
+      // Request was successful, continue
+      this.loginMode = true;
+      this.loading = false;
+    }, (_) => {
+      this.tools.showErrorMessage('Something went wrong.');
+      this.loading = false;
+    });
   }
 }

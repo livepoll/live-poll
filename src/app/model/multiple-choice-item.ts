@@ -3,12 +3,17 @@
  */
 
 import {PollItem} from './poll-item';
-import {Answer} from './answer';
+import {MultipleChoiceItemAnswer} from './multiple-choice-item-answer';
 
 /**
  * MultipleChoiceItem class.
  * Represents a multiple choice question, which can have several possible answers.
  */
 export class MultipleChoiceItem extends PollItem {
-  answers: Answer[];
+  answers: MultipleChoiceItemAnswer[];
+
+  public constructor(init?: Partial<MultipleChoiceItem>) {
+    super();
+    Object.assign(this, init);
+  }
 }

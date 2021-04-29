@@ -2,18 +2,19 @@
  * Copyright © Live-Poll 2020-2021. All rights reserved
  */
 
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
+import {environment as env} from '../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {Poll} from '../model/poll';
 import {Observable} from 'rxjs';
-import {environment as env} from '../../environments/environment';
+import {PollItem} from '../model/poll-item';
 
 const ENDPOINT_URL = env.apiBaseUrl + '/polls';
 
 @Injectable({
   providedIn: 'root'
 })
-export class PollServiceService {
+export class PollService {
 
   /**
    * Initialize the service
@@ -29,7 +30,7 @@ export class PollServiceService {
    * @param poll Affected poll
    */
   create(poll: Poll): Observable<Poll> {
-    return this.http.post<Poll>(ENDPOINT_URL, poll);
+    return this.http.post<Poll>(ENDPOINT_URL, poll, { withCredentials: true });
   }
 
   /**
@@ -38,14 +39,21 @@ export class PollServiceService {
    * @param id Id of the affected poll
    */
   get(id: number): Observable<Poll> {
-    return this.http.get<Poll>(ENDPOINT_URL + `/${id}`);
+    return this.http.get<Poll>(ENDPOINT_URL + `/${id}`, { withCredentials: true });
   }
 
   /**
    * Retrieves all polls of a specific user from the server
    */
   getAll(): Observable<Poll[]> {
-    return this.http.get<Poll[]>(ENDPOINT_URL);
+    return this.http.get<Poll[]>(ENDPOINT_URL, { withCredentials: true });
+  }
+
+  /**
+   * Retrieves all poll items of a specific poll from the server
+   */
+  getAllItems(pollId: number): Observable<PollItem[]> {
+    return this.http.get<PollItem[]>(ENDPOINT_URL + `/${pollId}/poll-items`, { withCredentials: true });
   }
 
   /**
@@ -54,7 +62,7 @@ export class PollServiceService {
    * @param poll Affected poll
    */
   update(poll: Poll): Observable<void> {
-    return this.http.put<void>(ENDPOINT_URL, poll);
+    return this.http.put<void>(ENDPOINT_URL + `/${poll.id}`, poll, { withCredentials: true });
   }
 
   /**
@@ -63,6 +71,6 @@ export class PollServiceService {
    * @param id Id of the affected poll
    */
   delete(id: number): Observable<void> {
-    return this.http.delete<void>(ENDPOINT_URL + `/${id}`);
+    return this.http.delete<void>(ENDPOINT_URL + `/${id}`, { withCredentials: true });
   }
 }

@@ -5,14 +5,12 @@
 import {Component, EventEmitter, Inject, LOCALE_ID} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Poll} from '../../model/poll';
-import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
-import {environment as env} from '../../../environments/environment';
 import {User} from '../../model/user';
-import {PollItem} from '../../model/poll-item';
-import {NzNotificationService} from 'ng-zorro-antd/notification';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {formatDate} from '@angular/common';
 import {CommonToolsService} from '../../service/common-tools.service';
+import {PollService} from '../../service/poll.service';
+import {PollItemService} from '../../service/poll-item.service';
 
 @Component({
   selector: 'app-poll',
@@ -23,10 +21,11 @@ export class PollComponent {
 
   // Constants
   host = location.protocol + '//' + location.host;
-  currentDate = new Date();
+  currentDate = new Date().getTime();
 
   // Event Emitters
   onUserDataChanged = new EventEmitter<User>();
+  onReloadPolls = new EventEmitter();
 
   // Variables
   userData: User;
@@ -45,14 +44,16 @@ export class PollComponent {
    *
    * @param activeRoute Injected active route
    * @param router Injected router
-   * @param http Injected http client
+   * @param pollService Injected PollService
+   * @param pollItemService Injected PollItemService
    * @param tools Injected ToolsService
    * @param locale Injected local id
    */
   constructor(
     private activeRoute: ActivatedRoute,
     private router: Router,
-    private http: HttpClient,
+    private pollService: PollService,
+    private pollItemService: PollItemService,
     private tools: CommonToolsService,
     @Inject(LOCALE_ID) private locale: string
   ) {
@@ -71,7 +72,7 @@ export class PollComponent {
 
     // Keep the current time in sync
     setInterval(() => {
-      this.currentDate = new Date();
+      this.currentDate = new Date().getTime();
     }, 1000);
   }
 
@@ -79,6 +80,7 @@ export class PollComponent {
    * Is called when the user clicks back in the poll detail view to come back to the poll list
    */
   onBack(): void {
+    this.onReloadPolls.emit();
     this.router.navigateByUrl('/dashboard/my-polls');
   }
 
@@ -87,20 +89,15 @@ export class PollComponent {
    *
    * @param url Customized input url
    */
-  onSnippetChange(url: string): void {
+  onSlugChange(url: string): void {
     if (!url || url.length === 0) return;
-    const oldSnippet = this.poll.snippet;
-    const newSnippet = this.poll.snippet = encodeURI(url.toLocaleLowerCase().split(' ').join('-'));
+    const oldSlug = this.poll.slug;
+    this.poll.slug = encodeURI(url.toLocaleLowerCase().split(' ').join('-'));
+
     // Commit changes to the server
-    // Build header, body and options
-    const header = new HttpHeaders().set('Content-Type', 'application/json');
-    const options: any = { header, observe: 'response', withCredentials: true };
-    const body = { newSnippet };
-    // Send request
-    this.http.put<string>(env.apiBaseUrl + '/users/' + this.userData.id + '/polls/' + this.pollId + '/snippet', body, options)
-      .subscribe((response: HttpResponse<string>) => {
-        if (!response.ok) this.poll.snippet = oldSnippet;
-      }, _ => this.poll.snippet = oldSnippet);
+    this.pollService.update(this.poll).subscribe((_) => {}, (_) => {
+      this.poll.slug = oldSlug;
+    });
   }
 
   /**
@@ -112,7 +109,7 @@ export class PollComponent {
     this.changingState = true;
     if (open) {
       this.poll.startDate = this.currentDate;
-      if (this.poll.endDate.getTime() > 0) this.poll.endDate.setTime(0);
+      if (this.poll.endDate > 0) this.poll.endDate = 0;
     } else {
       this.poll.endDate = this.currentDate;
     }
@@ -145,10 +142,25 @@ export class PollComponent {
   loadPoll(): void {
     // Redirect to MyPolls page, if some data is missing to load the poll
     if (!this.userData || !this.pollId) {
-      this.router.navigateByUrl('/dashboard/my-polls');
+      this.onBack();
       return;
     }
-    // Build header, body and options
+
+    this.pollService.get(this.pollId).subscribe((poll) => {
+      this.poll = poll;
+      this.pollService.getAllItems(poll.id).subscribe(items => {
+        this.poll.pollItems = items;
+        this.setupResultObserver();
+      }, (_) => {
+        this.error = true;
+        this.tools.showErrorMessage('Something went wrong, loading the poll items.');
+      });
+    }, (_) => {
+      this.error = true;
+      this.tools.showErrorMessage('Something went wrong, loading the poll.');
+    });
+
+    /*// Build header, body and options
     const header = new HttpHeaders().set('Content-Type', 'application/json');
     const options: any = { header, responseType: 'application/json', observe: 'response', withCredentials: true };
     // Send request
@@ -160,9 +172,9 @@ export class PollComponent {
           const poll = new Poll();
           poll.id = json.id;
           poll.name = json.name;
-          poll.startDate = new Date(json.startDate);
-          poll.endDate = new Date(json.endDate);
-          poll.snippet = json.snippet;
+          poll.startDate = json.startDate;
+          poll.endDate = json.endDate;
+          poll.slug = json.slug;
           poll.pollItems = [];
           json.pollItems.forEach(item => {
             const pollItem = new PollItem();
@@ -179,7 +191,7 @@ export class PollComponent {
       }, (_) => {
         this.error = true;
         this.tools.showErrorMessage('Something went wrong, loading the poll.');
-      });
+      });*/
   }
 
   /**
@@ -189,7 +201,10 @@ export class PollComponent {
     error = error ?? function(): void {
       this.tools.showErrorMessage('The change could not be committed on the server. Please try again later.');
     };
-    // Build header, body and options
+
+    this.pollService.update(this.poll).subscribe(callback, error);
+
+    /*// Build header, body and options
     const header = new HttpHeaders().set('Content-Type', 'application/json');
     const options: any = { header, observe: 'response', withCredentials: true };
     const body = {  };
@@ -197,39 +212,29 @@ export class PollComponent {
     this.http.put<string>(env.apiBaseUrl + '/users/' + this.userData.id + '/polls/' + this.pollId, body, options)
       .subscribe((response: HttpResponse<string>) => {
         if (response.ok) callback();
-      }, (_) => error());
+      }, (_) => error());*/
   }
 
   /**
    * Deletes the current poll from the server and redirects the user back to the my polls list
    */
   deletePoll(): void {
-    // Build header, body and options
-    const header = new HttpHeaders().set('Content-Type', 'application/json');
-    const options: any = { header, observe: 'response', withCredentials: true };
-    // Send request
-    this.http.delete<string>(env.apiBaseUrl + '/users/' + this.userData.id + '/polls/' + this.pollId, options)
-      .subscribe((response: HttpResponse<string>) => {
-        if (response.ok) {
-          this.router.navigateByUrl('/dashboard/my-polls');
-        }
-      });
+    this.pollService.delete(this.pollId).subscribe((_) => {
+      this.onBack();
+    }, (_) => {
+      this.tools.showErrorMessage('An error occurred while deleting the poll.');
+    });
   }
 
   /**
    * Deletes a single poll item from the server
    *
-   * @param pollItemId Id of the poll item
+   * @param id Id of the poll item
    */
-  deletePollItem(pollItemId: number): void {
-    // Build header, body and options
-    const header = new HttpHeaders().set('Content-Type', 'application/json');
-    const options: any = { header, observe: 'response', withCredentials: true };
-    // Send request
-    this.http.delete<string>(env.apiBaseUrl + '/users/' + this.userData.id + '/polls/' + this.pollId + '/item/' + pollItemId, options)
-      .subscribe((response: HttpResponse<string>) => {
-        if (response.ok) this.loadPoll();
-      });
+  deletePollItem(id: number): void {
+    this.pollItemService.delete(id).subscribe((_) => {
+      this.loadPoll();
+    });
   }
 
   /**
@@ -271,13 +276,13 @@ export class PollComponent {
 
     switch (this.pollStatus) {
       case 1: { // Pending
-        if (startDate.getTime() === 0 && endDate.getTime() === 0) return 'Manual opening, manual closing';
-        if (startDate.getTime() === 0) return 'Manual opening, auto closing at' + endDateString;
-        if (endDate.getTime() === 0) return 'Auto opening at ' + startDateString + ', manual closing';
+        if (startDate === 0 && endDate === 0) return 'Manual opening, manual closing';
+        if (startDate === 0) return 'Manual opening, auto closing at' + endDateString;
+        if (endDate === 0) return 'Auto opening at ' + startDateString + ', manual closing';
         return 'Auto opening at ' + startDateString + ', auto closing at ' + endDateString;
       }
       case 2: { // Running
-        if (endDate.getTime() === 0) return 'Running since ' + startDateString + ', manual closing';
+        if (endDate === 0) return 'Running since ' + startDateString + ', manual closing';
         return 'Running since ' + startDateString + ', auto closing at ' + endDateString;
       }
       case 3: { // Finished
@@ -293,7 +298,6 @@ export class PollComponent {
   openEditPollDialog(): void {
     // Open edit dialog
     this.showEditPollDialog = true;
-    console.log(this.showEditPollDialog);
   }
 
   /**
@@ -313,7 +317,7 @@ export class PollComponent {
     this.results = [];
     this.poll.pollItems.forEach(pollItem => {
       this.results.push({
-        id: pollItem.id,
+        id: pollItem.itemId,
         data: [
           {
             name: 'Noodles',

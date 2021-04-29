@@ -4,13 +4,13 @@
 
 import {Component, EventEmitter, OnInit} from '@angular/core';
 import {CookieService} from 'ngx-cookie-service';
-import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {environment as env} from '../environments/environment';
 import {NgcCookieConsentService} from 'ngx-cookieconsent';
-import {NzNotificationService} from 'ng-zorro-antd/notification';
 import {User} from './model/user';
 import {CommonToolsService} from './service/common-tools.service';
+import {UserService} from './service/user.service';
+import {AccountService} from './service/account.service';
 
 // Constants
 const COOKIE_NAME_THEME = 'theme';
@@ -29,22 +29,24 @@ export class AppComponent implements OnInit {
   // Variables
   currentPage: any;
   darkTheme = false;
-  userData: User;
+  user: User;
 
   /**
    * Initialize app component
    *
    * @param cookieService Injected cookie service
-   * @param http Injected http client
    * @param router Injected router
    * @param tools Injected ToolsService
+   * @param accountService Injected AccountService
+   * @param userService Injected UserService
    * @param _ Injected CookieConsent manager (do not remove this import)
    */
   constructor(
     private cookieService: CookieService,
-    private http: HttpClient,
     private router: Router,
     private tools: CommonToolsService,
+    private accountService: AccountService,
+    private userService: UserService,
     private _: NgcCookieConsentService
   ) {}
 
@@ -70,7 +72,7 @@ export class AppComponent implements OnInit {
     // Wire up Event Emitters
     if (child.onUserDataChanged) {
       this.onUserDataChanged = child.onUserDataChanged;
-      if (this.userData) this.onUserDataChanged.emit(this.userData);
+      if (this.user) this.onUserDataChanged.emit(this.user);
     }
     if (child.onLoginResultChanged) {
       this.onLoginResultChanged = child.onLoginResultChanged;
@@ -99,24 +101,16 @@ export class AppComponent implements OnInit {
    * If the request fails with a http error 403, then the user has to log in first
    */
   loadUserData(showErrorExplicitly: boolean): void {
-    // Build header, body and options
-    const header = new HttpHeaders().set('Content-Type', 'application/json');
-    const options: any = { header, responseType: 'application/json', observe: 'response', withCredentials: true };
-    // Send request
-    this.http.get<string>(env.apiBaseUrl + '/authenticate/init', options).subscribe((response: HttpResponse<string>) => {
-      const user = JSON.parse(response.body);
-      // Build user object
-      this.userData = new User();
-      this.userData.id = user.id;
-      this.userData.username = user.username;
-      this.userData.email = user.email;
+    this.userService.get().subscribe((response) => {
+      this.user = response.body;
       // Redirect to dashboard if necessary, otherwise apply userData to dashboard
-      if (location.href.includes('dashboard')) {
-        if (this.onUserDataChanged) this.onUserDataChanged.emit(this.userData);
+      if (location.href.includes('dashboard') || location.href.includes('/p/')) {
+        if (this.onUserDataChanged) this.onUserDataChanged.emit(this.user);
       } else {
         this.router.navigateByUrl('/dashboard');
       }
-    }, (_) => {
+    }, (err) => {
+      console.log(err);
       if (showErrorExplicitly) {
         this.tools.showErrorMessage('Loading user data failed.');
       } else {
@@ -133,17 +127,12 @@ export class AppComponent implements OnInit {
    * @param remember Remember user
    */
   login(username: string, password: string, remember: boolean): void {
-    // Build header, body and options
-    const header = new HttpHeaders().set('Content-Type', 'application/json');
-    const options: any = { header, responseType: 'text', observe: 'response', withCredentials: true };
-    const body = { username, password };
-    // Send request
-    this.http.post<string>(env.apiBaseUrl + '/authenticate/login', body, options).subscribe((_: HttpResponse<string>) => {
+    const body = new User(username, password);
+    this.accountService.login(body).subscribe((_) => {
       // Load user data
       this.loadUserData(true);
     }, (error) => {
       this.tools.showErrorMessage('Login failed.');
-      console.log(error);
       this.onLoginResultChanged.emit(error);
     });
   }
@@ -152,11 +141,7 @@ export class AppComponent implements OnInit {
    * Executes the logout of the current user
    */
   logout(): void {
-    // Build header, body and options
-    const header = new HttpHeaders().set('Content-Type', 'application/json');
-    const options: any = { header, responseType: 'text', observe: 'response', withCredentials: true };
-    // Send request
-    this.http.put<string>(env.apiBaseUrl + '/authenticate/logout', null, options).subscribe((_: HttpResponse<string>) => {
+    this.accountService.logout(this.user).subscribe((_) => {
       // Redirect to login page
       this.router.navigateByUrl('/login');
     }, (_) => {
@@ -181,23 +166,27 @@ export class AppComponent implements OnInit {
       const dom = document.getElementById('dark-theme');
       if (dom) dom.remove();
       // Apply dark theme
-      const style = document.createElement('link');
-      style.type = 'text/css';
-      style.rel = 'stylesheet';
-      style.id = 'dark-theme';
-      style.href = 'assets/themes/dark.css';
-      document.body.appendChild(style);
+      this.applyTheme('dark');
     } else {
       // Remove dark theme
       const dom = document.getElementById('light-theme');
       if (dom) dom.remove();
       // Apply light theme
-      const style = document.createElement('link');
-      style.type = 'text/css';
-      style.rel = 'stylesheet';
-      style.id = 'light-theme';
-      style.href = 'assets/themes/light.css';
-      document.body.appendChild(style);
+      this.applyTheme('light');
     }
+  }
+
+  /**
+   * Sets a theme to the app
+   *
+   * @param name Name of the theme. Either 'light' or 'dark'
+   */
+  applyTheme(name: string): void {
+    const style = document.createElement('link');
+    style.type = 'text/css';
+    style.rel = 'stylesheet';
+    style.id = `${name}-theme`;
+    style.href = `assets/themes/${name}.css`;
+    document.body.appendChild(style);
   }
 }

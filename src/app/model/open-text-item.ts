@@ -9,4 +9,8 @@ import {PollItem} from './poll-item';
  * Represents an open text question.
  */
 export class OpenTextItem extends PollItem {
+  public constructor(init?: Partial<OpenTextItem>) {
+    super();
+    Object.assign(this, init);
+  }
 }
