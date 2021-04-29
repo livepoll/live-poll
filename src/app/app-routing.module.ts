@@ -11,6 +11,7 @@ const routes: Routes = [
   { path: 'login', loadChildren: () => import('./pages/login/login.module').then(m => m.LoginModule) },
   { path: 'signup', loadChildren: () => import('./pages/sign-up/sign-up.module').then(m => m.SignUpModule) },
   { path: 'p/:slug', loadChildren: () => import('./pages/poll-participants/poll-participants.module').then(m => m.PollParticipantsModule) },
+  { path: 'activate/:token', loadChildren: () => import('./pages/activation/activation.module').then(m => m.ActivationModule) },
   { path: 'dashboard', component: DashboardComponent,
     children: [
       { path: '', pathMatch: 'full', redirectTo: '/dashboard/home' },
