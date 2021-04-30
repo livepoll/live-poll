@@ -9,6 +9,9 @@ import {ItemType} from '../../model/poll-item';
 import {WebsocketService} from '../../service/websocket.service';
 import {QuizItem} from '../../model/quiz-item';
 import {OpenTextItem} from '../../model/open-text-item';
+import {MultipleChoiceItemAnswer} from '../../model/multiple-choice-item-answer';
+import {QuizItemAnswer} from '../../model/quiz-item-answer';
+import {OpenTextItemAnswer} from '../../model/open-text-item-answer';
 
 @Component({
   selector: 'app-poll-participants',
@@ -21,8 +24,8 @@ export class PollParticipantsComponent implements OnInit, OnDestroy {
   slug = '';
   poll: Poll = {id: 1, name: 'Test Poll', pollItems: [], currentItem: 1, slug: 'test', startDate: 0, endDate: 0};
   activeItem: MultipleChoiceItem|QuizItem|OpenTextItem;
-  activeItemType = 'multiple-choice';
-  answer = -1;
+  activeItemType = '';
+  answer = null;
 
   /**
    * Initialize component
@@ -47,9 +50,35 @@ export class PollParticipantsComponent implements OnInit, OnDestroy {
         this.activeItemType = pollItem.type;
         delete pollItem.type;
         this.activeItem = pollItem;
-        console.log('Payload: ' + JSON.stringify(pollItem));
       });
     });
+  }
+
+  sendAnswer(): void {
+    switch (this.activeItemType) {
+      case 'multiple-choice': {
+        const activeItem = this.activeItem as MultipleChoiceItem;
+        const answerItem = new MultipleChoiceItemAnswer();
+        answerItem.selectionOption = activeItem.answers[this.answer].selectionOption;
+        answerItem.answerCount = 1;
+        this.websocketService.sendAnswer(answerItem);
+        break;
+      }
+      case 'quiz': {
+        const activeItem = this.activeItem as QuizItem;
+        const answerItem = new QuizItemAnswer();
+        answerItem.selectionOption = activeItem.answers[this.answer].selectionOption;
+        answerItem.answerCount = 1;
+        this.websocketService.sendAnswer(answerItem);
+        break;
+      }
+      case 'open-text': {
+        const answerItem = new OpenTextItemAnswer();
+        answerItem.answer = this.answer;
+        this.websocketService.sendAnswer(answerItem);
+        break;
+      }
+    }
   }
 
   /**

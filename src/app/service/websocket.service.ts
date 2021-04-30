@@ -56,6 +56,7 @@ export class WebsocketService {
    * @param answer Answer object, which will be serialized
    */
   sendAnswer(answer: MultipleChoiceItemAnswer|QuizItemAnswer|OpenTextItemAnswer): void {
+    console.log(answer);
     if (this.stompClient.connected) {
       this.stompClient.publish({
         destination: ENDPOINT_MESSAGING_WRITE_URL,

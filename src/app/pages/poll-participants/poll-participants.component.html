@@ -13,27 +13,32 @@
   </nz-header>
   <nz-content>
       <div class="poll-container" [ngSwitch]="activeItemType">
-        <h2>{{activeItem.question}}</h2>
+        <h2>{{activeItem?.question}}</h2>
+
+        <!-- Loading -->
+        <nz-spin *ngIf="activeItemType === ''" nzSize="large"></nz-spin>
 
         <!-- Multiple Choice Question -->
         <div class="poll-item-selection-options" *ngSwitchCase="'multiple-choice'">
           <nz-radio-group [(ngModel)]="answer">
             <label *ngFor="let answer of activeItem.answers; let i = index" nz-radio nzValue="{{i}}">{{answer.selectionOption}}</label>
-            <!--<label *ngIf="activeItem.options" nz-radio nzValue="M">Custom answer... <input type="text" nz-input *ngIf="answer === 'M'" /></label>-->
+            <input *ngIf="activeItem.options?.canSelectMultiple" type="text" nz-input [(ngModel)]="answer"/>
           </nz-radio-group>
         </div>
 
         <!-- Open Text Question -->
         <div class="poll-item-selection-options" *ngSwitchCase="'open-text'">
-          <h1>{{activeItem.question}}</h1>
+          <input type="text" nz-input [(ngModel)]="answer" nzSize="large" />
         </div>
 
         <!-- Quiz Question -->
         <div class="poll-item-selection-options" *ngSwitchCase="'quiz'">
-          <h1>{{activeItem.question}}</h1>
+          <nz-radio-group [(ngModel)]="answer">
+            <label *ngFor="let answer of activeItem.answers; let i = index" nz-radio nzValue="{{i}}">{{answer.selectionOption}}</label>
+          </nz-radio-group>
         </div>
 
-        <button nz-button nzType="primary" nzSize="large" [disabled]="answer == -1" nzBlock>
+        <button *ngIf="activeItemType !== ''" nz-button nzType="primary" nzSize="large" (click)="sendAnswer()" [disabled]="!(answer?.length > 0)" nzBlock>
           Submit Answer
           <i nz-icon nzType="right"></i>
         </button>
