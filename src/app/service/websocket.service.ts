@@ -1,23 +1,33 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import { webSocket } from 'rxjs/webSocket';
+import {HttpClient, HttpResponse} from '@angular/common/http';
 import {environment as env} from '../../environments/environment';
 import {QuizItemAnswer} from '../model/quiz-item-answer';
 import {MultipleChoiceItemAnswer} from '../model/multiple-choice-item-answer';
 import {OpenTextItemAnswer} from '../model/open-text-item-answer';
+import {RxStomp} from '@stomp/rx-stomp';
+import { map as rxMap } from 'rxjs/operators';
+import {Observable} from 'rxjs';
+import {Poll} from '../model/poll';
+import {OpenTextItem} from '../model/open-text-item';
+import {QuizItem} from '../model/quiz-item';
+import {MultipleChoiceItem} from '../model/multiple-choice-item';
 
 const ENDPOINT_WEBSOCKET_URL = env.apiBaseWebsocketUrl + '/websocket';
-const ENDPOINT_HANDSHAKE_URL = ENDPOINT_WEBSOCKET_URL + '/enter-poll';
-const ENDPOINT_MESSAGING_READ_URL = ENDPOINT_WEBSOCKET_URL + '/poll';
-const ENDPOINT_MESSAGING_WRITE_URL = ENDPOINT_WEBSOCKET_URL + '/answer';
+const ENDPOINT_BROKER_URL = ENDPOINT_WEBSOCKET_URL + '/enter-poll';
+const ENDPOINT_MESSAGING_READ_URL = '/user/v1/websocket/poll';
+const ENDPOINT_MESSAGING_WRITE_URL = '/v1/websocket/answer';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WebsocketService {
 
-  private webSocket;
-  private subject;
+  private stompClient;
+  private stompConfig = {
+    brokerURL: ENDPOINT_BROKER_URL,
+    reconnectDelay: 200
+  };
+  private subscription;
 
   /**
    * Initialize the service
@@ -30,21 +40,14 @@ export class WebsocketService {
   /**
    * Tries to connect via the handshake endpoint of the websocket server
    */
-  establishConnection(slug: string): void {
-    this.webSocket = webSocket({
-      url: ENDPOINT_HANDSHAKE_URL,
-      deserializer: ({data}) => data,
-      serializer: msg => JSON.stringify(msg),
-      openObserver: {
-        next: () => console.log('socket connection established')
-      },
-      closeObserver: {
-        next: () => console.log('socket connection closed')
-      }
-    });
-    this.subject = this.webSocket.subscribe((data) => {
-      console.log(data);
-    });
+  establishConnection(slug: string): Observable<MultipleChoiceItem|QuizItem|OpenTextItem> {
+    this.stompClient = new RxStomp();
+    this.stompClient.configure(this.stompConfig);
+    this.stompClient.activate();
+
+    return this.subscription = this.stompClient.watch(ENDPOINT_MESSAGING_READ_URL + '/' + slug).pipe(rxMap((msg: HttpResponse<any>) => {
+      return JSON.parse(msg.body);
+    }));
   }
 
   /**
@@ -53,14 +56,19 @@ export class WebsocketService {
    * @param answer Answer object, which will be serialized
    */
   sendAnswer(answer: MultipleChoiceItemAnswer|QuizItemAnswer|OpenTextItemAnswer): void {
-    this.subject?.next(answer);
+    if (this.stompClient.connected) {
+      this.stompClient.publish({
+        destination: ENDPOINT_MESSAGING_WRITE_URL,
+        body: JSON.stringify(answer)
+      });
+    }
   }
 
   /**
    * Closes an established connection
    */
   closeConnection(): void {
-    this.subject.unsubscribe();
-    this.webSocket?.complete();
+    this.subscription.unsubscribe();
+    this.stompClient.disconnect();
   }
 }

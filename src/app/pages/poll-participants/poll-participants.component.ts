@@ -7,6 +7,8 @@ import {Poll} from '../../model/poll';
 import {MultipleChoiceItem} from '../../model/multiple-choice-item';
 import {ItemType} from '../../model/poll-item';
 import {WebsocketService} from '../../service/websocket.service';
+import {QuizItem} from '../../model/quiz-item';
+import {OpenTextItem} from '../../model/open-text-item';
 
 @Component({
   selector: 'app-poll-participants',
@@ -18,18 +20,7 @@ export class PollParticipantsComponent implements OnInit, OnDestroy {
   // Variables
   slug = '';
   poll: Poll = {id: 1, name: 'Test Poll', pollItems: [], currentItem: 1, slug: 'test', startDate: 0, endDate: 0};
-  activeItem: MultipleChoiceItem = {
-    itemId: 1,
-    pollId: 1,
-    question: 'How did you like the presentation?',
-    position: 1,
-    type: ItemType.MultipleChoice,
-    answers: [
-      {selectionOption: 'Option 1', answerCount: 1},
-      {selectionOption: 'Option 2', answerCount: 10},
-      {selectionOption: 'Option 3', answerCount: 4}
-    ]
-  };
+  activeItem: MultipleChoiceItem|QuizItem|OpenTextItem;
   activeItemType = 'multiple-choice';
   answer = -1;
 
@@ -50,9 +41,14 @@ export class PollParticipantsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.slug = params.slug;
-      console.log(this.slug); // Test
       // Connect to WebSocket
-      this.websocketService.establishConnection(this.slug);
+      const subscription = this.websocketService.establishConnection(this.slug);
+      subscription.subscribe(pollItem => {
+        this.activeItemType = pollItem.type;
+        delete pollItem.type;
+        this.activeItem = pollItem;
+        console.log('Payload: ' + JSON.stringify(pollItem));
+      });
     });
   }
 
