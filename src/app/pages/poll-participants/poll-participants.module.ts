@@ -14,6 +14,7 @@ import {NzButtonModule} from 'ng-zorro-antd/button';
 import {NzIconModule} from 'ng-zorro-antd/icon';
 import {NzInputModule} from 'ng-zorro-antd/input';
 import {NzSpinModule} from 'ng-zorro-antd/spin';
+import {NzResultModule} from 'ng-zorro-antd/result';
 
 @NgModule({
   declarations: [PollParticipantsComponent],
@@ -27,7 +28,8 @@ import {NzSpinModule} from 'ng-zorro-antd/spin';
     NzButtonModule,
     NzIconModule,
     NzInputModule,
-    NzSpinModule
+    NzSpinModule,
+    NzResultModule
   ]
 })
 export class PollParticipantsModule {}

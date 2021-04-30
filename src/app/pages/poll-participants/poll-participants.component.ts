@@ -12,6 +12,7 @@ import {OpenTextItem} from '../../model/open-text-item';
 import {MultipleChoiceItemAnswer} from '../../model/multiple-choice-item-answer';
 import {QuizItemAnswer} from '../../model/quiz-item-answer';
 import {OpenTextItemAnswer} from '../../model/open-text-item-answer';
+import {CommonToolsService} from '../../service/common-tools.service';
 
 @Component({
   selector: 'app-poll-participants',
@@ -26,16 +27,19 @@ export class PollParticipantsComponent implements OnInit, OnDestroy {
   activeItem: MultipleChoiceItem|QuizItem|OpenTextItem;
   activeItemType = '';
   answer = null;
+  sent = false;
 
   /**
    * Initialize component
    *
    * @param route Active route
    * @param websocketService Injected WebSocketService
+   * @param toolsService Injected CommonToolsService
    */
   constructor(
     private route: ActivatedRoute,
-    private websocketService: WebsocketService
+    private websocketService: WebsocketService,
+    private toolsService: CommonToolsService
   ) {}
 
   /**
@@ -50,34 +54,38 @@ export class PollParticipantsComponent implements OnInit, OnDestroy {
         this.activeItemType = pollItem.type;
         delete pollItem.type;
         this.activeItem = pollItem;
+        this.sent = false;
       });
     });
   }
 
   sendAnswer(): void {
+    let answerItem;
     switch (this.activeItemType) {
       case 'multiple-choice': {
         const activeItem = this.activeItem as MultipleChoiceItem;
-        const answerItem = new MultipleChoiceItemAnswer();
+        answerItem = new MultipleChoiceItemAnswer();
         answerItem.selectionOption = activeItem.answers[this.answer].selectionOption;
         answerItem.answerCount = 1;
-        this.websocketService.sendAnswer(answerItem);
         break;
       }
       case 'quiz': {
         const activeItem = this.activeItem as QuizItem;
-        const answerItem = new QuizItemAnswer();
+        answerItem = new QuizItemAnswer();
         answerItem.selectionOption = activeItem.answers[this.answer].selectionOption;
         answerItem.answerCount = 1;
-        this.websocketService.sendAnswer(answerItem);
         break;
       }
       case 'open-text': {
-        const answerItem = new OpenTextItemAnswer();
+        answerItem = new OpenTextItemAnswer();
         answerItem.answer = this.answer;
-        this.websocketService.sendAnswer(answerItem);
         break;
       }
+    }
+    if (this.websocketService.sendAnswer(answerItem)) {
+      this.sent = true;
+    } else {
+      this.toolsService.showErrorMessage('Could not send answer. Please try again. If the problem occurs again, please try to reload the page.');
     }
   }
 
