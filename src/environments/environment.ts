@@ -9,6 +9,7 @@
 export const environment = {
   name: 'dev',
   production: false,
+  apiBaseWebsocketUrl: 'wss://localhost:8080/v1',
   apiBaseUrl: 'https://localhost:8080/v1',
   apiVersion: 'v0',
   useSecureCookies: false,

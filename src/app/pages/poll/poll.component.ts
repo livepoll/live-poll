@@ -159,39 +159,6 @@ export class PollComponent {
       this.error = true;
       this.tools.showErrorMessage('Something went wrong, loading the poll.');
     });
-
-    /*// Build header, body and options
-    const header = new HttpHeaders().set('Content-Type', 'application/json');
-    const options: any = { header, responseType: 'application/json', observe: 'response', withCredentials: true };
-    // Send request
-    this.http.get<string>(env.apiBaseUrl + '/users/' + this.userData.id + '/polls/' + this.pollId, options)
-      .subscribe((response: HttpResponse<string>) => {
-        if (response.ok) {
-          // Parse data
-          const json = JSON.parse(response.body);
-          const poll = new Poll();
-          poll.id = json.id;
-          poll.name = json.name;
-          poll.startDate = json.startDate;
-          poll.endDate = json.endDate;
-          poll.slug = json.slug;
-          poll.pollItems = [];
-          json.pollItems.forEach(item => {
-            const pollItem = new PollItem();
-            pollItem.id = item.itemId;
-            pollItem.question = item.question;
-            pollItem.pos = item.position;
-            pollItem.type = item.type;
-            poll.pollItems.push(pollItem);
-          });
-          this.poll = poll;
-          // Setup result observer
-          this.setupResultObserver();
-        }
-      }, (_) => {
-        this.error = true;
-        this.tools.showErrorMessage('Something went wrong, loading the poll.');
-      });*/
   }
 
   /**
@@ -203,16 +170,6 @@ export class PollComponent {
     };
 
     this.pollService.update(this.poll).subscribe(callback, error);
-
-    /*// Build header, body and options
-    const header = new HttpHeaders().set('Content-Type', 'application/json');
-    const options: any = { header, observe: 'response', withCredentials: true };
-    const body = {  };
-    // Send request
-    this.http.put<string>(env.apiBaseUrl + '/users/' + this.userData.id + '/polls/' + this.pollId, body, options)
-      .subscribe((response: HttpResponse<string>) => {
-        if (response.ok) callback();
-      }, (_) => error());*/
   }
 
   /**

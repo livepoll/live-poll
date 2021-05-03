@@ -3,11 +3,11 @@
  */
 
 /**
- * MultipleChoiceItemAnswer class.
+ * MultipleChoiceItemAnswerParticipant class.
  * Represents one possible answer for a multiple choice question.
  */
-export class MultipleChoiceItemAnswer {
+export class MultipleChoiceItemAnswerParticipant {
   id: number;
+  type = 'multiple-choice';
   selectionOption: string;
-  answerCount: number;
 }

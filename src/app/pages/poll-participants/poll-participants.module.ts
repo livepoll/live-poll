@@ -12,6 +12,9 @@ import {NzRadioModule} from 'ng-zorro-antd/radio';
 import {FormsModule} from '@angular/forms';
 import {NzButtonModule} from 'ng-zorro-antd/button';
 import {NzIconModule} from 'ng-zorro-antd/icon';
+import {NzInputModule} from 'ng-zorro-antd/input';
+import {NzSpinModule} from 'ng-zorro-antd/spin';
+import {NzResultModule} from 'ng-zorro-antd/result';
 
 @NgModule({
   declarations: [PollParticipantsComponent],
@@ -23,7 +26,10 @@ import {NzIconModule} from 'ng-zorro-antd/icon';
     NzRadioModule,
     FormsModule,
     NzButtonModule,
-    NzIconModule
+    NzIconModule,
+    NzInputModule,
+    NzSpinModule,
+    NzResultModule
   ]
 })
 export class PollParticipantsModule {}

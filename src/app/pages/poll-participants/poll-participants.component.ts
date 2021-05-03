@@ -1,59 +1,102 @@
 /*
  * Copyright © Live-Poll 2020-2021. All rights reserved
  */
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Poll} from '../../model/poll';
 import {MultipleChoiceItem} from '../../model/multiple-choice-item';
-import {ItemType} from '../../model/poll-item';
+import {WebsocketService} from '../../service/websocket.service';
+import {QuizItem} from '../../model/quiz-item';
+import {OpenTextItem} from '../../model/open-text-item';
+import {CommonToolsService} from '../../service/common-tools.service';
+import {PollService} from '../../service/poll.service';
+import {MultipleChoiceItemAnswerParticipant} from '../../model/multiple-choice-item-answer-participant';
 
 @Component({
   selector: 'app-poll-participants',
   templateUrl: './poll-participants.component.html',
   styleUrls: ['./poll-participants.component.sass']
 })
-export class PollParticipantsComponent implements OnInit {
+export class PollParticipantsComponent implements OnInit, OnDestroy {
 
   // Variables
-  poll: Poll = {id: 1, name: 'Test Poll', pollItems: [], currentItem: 1, slug: 'test', startDate: 0, endDate: 0};
-  activeItem: MultipleChoiceItem = {
-    itemId: 1,
-    pollId: 1,
-    question: 'How did you like the presentation?',
-    position: 1,
-    type: ItemType.MultipleChoice,
-    answers: [
-      {selectionOption: 'Option 1', answerCount: 1},
-      {selectionOption: 'Option 2', answerCount: 10},
-      {selectionOption: 'Option 3', answerCount: 4}
-    ]
-  };
-  activeItemType = 'multiple-choice';
-  answer = -1;
+  slug = '';
+  // poll: Poll = {id: 1, name: 'Test Poll', pollItems: [], currentItem: 1, slug: 'test', startDate: 0, endDate: 0};
+  poll: Poll;
+  activeItem: MultipleChoiceItem|QuizItem|OpenTextItem;
+  activeItemType = '';
+  answer = null;
+  sent = false;
 
   /**
    * Initialize component
    *
    * @param route Active route
+   * @param pollService Injected PollService
+   * @param websocketService Injected WebSocketService
+   * @param toolsService Injected CommonToolsService
    */
   constructor(
-    private route: ActivatedRoute
-  ) {
-    this.route.params.subscribe(params => console.log(params));
-  }
+    private route: ActivatedRoute,
+    private pollService: PollService,
+    private websocketService: WebsocketService,
+    private toolsService: CommonToolsService
+  ) {}
 
   /**
    * Initialize the participants page
    */
   ngOnInit(): void {
-    // Connect to WebSocket
-    this.initializeWebSocketConnection();
+    this.route.params.subscribe(params => {
+      this.slug = params.slug;
+      // Connect to WebSocket
+      const subscription = this.websocketService.establishConnection(this.slug);
+      subscription.subscribe(pollItem => {
+        // Load poll
+        this.pollService.get(pollItem.pollId).subscribe(poll => this.poll = poll);
+        // Update UI
+        this.activeItemType = pollItem.type;
+        delete pollItem.type;
+        this.activeItem = pollItem;
+        this.sent = false;
+      });
+    });
+  }
+
+  sendAnswer(): void {
+    let answerItem;
+    switch (this.activeItemType) {
+      case 'multiple-choice': {
+        const activeItem = this.activeItem as MultipleChoiceItem;
+        answerItem = new MultipleChoiceItemAnswerParticipant();
+        answerItem.id = activeItem.answers[this.answer].id;
+        answerItem.selectionOption = activeItem.answers[this.answer].selectionOption;
+        break;
+      }
+      case 'quiz': {
+        const activeItem = this.activeItem as QuizItem;
+        /*answerItem = new QuizItemAnswer();
+        answerItem = activeItem.itemId;
+        answerItem.selectionOption = activeItem.answers[this.answer].selectionOption;*/
+        break;
+      }
+      case 'open-text': {
+        /*answerItem = new OpenTextItemAnswer();
+        answerItem.answer = this.answer;*/
+        break;
+      }
+    }
+    if (this.websocketService.sendAnswer(this.activeItem.itemId, answerItem)) {
+      this.sent = true;
+    } else {
+      this.toolsService.showErrorMessage('Could not send answer. Please try again. If the problem occurs again, please try to reload the page.');
+    }
   }
 
   /**
-   * Setup the real-time web socket connection
+   * Closes the websocket connection before leaving the site
    */
-  initializeWebSocketConnection(): void {
-
+  ngOnDestroy(): void {
+    this.websocketService.closeConnection();
   }
 }
