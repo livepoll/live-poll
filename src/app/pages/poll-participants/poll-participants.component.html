@@ -9,7 +9,7 @@
         <img src="assets/images/logo.svg" alt="logo">
       </a>
     </div>
-    <h1 class="poll-name">{{poll.name}}</h1>
+    <h1 class="poll-name">{{poll?.name}}</h1>
   </nz-header>
   <nz-content>
     <div *ngIf="!sent" class="poll-container" [ngSwitch]="activeItemType">

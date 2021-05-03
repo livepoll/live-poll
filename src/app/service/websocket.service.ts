@@ -1,15 +1,17 @@
+/*
+ * Copyright © Live-Poll 2020-2021. All rights reserved
+ */
+
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpResponse} from '@angular/common/http';
+import {HttpResponse} from '@angular/common/http';
 import {environment as env} from '../../environments/environment';
-import {QuizItemAnswer} from '../model/quiz-item-answer';
-import {MultipleChoiceItemAnswer} from '../model/multiple-choice-item-answer';
-import {OpenTextItemAnswer} from '../model/open-text-item-answer';
 import {RxStomp} from '@stomp/rx-stomp';
-import { map as rxMap } from 'rxjs/operators';
+import {map as rxMap} from 'rxjs/operators';
 import {Observable} from 'rxjs';
 import {OpenTextItem} from '../model/open-text-item';
 import {QuizItem} from '../model/quiz-item';
 import {MultipleChoiceItem} from '../model/multiple-choice-item';
+import {MultipleChoiceItemAnswerParticipant} from '../model/multiple-choice-item-answer-participant';
 
 const ENDPOINT_BROKER_URL = env.apiBaseWebsocketUrl + '/websocket/enter-poll';
 const ENDPOINT_MESSAGING_READ_URL = '/user/v1/websocket/poll';
@@ -43,13 +45,14 @@ export class WebsocketService {
   /**
    * Sends an answer via the websocket to the server
    *
+   * @param pollItemId Id of the affected poll item
    * @param answer Answer object, which will be serialized
    */
-  sendAnswer(answer: MultipleChoiceItemAnswer|QuizItemAnswer|OpenTextItemAnswer): boolean {
+  sendAnswer(pollItemId: number, answer: MultipleChoiceItemAnswerParticipant): boolean {
     console.log(answer);
     if (this.stompClient.connected) {
       this.stompClient.publish({
-        destination: ENDPOINT_MESSAGING_WRITE_URL,
+        destination: ENDPOINT_MESSAGING_WRITE_URL + '/' + pollItemId,
         body: JSON.stringify(answer)
       });
       return true;

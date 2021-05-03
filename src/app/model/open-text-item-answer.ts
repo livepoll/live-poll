@@ -7,5 +7,6 @@
  * Represents one possible answer for an open text question.
  */
 export class OpenTextItemAnswer {
+  id: number;
   answer: string;
 }
