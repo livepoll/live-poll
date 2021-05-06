@@ -57,7 +57,7 @@
     "@angular/platform-browser": "~11.2.13",
     "@angular/platform-browser-dynamic": "~11.2.13",
     "@angular/router": "~11.2.12",
-    "@angular/service-worker": "~11.2.12",
+    "@angular/service-worker": "~11.2.13",
     "@stomp/rx-stomp": "^1.1.2",
     "@swimlane/ngx-charts": "^17.0.1",
     "@types/crypto-js": "^4.0.1",
