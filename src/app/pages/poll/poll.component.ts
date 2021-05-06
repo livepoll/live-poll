@@ -221,6 +221,8 @@ export class PollComponent {
    */
   drop(event: CdkDragDrop<string[]>): void {
     moveItemInArray(this.poll.pollItems, event.previousIndex, event.currentIndex);
+    // Update position on server
+    // TODO: Ask team what to do when dropping item, because I would have to do a API request for every position update
   }
 
   /**

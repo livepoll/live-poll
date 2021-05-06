@@ -21,27 +21,32 @@ const ITEM_TYPES = [
   {
     id: 1,
     name: 'Open Text Question',
-    description: 'Enables the user to fill in a text as answer'
+    description: 'Enables the user to fill in a text as answer',
+    available: true
   },
   {
     id: 2,
     name: 'Multiple Choice Question',
-    description: 'Lets the user choose between several, pre-defined answers'
+    description: 'Lets the user choose between several, pre-defined answers',
+    available: true
   },
   {
     id: 3,
     name: 'Quiz Question',
-    description: 'Multiple choice question, which displays the right answer afterwards'
+    description: 'Multiple choice question, which displays the right answer afterwards',
+    available: true
   },
   {
     id: 4,
     name: 'Word Cloud Question',
-    description: 'Single word can be entered. The words will be arranged in form of clouds'
+    description: 'Single word can be entered. The words will be arranged in form of clouds',
+    available: false
   },
   {
     id: 5,
     name: 'Rating Question',
-    description: 'Star rating.'
+    description: 'Star rating.',
+    available: false
   }
 ];
 
