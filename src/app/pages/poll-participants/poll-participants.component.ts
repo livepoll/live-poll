@@ -53,7 +53,7 @@ export class PollParticipantsComponent implements OnInit, OnDestroy {
       const subscription = this.websocketService.establishConnection(this.slug);
       subscription.subscribe(pollItem => {
         // Load poll
-        this.pollService.get(pollItem.pollId).subscribe(poll => this.poll = poll);
+        if (this.poll === undefined) this.pollService.get(pollItem.pollId).subscribe(poll => this.poll = poll);
         // Update UI
         this.activeItemType = pollItem.type;
         delete pollItem.type;
@@ -89,6 +89,7 @@ export class PollParticipantsComponent implements OnInit, OnDestroy {
     }
     if (this.websocketService.sendAnswer(this.activeItem.itemId, answerItem)) {
       this.sent = true;
+      this.answer = null;
     } else {
       this.toolsService.showErrorMessage('Could not send answer. Please try again. If the problem occurs again, please try to reload the page.');
     }
