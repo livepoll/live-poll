@@ -21,12 +21,12 @@ export class PollParticipantsComponent implements OnInit, OnDestroy {
 
   // Variables
   slug = '';
-  // poll: Poll = {id: 1, name: 'Test Poll', pollItems: [], currentItem: 1, slug: 'test', startDate: 0, endDate: 0};
   poll: Poll;
   activeItem: MultipleChoiceItem|QuizItem|OpenTextItem;
   activeItemType = '';
   answer = null;
   sent = false;
+  loading = true;
 
   /**
    * Initialize component
@@ -59,6 +59,7 @@ export class PollParticipantsComponent implements OnInit, OnDestroy {
         delete pollItem.type;
         this.activeItem = pollItem;
         this.sent = false;
+        this.loading = false;
       });
     });
   }

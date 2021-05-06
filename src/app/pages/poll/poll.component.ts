@@ -32,6 +32,7 @@ export class PollComponent {
   poll: Poll;
   pollId: number;
   changingState = false;
+  loadingRunPollItemId = 0;
   showNewPollItemDialog = false;
   error = false;
   results = [];
@@ -101,6 +102,25 @@ export class PollComponent {
   }
 
   /**
+   * Update the current poll item for this poll on the server
+   *
+   * @param event Click event
+   * @param pollItemId Id of the poll item
+   */
+  onRunPollItem(event: any, pollItemId: number): void {
+    event.stopPropagation();
+    const oldPollItem = this.poll.currentItem;
+    this.poll.currentItem = this.loadingRunPollItemId = pollItemId === this.poll.currentItem ? null : pollItemId;
+    this.pollService.update(this.poll).subscribe((_) => {
+      this.loadingRunPollItemId = -1;
+    }, (_) => {
+      this.poll.currentItem = oldPollItem;
+      this.loadingRunPollItemId = -1;
+      this.tools.showErrorMessage('Something went wrong. Please try again');
+    });
+  }
+
+  /**
    * Change the poll state on the server
    *
    * @param open Open = true; closed = false
@@ -166,7 +186,7 @@ export class PollComponent {
    */
   updatePoll(callback: () => void, error?: () => void): void {
     error = error ?? function(): void {
-      this.tools.showErrorMessage('The change could not be committed on the server. Please try again later.');
+      this.tools.showErrorMessage('The change could not be committed onto the server. Please try again later.');
     };
 
     this.pollService.update(this.poll).subscribe(callback, error);
