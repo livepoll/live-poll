@@ -54,6 +54,10 @@ export class PollParticipantsComponent implements OnInit, OnDestroy {
       subscription.subscribe(pollItem => {
         // Load poll
         if (this.poll === undefined) this.pollService.get(pollItem.pollId).subscribe(poll => this.poll = poll);
+        // Randomize selection options if it is a quiz item
+        if (pollItem.type === 'quiz') {
+          pollItem.answers = this.toolsService.shuffleList(pollItem.answers);
+        }
         // Update UI
         this.activeItemType = pollItem.type;
         delete pollItem.type;
