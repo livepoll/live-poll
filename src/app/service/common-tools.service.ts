@@ -79,19 +79,25 @@ export class CommonToolsService {
       .toLowerCase();
   }
 
+  // Fisher-Yates Shuffle
+  // https://bost.ocks.org/mike/shuffle/
   shuffleList(array: any[]): any[] {
     let currentIndex = array.length;
-    let temporaryValue: number;
+    let temp: number;
     let randomIndex: number;
 
-    while (0 !== currentIndex) {
+    // While there remain elements to shuffle
+    while (currentIndex !== 0) {
+      // Pick a remaining element
       randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex -= 1;
+      currentIndex--;
 
-      temporaryValue = array[currentIndex];
+      // And swap it with the current element
+      temp = array[currentIndex];
       array[currentIndex] = array[randomIndex];
-      array[randomIndex] = temporaryValue;
+      array[randomIndex] = temp;
     }
+    
     return array;
   }
 }
