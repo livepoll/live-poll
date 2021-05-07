@@ -107,7 +107,7 @@ export class PollComponent {
    * @param event Click event
    * @param pollItemId Id of the poll item
    */
-  onRunPollItem(event: any, pollItemId: number): void {
+  onRunPollItem(event: MouseEvent, pollItemId: number): void {
     event.stopPropagation();
     const oldPollItem = this.poll.currentItem;
     this.poll.currentItem = this.loadingRunPollItemId = pollItemId === this.poll.currentItem ? null : pollItemId;
@@ -282,7 +282,7 @@ export class PollComponent {
   /**
    * Shows the dialog a specific poll item
    */
-  openEditPollItemDialog(event: any): void {
+  openEditPollItemDialog(event: MouseEvent): void {
     event.stopPropagation();
     // Open edit dialog
     this.showEditPollItemDialog = true;

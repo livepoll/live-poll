@@ -53,7 +53,7 @@ export class PollParticipantsComponent implements OnInit, OnDestroy {
       const subscription = this.websocketService.establishConnection(this.slug);
       subscription.subscribe(pollItem => {
         // Load poll
-        if (this.poll === undefined) this.pollService.get(pollItem.pollId).subscribe(poll => this.poll = poll);
+        if (!this.poll) this.pollService.get(pollItem.pollId).subscribe(poll => this.poll = poll);
         // Randomize selection options if it is a quiz item
         if (pollItem.type === 'quiz') {
           pollItem.answers = this.toolsService.shuffleList(pollItem.answers);

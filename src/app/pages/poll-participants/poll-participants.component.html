@@ -53,7 +53,7 @@
 
     <!-- Waiting for presenter -->
     <nz-result
-      *ngIf="poll !== undefined && poll?.currentItem === null"
+      *ngIf="!poll && !poll.currentItem"
       nzStatus="info"
       nzTitle="Waiting for presenter"
       nzSubTitle="Waiting for the presenter to start the poll ...">
