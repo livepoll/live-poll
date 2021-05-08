@@ -16,7 +16,7 @@
       <h2>{{activeItem?.question}}</h2>
 
       <!-- Loading -->
-      <nz-spin *ngIf="activeItemType === ''" nzSize="large"></nz-spin>
+      <nz-spin *ngIf="loading" nzSize="large"></nz-spin>
 
       <!-- Multiple Choice Question -->
       <div class="poll-item-selection-options" *ngSwitchCase="'multiple-choice'">
@@ -49,6 +49,14 @@
       nzStatus="success"
       nzTitle="Answer was sent"
       nzSubTitle="Waiting for the presenter to select another question ...">
+    </nz-result>
+
+    <!-- Waiting for presenter -->
+    <nz-result
+      *ngIf="!poll.currentItem"
+      nzStatus="info"
+      nzTitle="Waiting for presenter"
+      nzSubTitle="Waiting for the presenter to start the poll ...">
     </nz-result>
   </nz-content>
   <nz-footer class="participants-footer">Provided with ❤ by <a href="https://www.live-poll.de" target="_blank">Live-Poll</a></nz-footer>

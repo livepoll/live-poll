@@ -49,7 +49,6 @@ export class WebsocketService {
    * @param answer Answer object, which will be serialized
    */
   sendAnswer(pollItemId: number, answer: MultipleChoiceItemAnswerParticipant): boolean {
-    console.log(answer);
     if (this.stompClient.connected) {
       this.stompClient.publish({
         destination: ENDPOINT_MESSAGING_WRITE_URL + '/' + pollItemId,

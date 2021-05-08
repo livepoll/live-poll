@@ -21,12 +21,12 @@ export class PollParticipantsComponent implements OnInit, OnDestroy {
 
   // Variables
   slug = '';
-  // poll: Poll = {id: 1, name: 'Test Poll', pollItems: [], currentItem: 1, slug: 'test', startDate: 0, endDate: 0};
   poll: Poll;
   activeItem: MultipleChoiceItem|QuizItem|OpenTextItem;
   activeItemType = '';
   answer = null;
   sent = false;
+  loading = true;
 
   /**
    * Initialize component
@@ -52,13 +52,33 @@ export class PollParticipantsComponent implements OnInit, OnDestroy {
       // Connect to WebSocket
       const subscription = this.websocketService.establishConnection(this.slug);
       subscription.subscribe(pollItem => {
-        // Load poll
-        this.pollService.get(pollItem.pollId).subscribe(poll => this.poll = poll);
-        // Update UI
-        this.activeItemType = pollItem.type;
-        delete pollItem.type;
-        this.activeItem = pollItem;
+        if (Object.keys(pollItem).length > 1) {
+          // Load poll
+          if (!this.poll) {
+            this.pollService.get(pollItem.pollId).subscribe(poll => this.poll = poll);
+          } else {
+            this.poll.currentItem = pollItem.itemId;
+          }
+          // Randomize selection options if it is a quiz item
+          if (pollItem.type === 'quiz') {
+            pollItem.answers = this.toolsService.shuffleList(pollItem.answers);
+          }
+          // Update UI
+          this.activeItemType = pollItem.type;
+          delete pollItem.type;
+          this.activeItem = pollItem;
+        } else {
+          // Load poll
+          if (!this.poll) {
+            this.pollService.get(pollItem.id).subscribe(poll => this.poll = poll);
+          } else {
+            this.poll.currentItem = null;
+          }
+          this.activeItem = null;
+          this.activeItemType = '';
+        }
         this.sent = false;
+        this.loading = false;
       });
     });
   }
@@ -88,6 +108,7 @@ export class PollParticipantsComponent implements OnInit, OnDestroy {
     }
     if (this.websocketService.sendAnswer(this.activeItem.itemId, answerItem)) {
       this.sent = true;
+      this.answer = null;
     } else {
       this.toolsService.showErrorMessage('Could not send answer. Please try again. If the problem occurs again, please try to reload the page.');
     }

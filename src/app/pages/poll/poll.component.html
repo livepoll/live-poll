@@ -99,10 +99,6 @@
                       </ngx-charts-bar-horizontal>
                     </div>
                   </div>
-                  <button nz-button nzType="default" class="preview-button"
-                          [routerLink]="'/p/' + poll.slug + '/' + pollItem.position">
-                    Preview Question<i nz-icon nzType="right"></i>
-                  </button>
 
                   <!-- Header -->
                   <ng-template #header>
@@ -110,7 +106,14 @@
                   </ng-template>
                   <!-- Header options -->
                   <ng-template #options>
+                    <nz-tag *ngIf="poll.currentItem === pollItem.itemId" nzColor="green">
+                      <i nz-icon nzType="loading"></i>
+                      <span>Running</span>
+                    </nz-tag>
                     <nz-tag nzColor="default">{{pollItem.type}}</nz-tag>
+                    <nz-switch class="run-item-switch" nzSize="small" [ngModel]="poll.currentItem === pollItem.itemId"
+                               (click)="onRunPollItem($event, pollItem.itemId)" [nzLoading]="loadingRunPollItemId === pollItem.itemId">
+                    </nz-switch>
                     <button nz-button nzType="primary" [nzSize]="p.nzActive ? 'default' : 'small'"
                             (click)="openEditPollItemDialog($event)">
                       <i nz-icon nzType="edit"></i>Edit
