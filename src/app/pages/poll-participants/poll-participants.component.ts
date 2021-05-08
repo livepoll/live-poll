@@ -52,16 +52,31 @@ export class PollParticipantsComponent implements OnInit, OnDestroy {
       // Connect to WebSocket
       const subscription = this.websocketService.establishConnection(this.slug);
       subscription.subscribe(pollItem => {
-        // Load poll
-        if (!this.poll) this.pollService.get(pollItem.pollId).subscribe(poll => this.poll = poll);
-        // Randomize selection options if it is a quiz item
-        if (pollItem.type === 'quiz') {
-          pollItem.answers = this.toolsService.shuffleList(pollItem.answers);
+        if (Object.keys(pollItem).length > 1) {
+          // Load poll
+          if (!this.poll) {
+            this.pollService.get(pollItem.pollId).subscribe(poll => this.poll = poll);
+          } else {
+            this.poll.currentItem = pollItem.itemId;
+          }
+          // Randomize selection options if it is a quiz item
+          if (pollItem.type === 'quiz') {
+            pollItem.answers = this.toolsService.shuffleList(pollItem.answers);
+          }
+          // Update UI
+          this.activeItemType = pollItem.type;
+          delete pollItem.type;
+          this.activeItem = pollItem;
+        } else {
+          // Load poll
+          if (!this.poll) {
+            this.pollService.get(pollItem.id).subscribe(poll => this.poll = poll);
+          } else {
+            this.poll.currentItem = null;
+          }
+          this.activeItem = null;
+          this.activeItemType = '';
         }
-        // Update UI
-        this.activeItemType = pollItem.type;
-        delete pollItem.type;
-        this.activeItem = pollItem;
         this.sent = false;
         this.loading = false;
       });
