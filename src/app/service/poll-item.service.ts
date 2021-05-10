@@ -35,8 +35,17 @@ export class PollItemService {
    * @param pollItem Poll item
    */
   create<T extends MultipleChoiceItem | QuizItem | OpenTextItem>(pollItem: T): Observable<T> {
-    const endpointFraction = this.tools.convertCamelCaseToKebabCase(pollItem.constructor.name)
-      .replace('-item', '');
+    let endpointFraction = '';
+    switch (pollItem.constructor) {
+      case MultipleChoiceItem:
+        endpointFraction = 'multiple-choice';
+        break;
+      case QuizItem:
+        endpointFraction = 'quiz';
+        break;
+      case OpenTextItem:
+        endpointFraction = 'open-text';
+    }
     return this.http.post<T>(ENDPOINT_URL + `/${endpointFraction}`, pollItem, { withCredentials: true });
   }
 
