@@ -77,7 +77,8 @@ export class PollParticipantsComponent implements OnInit, OnDestroy {
           this.activeItem = null;
           this.activeItemType = '';
         }
-        this.sent = false;
+        // Check if already answered
+        this.sent = localStorage.getItem('answered_' + this.activeItem?.itemId) !== null;
         this.loading = false;
       });
     });
@@ -107,6 +108,7 @@ export class PollParticipantsComponent implements OnInit, OnDestroy {
       }
     }
     if (this.websocketService.sendAnswer(this.activeItem.itemId, answerItem)) {
+      localStorage.setItem('answered_' + this.activeItem.itemId, '1');
       this.sent = true;
       this.answer = null;
     } else {
