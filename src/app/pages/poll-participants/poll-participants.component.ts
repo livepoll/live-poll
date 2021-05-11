@@ -11,6 +11,8 @@ import {OpenTextItem} from '../../model/open-text-item';
 import {CommonToolsService} from '../../service/common-tools.service';
 import {PollService} from '../../service/poll.service';
 import {MultipleChoiceItemAnswerParticipant} from '../../model/multiple-choice-item-answer-participant';
+import {OpenTextItemAnswerParticipant} from '../../model/open-text-item-answer-participant';
+import {QuizItemAnswerParticipant} from '../../model/quiz-item-answer-participant';
 
 @Component({
   selector: 'app-poll-participants',
@@ -80,6 +82,7 @@ export class PollParticipantsComponent implements OnInit, OnDestroy {
         // Check if already answered
         this.sent = localStorage.getItem('answered_' + this.activeItem?.itemId) !== null;
         this.loading = false;
+        this.answer = null;
       });
     });
   }
@@ -96,14 +99,14 @@ export class PollParticipantsComponent implements OnInit, OnDestroy {
       }
       case 'quiz': {
         const activeItem = this.activeItem as QuizItem;
-        /*answerItem = new QuizItemAnswer();
-        answerItem = activeItem.itemId;
-        answerItem.selectionOption = activeItem.answers[this.answer].selectionOption;*/
+        answerItem = new QuizItemAnswerParticipant();
+        answerItem.id = activeItem.answers[this.answer].id;
+        answerItem.selectionOption = activeItem.answers[this.answer].selectionOption;
         break;
       }
       case 'open-text': {
-        /*answerItem = new OpenTextItemAnswer();
-        answerItem.answer = this.answer;*/
+        answerItem = new OpenTextItemAnswerParticipant();
+        answerItem.answer = this.answer;
         break;
       }
     }
