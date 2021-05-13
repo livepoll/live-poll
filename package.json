@@ -56,7 +56,7 @@
     "@angular/localize": "^11.2.13",
     "@angular/platform-browser": "~11.2.13",
     "@angular/platform-browser-dynamic": "~11.2.13",
-    "@angular/router": "~11.2.13",
+    "@angular/router": "~12.0.0",
     "@angular/service-worker": "~11.2.13",
     "@stomp/rx-stomp": "^1.1.2",
     "@swimlane/ngx-charts": "^18.0.1",
