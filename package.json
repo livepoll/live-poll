@@ -21,7 +21,7 @@
   "author": {
     "name": "Marc Auberer",
     "email": "support@live-poll.de",
-    "url": "www.live-poll.de"
+    "url": "https://www.live-poll.de"
   },
   "license": "MIT",
   "scripts": {
@@ -68,7 +68,7 @@
     "ng-zorro-antd": "^11.4.1",
     "ngx-cookie-service": "^11.0.2",
     "ngx-cookieconsent": "^2.2.3",
-    "rxjs": "~7.0.0",
+    "rxjs": "^6.5.3",
     "tslib": "^2.2.0",
     "workbox-core": "^6.1.5",
     "workbox-precaching": "^6.1.5",
@@ -81,7 +81,7 @@
     "@angular/compiler-cli": "~11.2.13",
     "@types/jasmine": "~3.7.2",
     "@types/jasminewd2": "~2.0.9",
-    "@types/node": "^15.0.2",
+    "@types/node": "^15.0.3",
     "codelyzer": "^6.0.2",
     "electron": "^12.0.7",
     "electron-packager": "^15.2.0",

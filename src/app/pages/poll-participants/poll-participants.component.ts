@@ -62,7 +62,7 @@ export class PollParticipantsComponent implements OnInit, OnDestroy {
             this.poll.currentItem = pollItem.itemId;
           }
           // Randomize selection options if it is a quiz item
-          if (pollItem.type === 'quiz') {
+          if (pollItem instanceof QuizItem) {
             pollItem.answers = this.toolsService.shuffleList(pollItem.answers);
           }
           // Update UI
@@ -72,7 +72,7 @@ export class PollParticipantsComponent implements OnInit, OnDestroy {
         } else {
           // Load poll
           if (!this.poll) {
-            this.pollService.get(pollItem.id).subscribe(poll => this.poll = poll);
+            this.pollService.get(pollItem.pollId).subscribe(poll => this.poll = poll);
           } else {
             this.poll.currentItem = null;
           }
