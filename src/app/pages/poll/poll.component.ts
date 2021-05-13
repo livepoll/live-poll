@@ -144,6 +144,13 @@ export class PollComponent {
   }
 
   /**
+   * Opens a separate page for the presenter
+   */
+  openPresenterView(): void {
+    this.router.navigateByUrl('/r/' + this.poll.slug);
+  }
+
+  /**
    * Is called when the NewPollItemDialog or the EditPollItemDialog was closed.
    * Triggers a poll reload, if the creation of an item was successful
    *
