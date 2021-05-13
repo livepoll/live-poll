@@ -61,7 +61,7 @@
         <span class="text-primary">
           {{host}}/p/
           <span nz-typography nzCopyable nzEditable [nzContent]="poll.slug" (nzContentChange)="onSlugChange($event)"
-                [nzCopyText]="host + '/' + poll.slug" class="slug text-primary"></span>
+                [nzCopyText]="host + '/p/' + poll.slug" class="slug text-primary"></span>
         </span>
         <nz-tabset class="full-width">
           <nz-tab [nzTitle]="titleQuestions" class="tab">
