@@ -3,6 +3,14 @@
  */
 
 import {Component, OnInit} from '@angular/core';
+import {Poll} from '../../model/poll';
+import {MultipleChoiceItem} from '../../model/multiple-choice-item';
+import {QuizItem} from '../../model/quiz-item';
+import {OpenTextItem} from '../../model/open-text-item';
+import {ActivatedRoute} from '@angular/router';
+import {PollService} from '../../service/poll.service';
+import {WebsocketService} from '../../service/websocket.service';
+import {CommonToolsService} from '../../service/common-tools.service';
 
 @Component({
   selector: 'app-presentation',
@@ -11,9 +19,57 @@ import {Component, OnInit} from '@angular/core';
 })
 export class PresentationComponent implements OnInit {
 
-  constructor() { }
+  // Variables
+  pollId = 0;
+  poll: Poll;
+  activeItem: MultipleChoiceItem|QuizItem|OpenTextItem;
+  activeItemType = '';
 
+  /**
+   * Initialize component
+   *
+   * @param route Active route
+   * @param pollService Injected PollService
+   * @param websocketService Injected WebSocketService
+   * @param toolsService Injected CommonToolsService
+   */
+  constructor(
+    private route: ActivatedRoute,
+    private pollService: PollService,
+    private websocketService: WebsocketService,
+    private toolsService: CommonToolsService
+  ) {}
+
+  /**
+   * Initialize the presenter view
+   */
   ngOnInit(): void {
+    this.route.params.subscribe(params => {
+      this.pollId = params.pollId;
+      // Connect to WebSocket
+      const subscription = this.websocketService.establishConnectionPresentation(this.pollId);
+      subscription.subscribe(pollItem => {
+        console.log('PollItem' + pollItem);
+        if (Object.keys(pollItem).length > 1) {
+          // Update UI
+          this.activeItemType = pollItem.type;
+          delete pollItem.type;
+          this.activeItem = pollItem;
+        } else {
+          // Update UI
+          this.activeItem = null;
+          this.activeItemType = '';
+        }
+      });
+      // Load poll
+      this.pollService.get(this.pollId).subscribe(poll => this.poll = poll);
+    });
   }
 
+  /**
+   * Moves to the next poll item, defined by the poll item order
+   */
+  next(): void {
+
+  }
 }

@@ -2,4 +2,34 @@
   ~ Copyright © Live-Poll 2020-2021. All rights reserved
   -->
 
-<p>presentation works!</p>
+<nz-layout>
+  <nz-header class="header">
+    <div class="header-logo">
+      <a href="/" target="_blank" rel="noopener noreferrer">
+        <img src="assets/images/logo.svg" alt="logo">
+      </a>
+    </div>
+    <h1 class="poll-name">{{poll?.name}}</h1>
+  </nz-header>
+  <nz-content>
+    <!-- Poll results for a poll item -->
+    <div *ngIf="poll?.currentItem" class="poll-container">
+      <h2>{{activeItem.question}}</h2>
+      <!--<ngx-charts-pie-chart class="chart" [view]="[500, 300]" [results]="getChartData(pollItem.itemId)"
+                            scheme="forest">
+      </ngx-charts-pie-chart>-->
+    </div>
+
+    <!-- Start screen -->
+    <nz-result
+      *ngIf="!poll?.currentItem"
+      nzStatus="404"
+      nzTitle="Start poll"
+      nzSubTitle="Start the poll when you're ready">
+      <div nz-result-extra>
+        <button nz-button nzType="primary" (click)="next()">Start poll</button>
+      </div>
+    </nz-result>
+  </nz-content>
+  <nz-footer class="participants-footer">Provided with ❤ by <a href="https://www.live-poll.de" target="_blank">Live-Poll</a></nz-footer>
+</nz-layout>

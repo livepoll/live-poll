@@ -52,7 +52,7 @@ export class PollParticipantsComponent implements OnInit, OnDestroy {
     this.route.params.subscribe(params => {
       this.slug = params.slug;
       // Connect to WebSocket
-      const subscription = this.websocketService.establishConnection(this.slug);
+      const subscription = this.websocketService.establishConnectionParticipant(this.slug);
       subscription.subscribe(pollItem => {
         if (Object.keys(pollItem).length > 1) {
           // Load poll

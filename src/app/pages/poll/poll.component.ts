@@ -147,7 +147,7 @@ export class PollComponent {
    * Opens a separate page for the presenter
    */
   openPresenterView(): void {
-    this.router.navigateByUrl('/r/' + this.poll.slug);
+    this.router.navigateByUrl('/r/' + this.poll.id);
   }
 
   /**

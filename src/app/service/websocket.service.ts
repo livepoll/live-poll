@@ -14,8 +14,9 @@ import {MultipleChoiceItem} from '../model/multiple-choice-item';
 import {MultipleChoiceItemAnswerParticipant} from '../model/multiple-choice-item-answer-participant';
 
 const ENDPOINT_BROKER_URL = env.apiBaseWebsocketUrl + '/websocket/enter-poll';
-const ENDPOINT_MESSAGING_READ_URL = '/user/v1/websocket/poll';
-const ENDPOINT_MESSAGING_WRITE_URL = '/v1/websocket/answer';
+const ENDPOINT_MESSAGING_PARTICIPANT_READ_URL = '/user/v1/websocket/poll';
+const ENDPOINT_MESSAGING_PARTICIPANT_WRITE_URL = '/v1/websocket/answer';
+const ENDPOINT_MESSAGING_PRESENTATION_READ_URL = '/user/v1/websocket/presentation';
 
 @Injectable({
   providedIn: 'root'
@@ -32,12 +33,27 @@ export class WebsocketService {
   /**
    * Tries to connect via the handshake endpoint of the websocket server
    */
-  establishConnection(slug: string): Observable<MultipleChoiceItem|QuizItem|OpenTextItem> {
+  establishConnectionParticipant(slug: string): Observable<MultipleChoiceItem|QuizItem|OpenTextItem> {
     this.stompClient = new RxStomp();
     this.stompClient.configure(this.stompConfig);
     this.stompClient.activate();
 
-    return this.subscription = this.stompClient.watch(ENDPOINT_MESSAGING_READ_URL + '/' + slug).pipe(rxMap((msg: HttpResponse<any>) => {
+    return this.subscription = this.stompClient.watch(ENDPOINT_MESSAGING_PARTICIPANT_READ_URL + '/' + slug)
+      .pipe(rxMap((msg: HttpResponse<any>) => {
+      return JSON.parse(msg.body);
+    }));
+  }
+
+  /**
+   * Tries to connect via the handshake endpoint of the websocket server
+   */
+  establishConnectionPresentation(pollId: number): Observable<MultipleChoiceItem|QuizItem|OpenTextItem> {
+    this.stompClient = new RxStomp();
+    this.stompClient.configure(this.stompConfig);
+    this.stompClient.activate();
+
+    return this.subscription = this.stompClient.watch(ENDPOINT_MESSAGING_PRESENTATION_READ_URL + '/' + pollId)
+      .pipe(rxMap((msg: HttpResponse<any>) => {
       return JSON.parse(msg.body);
     }));
   }
@@ -51,7 +67,7 @@ export class WebsocketService {
   sendAnswer(pollItemId: number, answer: MultipleChoiceItemAnswerParticipant): boolean {
     if (this.stompClient.connected) {
       this.stompClient.publish({
-        destination: ENDPOINT_MESSAGING_WRITE_URL + '/' + pollItemId,
+        destination: ENDPOINT_MESSAGING_PARTICIPANT_WRITE_URL + '/' + pollItemId,
         body: JSON.stringify(answer)
       });
       return true;
