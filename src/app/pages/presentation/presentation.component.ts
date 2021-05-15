@@ -7,7 +7,7 @@ import {Poll} from '../../model/poll';
 import {MultipleChoiceItem} from '../../model/multiple-choice-item';
 import {QuizItem} from '../../model/quiz-item';
 import {OpenTextItem} from '../../model/open-text-item';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {PollService} from '../../service/poll.service';
 import {WebsocketService} from '../../service/websocket.service';
 import {CommonToolsService} from '../../service/common-tools.service';
@@ -28,12 +28,14 @@ export class PresentationComponent implements OnInit {
   /**
    * Initialize component
    *
+   * @param router Injected router
    * @param route Active route
    * @param pollService Injected PollService
    * @param websocketService Injected WebSocketService
    * @param toolsService Injected CommonToolsService
    */
   constructor(
+    private router: Router,
     private route: ActivatedRoute,
     private pollService: PollService,
     private websocketService: WebsocketService,
@@ -71,5 +73,12 @@ export class PresentationComponent implements OnInit {
    */
   next(): void {
 
+  }
+
+  /**
+   * Go back to dashboard to edit the poll
+   */
+  backToDashboard(): void {
+    this.router.navigateByUrl('/dashboard/my-polls/poll/' + this.pollId);
   }
 }

@@ -14,7 +14,7 @@
   <nz-content>
     <!-- Poll results for a poll item -->
     <div *ngIf="poll?.currentItem" class="poll-container">
-      <h2>{{activeItem.question}}</h2>
+      <h2>{{activeItem?.question}}</h2>
       <!--<ngx-charts-pie-chart class="chart" [view]="[500, 300]" [results]="getChartData(pollItem.itemId)"
                             scheme="forest">
       </ngx-charts-pie-chart>-->
@@ -27,6 +27,10 @@
       nzTitle="Start poll"
       nzSubTitle="Start the poll when you're ready">
       <div nz-result-extra>
+        <button nz-button (click)="backToDashboard()">
+          <i nz-icon nzType="left"></i>
+          Back to Dashboard
+        </button>
         <button nz-button nzType="primary" (click)="next()">Start poll</button>
       </div>
     </nz-result>
