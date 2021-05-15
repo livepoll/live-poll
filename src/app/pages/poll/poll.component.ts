@@ -216,9 +216,7 @@ export class PollComponent {
    * @param id Id of the poll item
    */
   deletePollItem(id: number): void {
-    this.pollItemService.delete(id).subscribe((_) => {
-      this.loadPoll();
-    });
+    this.pollItemService.delete(id).subscribe((_) => this.loadPoll(), (_) => this.loadPoll());
   }
 
   /**
