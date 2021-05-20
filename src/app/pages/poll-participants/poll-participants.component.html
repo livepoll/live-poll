@@ -53,10 +53,18 @@
 
     <!-- Waiting for presenter -->
     <nz-result
-      *ngIf="!poll.currentItem"
+      *ngIf="poll && !poll.currentItem"
       nzStatus="403"
       nzTitle="Waiting for presenter"
       nzSubTitle="Waiting for the presenter to start the poll ...">
+    </nz-result>
+
+    <!-- Poll not found -->
+    <nz-result
+      *ngIf="!loading && !poll"
+      nzStatus="404"
+      nzTitle="Poll not found"
+      nzSubTitle="No poll found for this slug. Please make sure, that you have the right link.">
     </nz-result>
   </nz-content>
   <nz-footer class="participants-footer">Provided with ❤ by <a href="https://www.live-poll.de" target="_blank">Live-Poll</a></nz-footer>

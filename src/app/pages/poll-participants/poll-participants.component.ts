@@ -57,7 +57,12 @@ export class PollParticipantsComponent implements OnInit, OnDestroy {
         if (Object.keys(pollItem).length > 1) {
           // Load poll
           if (!this.poll) {
-            this.pollService.get(pollItem.pollId).subscribe(poll => this.poll = poll);
+            this.pollService.get(pollItem.pollId).subscribe(poll => {
+              this.poll = poll;
+              this.loading = false;
+            }, (_) => {
+              this.loading = false;
+            });
           } else {
             this.poll.currentItem = pollItem.itemId;
           }
@@ -72,7 +77,12 @@ export class PollParticipantsComponent implements OnInit, OnDestroy {
         } else {
           // Load poll
           if (!this.poll) {
-            this.pollService.get(pollItem.pollId).subscribe(poll => this.poll = poll);
+            this.pollService.get(pollItem.pollId).subscribe(poll => {
+              this.poll = poll;
+              this.loading = false;
+            }, (_) => {
+              this.loading = false;
+            });
           } else {
             this.poll.currentItem = null;
           }
@@ -81,7 +91,6 @@ export class PollParticipantsComponent implements OnInit, OnDestroy {
         }
         // Check if already answered
         this.sent = localStorage.getItem('answered_' + this.activeItem?.itemId) !== null;
-        this.loading = false;
         this.answer = null;
       });
     });
