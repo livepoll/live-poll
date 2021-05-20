@@ -2,7 +2,7 @@
  * Copyright © Live-Poll 2020-2021. All rights reserved
  */
 
-import {PollItem} from './poll-item';
+import {PollItem} from './poll-item/poll-item';
 
 /**
  * Poll class.

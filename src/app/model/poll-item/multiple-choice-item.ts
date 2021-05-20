@@ -3,7 +3,7 @@
  */
 
 import {PollItem} from './poll-item';
-import {MultipleChoiceItemAnswer} from './multiple-choice-item-answer';
+import {MultipleChoiceItemAnswer} from '../poll-item-answer/multiple-choice-item-answer';
 
 /**
  * MultipleChoiceItem class.

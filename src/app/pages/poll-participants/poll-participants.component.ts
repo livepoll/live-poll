@@ -4,15 +4,15 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Poll} from '../../model/poll';
-import {MultipleChoiceItem} from '../../model/multiple-choice-item';
+import {MultipleChoiceItem} from '../../model/poll-item/multiple-choice-item';
 import {WebsocketService} from '../../service/websocket.service';
-import {QuizItem} from '../../model/quiz-item';
-import {OpenTextItem} from '../../model/open-text-item';
+import {QuizItem} from '../../model/poll-item/quiz-item';
+import {OpenTextItem} from '../../model/poll-item/open-text-item';
 import {CommonToolsService} from '../../service/common-tools.service';
 import {PollService} from '../../service/poll.service';
-import {MultipleChoiceItemAnswerParticipant} from '../../model/multiple-choice-item-answer-participant';
-import {OpenTextItemAnswerParticipant} from '../../model/open-text-item-answer-participant';
-import {QuizItemAnswerParticipant} from '../../model/quiz-item-answer-participant';
+import {MultipleChoiceItemAnswerParticipant} from '../../model/poll-item-answer-participant/multiple-choice-item-answer-participant';
+import {OpenTextItemAnswerParticipant} from '../../model/poll-item-answer-participant/open-text-item-answer-participant';
+import {QuizItemAnswerParticipant} from '../../model/poll-item-answer-participant/quiz-item-answer-participant';
 
 @Component({
   selector: 'app-poll-participants',

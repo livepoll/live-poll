@@ -3,7 +3,7 @@
  */
 
 import {PollItem} from './poll-item';
-import {QuizItemAnswer} from './quiz-item-answer';
+import {QuizItemAnswer} from '../poll-item-answer/quiz-item-answer';
 
 /**
  * QuizItem class.

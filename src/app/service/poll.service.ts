@@ -7,7 +7,7 @@ import {environment as env} from '../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {Poll} from '../model/poll';
 import {Observable} from 'rxjs';
-import {PollItem} from '../model/poll-item';
+import {PollItem} from '../model/poll-item/poll-item';
 
 const ENDPOINT_URL = env.apiBaseUrl + '/polls';
 

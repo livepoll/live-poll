@@ -8,10 +8,10 @@ import {environment as env} from '../../environments/environment';
 import {RxStomp} from '@stomp/rx-stomp';
 import {map as rxMap} from 'rxjs/operators';
 import {Observable} from 'rxjs';
-import {OpenTextItem} from '../model/open-text-item';
-import {QuizItem} from '../model/quiz-item';
-import {MultipleChoiceItem} from '../model/multiple-choice-item';
-import {MultipleChoiceItemAnswerParticipant} from '../model/multiple-choice-item-answer-participant';
+import {OpenTextItem} from '../model/poll-item/open-text-item';
+import {QuizItem} from '../model/poll-item/quiz-item';
+import {MultipleChoiceItem} from '../model/poll-item/multiple-choice-item';
+import {MultipleChoiceItemAnswerParticipant} from '../model/poll-item-answer-participant/multiple-choice-item-answer-participant';
 
 const ENDPOINT_BROKER_URL = env.apiBaseWebsocketUrl + '/websocket/enter-poll';
 const ENDPOINT_MESSAGING_PARTICIPANT_READ_URL = '/user/v1/websocket/poll';
