@@ -28,14 +28,14 @@ export class CommonToolsService {
     const currentDate = new Date().getTime();
 
     if (
-      (startDate === 0 && endDate === 0) || // Manual opening, manual closing
+      (!startDate && !endDate) || // Manual opening, manual closing
       (startDate > currentDate) // Start date not reached
     ) {
       // Poll is pending
       return 1;
     } else if (
       (startDate <= currentDate && endDate > currentDate) || // We're in between of the two dates
-      (startDate <= currentDate && endDate === 0) // Started, manual closing
+      (startDate <= currentDate && !endDate) // Started, manual closing
     ) {
       // Poll is running
       return 2;
@@ -97,7 +97,7 @@ export class CommonToolsService {
       array[currentIndex] = array[randomIndex];
       array[randomIndex] = temp;
     }
-    
+
     return array;
   }
 }
