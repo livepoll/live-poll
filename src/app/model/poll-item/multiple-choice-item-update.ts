@@ -11,7 +11,7 @@ import {MultipleChoiceItemAnswer} from '../poll-item-answer/multiple-choice-item
  */
 export class MultipleChoiceItemCreate extends PollItem {
   position: number;
-  answers: MultipleChoiceItemAnswer[];
+  selectionOptions: MultipleChoiceItemAnswer[];
 
   public constructor(init?: Partial<MultipleChoiceItemCreate>) {
     super();

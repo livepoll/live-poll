@@ -11,7 +11,7 @@ import {QuizItemAnswer} from '../poll-item-answer/quiz-item-answer';
  */
 export class QuizItemCreate extends PollItem {
   position: number;
-  answers: QuizItemAnswer[];
+  selectionOptions: QuizItemAnswer[];
 
   public constructor(init?: Partial<QuizItemCreate>) {
     super();

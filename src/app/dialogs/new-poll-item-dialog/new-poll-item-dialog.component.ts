@@ -177,10 +177,10 @@ export class NewPollItemDialogComponent {
         pollItem = new OpenTextItemCreate({ pollId, question });
         break;
       case 2: // Multiple choice item
-        pollItem = new MultipleChoiceItemCreate({ pollId, question, answers });
+        pollItem = new MultipleChoiceItemCreate({ pollId, question, selectionOptions: answers });
         break;
       case 3: // Quiz item
-        pollItem = new QuizItemCreate({ pollId, question, answers });
+        pollItem = new QuizItemCreate({ pollId, question, selectionOptions: answers });
         break;
     }
 
@@ -198,30 +198,5 @@ export class NewPollItemDialogComponent {
       this.loading = false;
       this.step--;
     });
-
-    /*// Build header, body and options
-    const header = new HttpHeaders().set('Content-Type', 'application/json');
-    const options: any = { header, observe: 'response', withCredentials: true };
-    const body = { pollId, question, position, answers };
-    // Send request
-    const endpointFraction = ITEM_TYPES.find(item => item.id === this.itemType).endpointFraction;
-    this.http.post<string>(env.apiBaseUrl + '/polls/' + pollId + '/' + endpointFraction, body, options)
-      .subscribe((response: HttpResponse<string>) => {
-        if (response.ok) {
-          // Request was successful, continue
-          this.onClose.emit(true);
-          // Reset dialog
-          this.step = 1;
-          this.itemType = 0;
-          this.question = '';
-          this.answers = ['', ''];
-          this.options = [];
-          this.loading = false;
-        }
-      }, (_) => {
-        this.tools.showErrorMessage('An unknown error occurred. Please try again.');
-        this.loading = false;
-        this.step--;
-      });*/
   }
 }

@@ -10,7 +10,7 @@ import {QuizItemAnswer} from '../poll-item-answer/quiz-item-answer';
  * Represents a quiz question. Quiz questions can have multiple possible answers.
  */
 export class QuizItemCreate extends PollItem {
-  answers: QuizItemAnswer[];
+  selectionOptions: QuizItemAnswer[];
 
   public constructor(init?: Partial<QuizItemCreate>) {
     super();

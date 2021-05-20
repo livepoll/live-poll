@@ -68,7 +68,7 @@ export class PollParticipantsComponent implements OnInit, OnDestroy {
           }
           // Randomize selection options if it is a quiz item
           if (pollItem instanceof QuizItemCreate) {
-            pollItem.answers = this.toolsService.shuffleList(pollItem.answers);
+            pollItem.selectionOptions = this.toolsService.shuffleList(pollItem.selectionOptions);
           }
           // Update UI
           this.activeItemType = pollItem.type;
@@ -102,15 +102,15 @@ export class PollParticipantsComponent implements OnInit, OnDestroy {
       case 'multiple-choice': {
         const activeItem = this.activeItem as MultipleChoiceItemCreate;
         answerItem = new MultipleChoiceItemAnswerParticipant();
-        answerItem.id = activeItem.answers[this.answer].id;
-        answerItem.selectionOption = activeItem.answers[this.answer].selectionOption;
+        answerItem.id = activeItem.selectionOptions[this.answer].id;
+        answerItem.selectionOption = activeItem.selectionOptions[this.answer].selectionOption;
         break;
       }
       case 'quiz': {
         const activeItem = this.activeItem as QuizItemCreate;
         answerItem = new QuizItemAnswerParticipant();
-        answerItem.id = activeItem.answers[this.answer].id;
-        answerItem.selectionOption = activeItem.answers[this.answer].selectionOption;
+        answerItem.id = activeItem.selectionOptions[this.answer].id;
+        answerItem.selectionOption = activeItem.selectionOptions[this.answer].selectionOption;
         break;
       }
       case 'open-text': {

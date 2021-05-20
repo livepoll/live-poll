@@ -10,7 +10,7 @@ import {MultipleChoiceItemAnswer} from '../poll-item-answer/multiple-choice-item
  * Represents a multiple choice question, which can have several possible answers.
  */
 export class MultipleChoiceItemCreate extends PollItem {
-  answers: MultipleChoiceItemAnswer[];
+  selectionOptions: MultipleChoiceItemAnswer[];
 
   public constructor(init?: Partial<MultipleChoiceItemCreate>) {
     super();
