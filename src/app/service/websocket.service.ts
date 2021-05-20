@@ -8,9 +8,9 @@ import {environment as env} from '../../environments/environment';
 import {RxStomp} from '@stomp/rx-stomp';
 import {map as rxMap} from 'rxjs/operators';
 import {Observable} from 'rxjs';
-import {OpenTextItem} from '../model/poll-item/open-text-item';
-import {QuizItem} from '../model/poll-item/quiz-item';
-import {MultipleChoiceItem} from '../model/poll-item/multiple-choice-item';
+import {OpenTextItemCreate} from '../model/poll-item/open-text-item-create';
+import {QuizItemCreate} from '../model/poll-item/quiz-item-create';
+import {MultipleChoiceItemCreate} from '../model/poll-item/multiple-choice-item-create';
 import {MultipleChoiceItemAnswerParticipant} from '../model/poll-item-answer-participant/multiple-choice-item-answer-participant';
 
 const ENDPOINT_BROKER_URL = env.apiBaseWebsocketUrl + '/websocket/enter-poll';
@@ -33,7 +33,7 @@ export class WebsocketService {
   /**
    * Tries to connect via the handshake endpoint of the websocket server
    */
-  establishConnectionParticipant(slug: string): Observable<MultipleChoiceItem|QuizItem|OpenTextItem> {
+  establishConnectionParticipant(slug: string): Observable<MultipleChoiceItemCreate|QuizItemCreate|OpenTextItemCreate> {
     this.stompClient = new RxStomp();
     this.stompClient.configure(this.stompConfig);
     this.stompClient.activate();
@@ -47,7 +47,7 @@ export class WebsocketService {
   /**
    * Tries to connect via the handshake endpoint of the websocket server
    */
-  establishConnectionPresentation(pollId: number): Observable<MultipleChoiceItem|QuizItem|OpenTextItem> {
+  establishConnectionPresentation(pollId: number): Observable<MultipleChoiceItemCreate|QuizItemCreate|OpenTextItemCreate> {
     this.stompClient = new RxStomp();
     this.stompClient.configure(this.stompConfig);
     this.stompClient.activate();

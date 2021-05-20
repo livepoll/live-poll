@@ -6,13 +6,13 @@ import {PollItem} from './poll-item';
 import {MultipleChoiceItemAnswer} from '../poll-item-answer/multiple-choice-item-answer';
 
 /**
- * MultipleChoiceItem class.
+ * MultipleChoiceItemCreate class.
  * Represents a multiple choice question, which can have several possible answers.
  */
-export class MultipleChoiceItem extends PollItem {
+export class MultipleChoiceItemCreate extends PollItem {
   answers: MultipleChoiceItemAnswer[];
 
-  public constructor(init?: Partial<MultipleChoiceItem>) {
+  public constructor(init?: Partial<MultipleChoiceItemCreate>) {
     super();
     Object.assign(this, init);
   }

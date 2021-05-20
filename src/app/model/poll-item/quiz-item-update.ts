@@ -6,13 +6,14 @@ import {PollItem} from './poll-item';
 import {QuizItemAnswer} from '../poll-item-answer/quiz-item-answer';
 
 /**
- * QuizItem class.
+ * QuizItemCreate class.
  * Represents a quiz question. Quiz questions can have multiple possible answers.
  */
-export class QuizItem extends PollItem {
+export class QuizItemCreate extends PollItem {
+  position: number;
   answers: QuizItemAnswer[];
 
-  public constructor(init?: Partial<QuizItem>) {
+  public constructor(init?: Partial<QuizItemCreate>) {
     super();
     Object.assign(this, init);
   }

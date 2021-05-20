@@ -4,10 +4,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Poll} from '../../model/poll';
-import {MultipleChoiceItem} from '../../model/poll-item/multiple-choice-item';
+import {MultipleChoiceItemCreate} from '../../model/poll-item/multiple-choice-item-create';
 import {WebsocketService} from '../../service/websocket.service';
-import {QuizItem} from '../../model/poll-item/quiz-item';
-import {OpenTextItem} from '../../model/poll-item/open-text-item';
+import {QuizItemCreate} from '../../model/poll-item/quiz-item-create';
+import {OpenTextItemCreate} from '../../model/poll-item/open-text-item-create';
 import {CommonToolsService} from '../../service/common-tools.service';
 import {PollService} from '../../service/poll.service';
 import {MultipleChoiceItemAnswerParticipant} from '../../model/poll-item-answer-participant/multiple-choice-item-answer-participant';
@@ -24,7 +24,7 @@ export class PollParticipantsComponent implements OnInit, OnDestroy {
   // Variables
   slug = '';
   poll: Poll;
-  activeItem: MultipleChoiceItem|QuizItem|OpenTextItem;
+  activeItem: MultipleChoiceItemCreate|QuizItemCreate|OpenTextItemCreate;
   activeItemType = '';
   answer = null;
   sent = false;
@@ -62,7 +62,7 @@ export class PollParticipantsComponent implements OnInit, OnDestroy {
             this.poll.currentItem = pollItem.itemId;
           }
           // Randomize selection options if it is a quiz item
-          if (pollItem instanceof QuizItem) {
+          if (pollItem instanceof QuizItemCreate) {
             pollItem.answers = this.toolsService.shuffleList(pollItem.answers);
           }
           // Update UI
@@ -91,14 +91,14 @@ export class PollParticipantsComponent implements OnInit, OnDestroy {
     let answerItem;
     switch (this.activeItemType) {
       case 'multiple-choice': {
-        const activeItem = this.activeItem as MultipleChoiceItem;
+        const activeItem = this.activeItem as MultipleChoiceItemCreate;
         answerItem = new MultipleChoiceItemAnswerParticipant();
         answerItem.id = activeItem.answers[this.answer].id;
         answerItem.selectionOption = activeItem.answers[this.answer].selectionOption;
         break;
       }
       case 'quiz': {
-        const activeItem = this.activeItem as QuizItem;
+        const activeItem = this.activeItem as QuizItemCreate;
         answerItem = new QuizItemAnswerParticipant();
         answerItem.id = activeItem.answers[this.answer].id;
         answerItem.selectionOption = activeItem.answers[this.answer].selectionOption;

@@ -7,9 +7,9 @@ import {environment as env} from '../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {PollItem} from '../model/poll-item/poll-item';
-import {MultipleChoiceItem} from '../model/poll-item/multiple-choice-item';
-import {QuizItem} from '../model/poll-item/quiz-item';
-import {OpenTextItem} from '../model/poll-item/open-text-item';
+import {MultipleChoiceItemCreate} from '../model/poll-item/multiple-choice-item-create';
+import {QuizItemCreate} from '../model/poll-item/quiz-item-create';
+import {OpenTextItemCreate} from '../model/poll-item/open-text-item-create';
 import {CommonToolsService} from './common-tools.service';
 
 const ENDPOINT_URL = env.apiBaseUrl + '/poll-items';
@@ -34,16 +34,16 @@ export class PollItemService {
    *
    * @param pollItem Poll item
    */
-  create<T extends MultipleChoiceItem | QuizItem | OpenTextItem>(pollItem: T): Observable<T> {
+  create<T extends MultipleChoiceItemCreate | QuizItemCreate | OpenTextItemCreate>(pollItem: T): Observable<T> {
     let endpointFraction = '';
     switch (pollItem.constructor) {
-      case MultipleChoiceItem:
+      case MultipleChoiceItemCreate:
         endpointFraction = 'multiple-choice';
         break;
-      case QuizItem:
+      case QuizItemCreate:
         endpointFraction = 'quiz';
         break;
-      case OpenTextItem:
+      case OpenTextItemCreate:
         endpointFraction = 'open-text';
     }
     return this.http.post<T>(ENDPOINT_URL + `/${endpointFraction}`, pollItem, { withCredentials: true });

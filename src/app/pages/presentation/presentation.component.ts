@@ -4,9 +4,9 @@
 
 import {Component, OnInit} from '@angular/core';
 import {Poll} from '../../model/poll';
-import {MultipleChoiceItem} from '../../model/poll-item/multiple-choice-item';
-import {QuizItem} from '../../model/poll-item/quiz-item';
-import {OpenTextItem} from '../../model/poll-item/open-text-item';
+import {MultipleChoiceItemCreate} from '../../model/poll-item/multiple-choice-item-create';
+import {QuizItemCreate} from '../../model/poll-item/quiz-item-create';
+import {OpenTextItemCreate} from '../../model/poll-item/open-text-item-create';
 import {ActivatedRoute, Router} from '@angular/router';
 import {PollService} from '../../service/poll.service';
 import {WebsocketService} from '../../service/websocket.service';
@@ -22,7 +22,7 @@ export class PresentationComponent implements OnInit {
   // Variables
   pollId = 0;
   poll: Poll;
-  activeItem: MultipleChoiceItem|QuizItem|OpenTextItem;
+  activeItem: MultipleChoiceItemCreate|QuizItemCreate|OpenTextItemCreate;
   activeItemType = '';
 
   /**

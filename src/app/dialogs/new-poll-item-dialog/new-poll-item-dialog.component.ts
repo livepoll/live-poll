@@ -7,9 +7,9 @@ import {OPTIONS_DATA, OptionType} from '../../shared/poll-item-options';
 import {Poll} from '../../model/poll';
 import {CommonToolsService} from '../../service/common-tools.service';
 import {PollItemService} from '../../service/poll-item.service';
-import {OpenTextItem} from '../../model/poll-item/open-text-item';
-import {MultipleChoiceItem} from '../../model/poll-item/multiple-choice-item';
-import {QuizItem} from '../../model/poll-item/quiz-item';
+import {OpenTextItemCreate} from '../../model/poll-item/open-text-item-create';
+import {MultipleChoiceItemCreate} from '../../model/poll-item/multiple-choice-item-create';
+import {QuizItemCreate} from '../../model/poll-item/quiz-item-create';
 
 // Constants
 const STEP_LABELS = [
@@ -99,7 +99,7 @@ export class NewPollItemDialogComponent {
   handleNext(): void {
     if (this.step === STEP_LABELS.length) {
       this.step++;
-      this.createPollItem(this.poll.id, this.question, 0, this.answers);
+      this.createPollItem(this.poll.id, this.question, this.answers);
     } else {
       // Validity check
       switch (this.step) {
@@ -168,19 +168,19 @@ export class NewPollItemDialogComponent {
     return index;
   }
 
-  createPollItem(pollId: number, question: string, position: number, answers): void {
+  createPollItem(pollId: number, question: string, answers): void {
     this.loading = true;
 
     let pollItem;
     switch (this.itemType) {
       case 1: // Open text item
-        pollItem = new OpenTextItem({ pollId, position, question });
+        pollItem = new OpenTextItemCreate({ pollId, question });
         break;
       case 2: // Multiple choice item
-        pollItem = new MultipleChoiceItem({ pollId, position, question, answers });
+        pollItem = new MultipleChoiceItemCreate({ pollId, question, answers });
         break;
       case 3: // Quiz item
-        pollItem = new QuizItem({ pollId, position, question, answers });
+        pollItem = new QuizItemCreate({ pollId, question, answers });
         break;
     }
 
