@@ -98,6 +98,7 @@ export class PollComponent {
     // Commit changes to the server
     this.pollService.update(this.poll).subscribe((_) => {}, (_) => {
       this.poll.slug = oldSlug;
+      this.tools.showErrorMessage('Could not change the slug. Maybe the slug is already in use by another poll');
     });
   }
 

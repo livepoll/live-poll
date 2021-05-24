@@ -4,15 +4,15 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Poll} from '../../model/poll';
-import {MultipleChoiceItemCreate} from '../../model/poll-item/multiple-choice-item-create';
 import {WebsocketService} from '../../service/websocket.service';
-import {QuizItemCreate} from '../../model/poll-item/quiz-item-create';
-import {OpenTextItemCreate} from '../../model/poll-item/open-text-item-create';
 import {CommonToolsService} from '../../service/common-tools.service';
 import {PollService} from '../../service/poll.service';
 import {MultipleChoiceItemAnswerParticipant} from '../../model/poll-item-answer-participant/multiple-choice-item-answer-participant';
 import {OpenTextItemAnswerParticipant} from '../../model/poll-item-answer-participant/open-text-item-answer-participant';
 import {QuizItemAnswerParticipant} from '../../model/poll-item-answer-participant/quiz-item-answer-participant';
+import {MultipleChoiceItemParticipant} from '../../model/poll-item-participant/multiple-choice-item-participant';
+import {QuizItemParticipant} from '../../model/poll-item-participant/quiz-item-participant';
+import {OpenTextItemParticipant} from '../../model/poll-item-participant/open-text-item-participant';
 
 @Component({
   selector: 'app-poll-participants',
@@ -24,7 +24,7 @@ export class PollParticipantsComponent implements OnInit, OnDestroy {
   // Variables
   slug = '';
   poll: Poll;
-  activeItem: MultipleChoiceItemCreate|QuizItemCreate|OpenTextItemCreate;
+  activeItem: MultipleChoiceItemParticipant|QuizItemParticipant|OpenTextItemParticipant;
   activeItemType = '';
   answer = null;
   sent = false;
@@ -67,8 +67,8 @@ export class PollParticipantsComponent implements OnInit, OnDestroy {
             this.poll.currentItem = pollItem.itemId;
           }
           // Randomize selection options if it is a quiz item
-          if (pollItem instanceof QuizItemCreate) {
-            pollItem.selectionOptions = this.toolsService.shuffleList(pollItem.selectionOptions);
+          if (pollItem instanceof QuizItemParticipant) {
+            pollItem.answers = this.toolsService.shuffleList(pollItem.answers);
           }
           // Update UI
           this.activeItemType = pollItem.type;
@@ -100,17 +100,17 @@ export class PollParticipantsComponent implements OnInit, OnDestroy {
     let answerItem;
     switch (this.activeItemType) {
       case 'multiple-choice': {
-        const activeItem = this.activeItem as MultipleChoiceItemCreate;
+        const activeItem = this.activeItem as MultipleChoiceItemParticipant;
         answerItem = new MultipleChoiceItemAnswerParticipant();
-        answerItem.id = activeItem.selectionOptions[this.answer].id;
-        answerItem.selectionOption = activeItem.selectionOptions[this.answer].selectionOption;
+        answerItem.id = activeItem.answers[this.answer].id;
+        answerItem.selectionOption = activeItem.answers[this.answer].selectionOption;
         break;
       }
       case 'quiz': {
-        const activeItem = this.activeItem as QuizItemCreate;
+        const activeItem = this.activeItem as QuizItemParticipant;
         answerItem = new QuizItemAnswerParticipant();
-        answerItem.id = activeItem.selectionOptions[this.answer].id;
-        answerItem.selectionOption = activeItem.selectionOptions[this.answer].selectionOption;
+        answerItem.id = activeItem.answers[this.answer].id;
+        answerItem.selectionOption = activeItem.answers[this.answer].selectionOption;
         break;
       }
       case 'open-text': {

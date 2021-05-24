@@ -8,10 +8,10 @@ import {environment as env} from '../../environments/environment';
 import {RxStomp} from '@stomp/rx-stomp';
 import {map as rxMap} from 'rxjs/operators';
 import {Observable} from 'rxjs';
-import {OpenTextItemCreate} from '../model/poll-item/open-text-item-create';
-import {QuizItemCreate} from '../model/poll-item/quiz-item-create';
-import {MultipleChoiceItemCreate} from '../model/poll-item/multiple-choice-item-create';
 import {MultipleChoiceItemAnswerParticipant} from '../model/poll-item-answer-participant/multiple-choice-item-answer-participant';
+import {MultipleChoiceItemParticipant} from '../model/poll-item-participant/multiple-choice-item-participant';
+import {QuizItemParticipant} from '../model/poll-item-participant/quiz-item-participant';
+import {OpenTextItemParticipant} from '../model/poll-item-participant/open-text-item-participant';
 
 const ENDPOINT_BROKER_URL = env.apiBaseWebsocketUrl + '/websocket/enter-poll';
 const ENDPOINT_MESSAGING_PARTICIPANT_READ_URL = '/user/v1/websocket/poll';
@@ -33,7 +33,7 @@ export class WebsocketService {
   /**
    * Tries to connect via the handshake endpoint of the websocket server
    */
-  establishConnectionParticipant(slug: string): Observable<MultipleChoiceItemCreate|QuizItemCreate|OpenTextItemCreate> {
+  establishConnectionParticipant(slug: string): Observable<MultipleChoiceItemParticipant|QuizItemParticipant|OpenTextItemParticipant> {
     this.stompClient = new RxStomp();
     this.stompClient.configure(this.stompConfig);
     this.stompClient.activate();
@@ -47,7 +47,7 @@ export class WebsocketService {
   /**
    * Tries to connect via the handshake endpoint of the websocket server
    */
-  establishConnectionPresentation(pollId: number): Observable<MultipleChoiceItemCreate|QuizItemCreate|OpenTextItemCreate> {
+  establishConnectionPresentation(pollId: number): Observable<MultipleChoiceItemParticipant|QuizItemParticipant|OpenTextItemParticipant> {
     this.stompClient = new RxStomp();
     this.stompClient.configure(this.stompConfig);
     this.stompClient.activate();

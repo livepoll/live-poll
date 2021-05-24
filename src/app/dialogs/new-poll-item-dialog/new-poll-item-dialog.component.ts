@@ -7,9 +7,9 @@ import {OPTIONS_DATA, OptionType} from '../../shared/poll-item-options';
 import {Poll} from '../../model/poll';
 import {CommonToolsService} from '../../service/common-tools.service';
 import {PollItemService} from '../../service/poll-item.service';
-import {OpenTextItemCreate} from '../../model/poll-item/open-text-item-create';
-import {MultipleChoiceItemCreate} from '../../model/poll-item/multiple-choice-item-create';
-import {QuizItemCreate} from '../../model/poll-item/quiz-item-create';
+import {OpenTextItemCreate} from '../../model/poll-item-create/open-text-item-create';
+import {MultipleChoiceItemCreate} from '../../model/poll-item-create/multiple-choice-item-create';
+import {QuizItemCreate} from '../../model/poll-item-create/quiz-item-create';
 
 // Constants
 const STEP_LABELS = [

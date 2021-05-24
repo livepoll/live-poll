@@ -6,10 +6,10 @@ import {Injectable} from '@angular/core';
 import {environment as env} from '../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {PollItem} from '../model/poll-item/poll-item';
-import {MultipleChoiceItemCreate} from '../model/poll-item/multiple-choice-item-create';
-import {QuizItemCreate} from '../model/poll-item/quiz-item-create';
-import {OpenTextItemCreate} from '../model/poll-item/open-text-item-create';
+import {PollItem} from '../model/poll-item-create/poll-item';
+import {MultipleChoiceItemCreate} from '../model/poll-item-create/multiple-choice-item-create';
+import {QuizItemCreate} from '../model/poll-item-create/quiz-item-create';
+import {OpenTextItemCreate} from '../model/poll-item-create/open-text-item-create';
 import {CommonToolsService} from './common-tools.service';
 
 const ENDPOINT_URL = env.apiBaseUrl + '/poll-items';

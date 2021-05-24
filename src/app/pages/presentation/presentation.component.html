@@ -15,9 +15,9 @@
     <!-- Poll results for a poll item -->
     <div *ngIf="poll?.currentItem" class="poll-container">
       <h2>{{activeItem?.question}}</h2>
-      <!--<ngx-charts-pie-chart class="chart" [view]="[500, 300]" [results]="getChartData(pollItem.itemId)"
+      <ngx-charts-pie-chart class="chart" [view]="[500, 300]" [results]="getChartData()"
                             scheme="forest">
-      </ngx-charts-pie-chart>-->
+      </ngx-charts-pie-chart>
     </div>
 
     <!-- Start screen -->

@@ -4,13 +4,14 @@
 
 import {Component, OnInit} from '@angular/core';
 import {Poll} from '../../model/poll';
-import {MultipleChoiceItemCreate} from '../../model/poll-item/multiple-choice-item-create';
-import {QuizItemCreate} from '../../model/poll-item/quiz-item-create';
-import {OpenTextItemCreate} from '../../model/poll-item/open-text-item-create';
+import {MultipleChoiceItemCreate} from '../../model/poll-item-create/multiple-choice-item-create';
+import {QuizItemCreate} from '../../model/poll-item-create/quiz-item-create';
+import {OpenTextItemCreate} from '../../model/poll-item-create/open-text-item-create';
 import {ActivatedRoute, Router} from '@angular/router';
 import {PollService} from '../../service/poll.service';
 import {WebsocketService} from '../../service/websocket.service';
 import {CommonToolsService} from '../../service/common-tools.service';
+import {ChartDataItem} from '../../model/chart-data-item';
 
 @Component({
   selector: 'app-presentation',
@@ -51,7 +52,7 @@ export class PresentationComponent implements OnInit {
       // Connect to WebSocket
       const subscription = this.websocketService.establishConnectionPresentation(this.pollId);
       subscription.subscribe(pollItem => {
-        console.log('PollItem' + pollItem);
+        console.log('PollItem' + JSON.stringify(pollItem));
         if (Object.keys(pollItem).length > 1) {
           // Update UI
           this.activeItemType = pollItem.type;
@@ -72,7 +73,9 @@ export class PresentationComponent implements OnInit {
    * Moves to the next poll item, defined by the poll item order
    */
   next(): void {
-
+    this.pollService.nextItem(this.poll.id).subscribe((poll) => {
+      this.poll = poll;
+    });
   }
 
   /**
@@ -80,5 +83,14 @@ export class PresentationComponent implements OnInit {
    */
   backToDashboard(): void {
     this.router.navigateByUrl('/dashboard/my-polls/poll/' + this.pollId);
+  }
+
+  /**
+   *
+   */
+  getChartData(): ChartDataItem[] {
+    const items: ChartDataItem[] = [];
+
+    return items;
   }
 }
