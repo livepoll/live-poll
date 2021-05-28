@@ -12,6 +12,9 @@ import {PollService} from '../../service/poll.service';
 import {WebsocketService} from '../../service/websocket.service';
 import {CommonToolsService} from '../../service/common-tools.service';
 import {ChartDataItem} from '../../model/chart-data-item';
+import {MultipleChoiceItemParticipant} from '../../model/poll-item-participant/multiple-choice-item-participant';
+import {QuizItemParticipant} from '../../model/poll-item-participant/quiz-item-participant';
+import {OpenTextItemParticipant} from '../../model/poll-item-participant/open-text-item-participant';
 
 @Component({
   selector: 'app-presentation',
@@ -24,7 +27,8 @@ export class PresentationComponent implements OnInit {
   pollId = 0;
   poll: Poll;
   activeItem: MultipleChoiceItemCreate|QuizItemCreate|OpenTextItemCreate;
-  activeItemType = '';
+  pollOver = false;
+  chartData: ChartDataItem[] = [];
 
   /**
    * Initialize component
@@ -55,13 +59,11 @@ export class PresentationComponent implements OnInit {
         console.log('PollItem' + JSON.stringify(pollItem));
         if (Object.keys(pollItem).length > 1) {
           // Update UI
-          this.activeItemType = pollItem.type;
-          delete pollItem.type;
           this.activeItem = pollItem;
+          this.chartData = this.getChartData();
         } else {
           // Update UI
           this.activeItem = null;
-          this.activeItemType = '';
         }
       });
       // Load poll
@@ -73,8 +75,13 @@ export class PresentationComponent implements OnInit {
    * Moves to the next poll item, defined by the poll item order
    */
   next(): void {
-    this.pollService.nextItem(this.poll.id).subscribe((poll) => {
-      this.poll = poll;
+    this.pollService.nextItem(this.poll.id).subscribe((pollItem) => {
+      if (pollItem.result === 'Poll over') {
+        this.pollOver = true;
+      } else {
+        this.activeItem = pollItem;
+        this.poll.currentItem = pollItem.itemId;
+      }
     });
   }
 
@@ -86,11 +93,37 @@ export class PresentationComponent implements OnInit {
   }
 
   /**
-   *
+   * Returns data for the chart of answers
    */
   getChartData(): ChartDataItem[] {
     const items: ChartDataItem[] = [];
-
+    switch (this.activeItem.type) {
+      case 'multiple-choice': {
+        const activeItem = this.activeItem as MultipleChoiceItemParticipant;
+        activeItem.answers.forEach((answer) => {
+          const item = new ChartDataItem();
+          item.name = answer.selectionOption;
+          item.value = answer.answerCount;
+          items.push(item);
+        });
+        break;
+      }
+      case 'quiz': {
+        const activeItem = this.activeItem as QuizItemParticipant;
+        activeItem.answers.forEach((answer) => {
+          const item = new ChartDataItem();
+          item.name = answer.selectionOption;
+          item.value = answer.answerCount;
+          items.push(item);
+        });
+        break;
+      }
+      case 'open-text': {
+        const activeItem = this.activeItem as OpenTextItemParticipant;
+        break;
+      }
+    }
+    JSON.stringify(items);
     return items;
   }
 }

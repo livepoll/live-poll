@@ -9,4 +9,5 @@
 export class QuizItemAnswer {
   id: number;
   selectionOption: string;
+  answerCount: number;
 }

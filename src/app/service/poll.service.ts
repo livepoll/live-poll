@@ -79,7 +79,7 @@ export class PollService {
    *
    * @param id Id of the affected poll
    */
-  nextItem(id: number): Observable<Poll> {
-    return this.http.get<Poll>(ENDPOINT_URL + `/${id}/next-item`, { withCredentials: true });
+  nextItem(id: number): Observable<PollItem> {
+    return this.http.get<PollItem>(ENDPOINT_URL + `/${id}/next-item`, { withCredentials: true });
   }
 }

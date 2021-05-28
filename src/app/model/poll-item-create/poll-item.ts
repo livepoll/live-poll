@@ -11,6 +11,7 @@ export class PollItem {
   pollId: number;
   question: string;
   type: ItemType;
+  result: string; // Represents a result flag
 }
 
 /**
