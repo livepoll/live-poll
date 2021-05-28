@@ -45,6 +45,12 @@
     "electron": "ng build --configuration=electron & electron .",
     "build:electron": "ng build --configuration=electron & electron-packager ./dist/live-poll --out=dist --all"
   },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
   "private": true,
   "dependencies": {
     "@angular/animations": "~11.2.11",
