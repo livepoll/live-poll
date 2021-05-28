@@ -53,10 +53,18 @@
 
     <!-- Waiting for presenter -->
     <nz-result
-      *ngIf="poll && !poll.currentItem"
+      *ngIf="poll && !poll.currentItem && !pollOver"
       nzStatus="403"
       nzTitle="Waiting for presenter"
       nzSubTitle="Waiting for the presenter to start the poll ...">
+    </nz-result>
+
+    <!-- End screen -->
+    <nz-result
+      *ngIf="pollOver"
+      nzStatus="success"
+      nzTitle="Poll finished"
+      nzSubTitle="Congrats! You completed the poll. Thanks for participating!">
     </nz-result>
 
     <!-- Poll not found -->

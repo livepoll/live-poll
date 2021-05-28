@@ -56,7 +56,6 @@ export class PresentationComponent implements OnInit {
       // Connect to WebSocket
       const subscription = this.websocketService.establishConnectionPresentation(this.pollId);
       subscription.subscribe(pollItem => {
-        console.log('PollItem' + JSON.stringify(pollItem));
         if (Object.keys(pollItem).length > 1) {
           // Update UI
           this.activeItem = pollItem;
@@ -81,6 +80,7 @@ export class PresentationComponent implements OnInit {
       } else {
         this.activeItem = pollItem;
         this.poll.currentItem = pollItem.itemId;
+        this.chartData = this.getChartData();
       }
     });
   }

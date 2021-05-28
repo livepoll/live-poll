@@ -29,6 +29,7 @@ export class PollParticipantsComponent implements OnInit, OnDestroy {
   answer = null;
   sent = false;
   loading = true;
+  pollOver = false;
 
   /**
    * Initialize component
@@ -86,6 +87,7 @@ export class PollParticipantsComponent implements OnInit, OnDestroy {
           } else {
             this.poll.currentItem = null;
           }
+          if (this.activeItemType !== '') this.pollOver = true;
           this.activeItem = null;
           this.activeItemType = '';
         }

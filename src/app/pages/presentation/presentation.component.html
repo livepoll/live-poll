@@ -19,12 +19,16 @@
                             class="chart" [view]="[700, 400]"
                             [results]="chartData"
                             legend="true"
+                            doughnut="true"
+                            arcWidth="0.35"
                             scheme="forest">
       </ngx-charts-pie-chart>
       <ngx-charts-pie-chart *ngIf="activeItem.type === 'quiz'"
                             class="chart" [view]="[700, 400]"
                             [results]="chartData"
                             legend="true"
+                            doughnut="true"
+                            arcWidth="0.35"
                             scheme="forest">
       </ngx-charts-pie-chart>
       <button class="next-button" nz-button nzType="primary" (click)="next()">Next question</button>
