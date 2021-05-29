@@ -52,6 +52,9 @@
       <button nz-button nzType="primary" [nzLoading]="changingState" (click)="changePollState(pollStatus !== 2)">
         {{pollStatus === 1 ? 'Open' : (pollStatus === 2 ? 'Close' : 'Re-open')}}
       </button>
+      <button nz-button nzType="primary" (click)="openPresenterView()">
+        Open presenter view<i nz-icon nzType="right"></i>
+      </button>
     </nz-page-header-extra>
 
     <!--content-->

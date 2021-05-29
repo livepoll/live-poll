@@ -8,14 +8,15 @@ import {environment as env} from '../../environments/environment';
 import {RxStomp} from '@stomp/rx-stomp';
 import {map as rxMap} from 'rxjs/operators';
 import {Observable} from 'rxjs';
-import {OpenTextItem} from '../model/open-text-item';
-import {QuizItem} from '../model/quiz-item';
-import {MultipleChoiceItem} from '../model/multiple-choice-item';
-import {MultipleChoiceItemAnswerParticipant} from '../model/multiple-choice-item-answer-participant';
+import {MultipleChoiceItemAnswerParticipant} from '../model/poll-item-answer-participant/multiple-choice-item-answer-participant';
+import {MultipleChoiceItemParticipant} from '../model/poll-item-participant/multiple-choice-item-participant';
+import {QuizItemParticipant} from '../model/poll-item-participant/quiz-item-participant';
+import {OpenTextItemParticipant} from '../model/poll-item-participant/open-text-item-participant';
 
 const ENDPOINT_BROKER_URL = env.apiBaseWebsocketUrl + '/websocket/enter-poll';
-const ENDPOINT_MESSAGING_READ_URL = '/user/v1/websocket/poll';
-const ENDPOINT_MESSAGING_WRITE_URL = '/v1/websocket/answer';
+const ENDPOINT_MESSAGING_PARTICIPANT_READ_URL = '/user/v1/websocket/poll';
+const ENDPOINT_MESSAGING_PARTICIPANT_WRITE_URL = '/v1/websocket/answer';
+const ENDPOINT_MESSAGING_PRESENTATION_READ_URL = '/user/v1/websocket/presentation';
 
 @Injectable({
   providedIn: 'root'
@@ -32,12 +33,27 @@ export class WebsocketService {
   /**
    * Tries to connect via the handshake endpoint of the websocket server
    */
-  establishConnection(slug: string): Observable<MultipleChoiceItem|QuizItem|OpenTextItem> {
+  establishConnectionParticipant(slug: string): Observable<MultipleChoiceItemParticipant|QuizItemParticipant|OpenTextItemParticipant> {
     this.stompClient = new RxStomp();
     this.stompClient.configure(this.stompConfig);
     this.stompClient.activate();
 
-    return this.subscription = this.stompClient.watch(ENDPOINT_MESSAGING_READ_URL + '/' + slug).pipe(rxMap((msg: HttpResponse<any>) => {
+    return this.subscription = this.stompClient.watch(ENDPOINT_MESSAGING_PARTICIPANT_READ_URL + '/' + slug)
+      .pipe(rxMap((msg: HttpResponse<any>) => {
+      return JSON.parse(msg.body);
+    }));
+  }
+
+  /**
+   * Tries to connect via the handshake endpoint of the websocket server
+   */
+  establishConnectionPresentation(pollId: number): Observable<MultipleChoiceItemParticipant|QuizItemParticipant|OpenTextItemParticipant> {
+    this.stompClient = new RxStomp();
+    this.stompClient.configure(this.stompConfig);
+    this.stompClient.activate();
+
+    return this.subscription = this.stompClient.watch(ENDPOINT_MESSAGING_PRESENTATION_READ_URL + '/' + pollId)
+      .pipe(rxMap((msg: HttpResponse<any>) => {
       return JSON.parse(msg.body);
     }));
   }
@@ -51,7 +67,7 @@ export class WebsocketService {
   sendAnswer(pollItemId: number, answer: MultipleChoiceItemAnswerParticipant): boolean {
     if (this.stompClient.connected) {
       this.stompClient.publish({
-        destination: ENDPOINT_MESSAGING_WRITE_URL + '/' + pollItemId,
+        destination: ENDPOINT_MESSAGING_PARTICIPANT_WRITE_URL + '/' + pollItemId,
         body: JSON.stringify(answer)
       });
       return true;

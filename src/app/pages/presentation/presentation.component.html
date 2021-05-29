@@ -1,0 +1,67 @@
+<!--
+  ~ Copyright © Live-Poll 2020-2021. All rights reserved
+  -->
+
+<nz-layout>
+  <nz-header class="header">
+    <div class="header-logo">
+      <a href="/" target="_blank" rel="noopener noreferrer">
+        <img src="assets/images/logo.svg" alt="logo">
+      </a>
+    </div>
+    <h1 class="poll-name">{{poll?.name}}</h1>
+  </nz-header>
+  <nz-content>
+    <!-- Poll results for a poll item -->
+    <div *ngIf="!pollOver && poll?.currentItem" class="poll-container">
+      <h2>{{activeItem?.question}}</h2>
+      <ngx-charts-pie-chart *ngIf="activeItem.type === 'multiple-choice'"
+                            class="chart" [view]="[700, 400]"
+                            [results]="chartData"
+                            legend="true"
+                            doughnut="true"
+                            arcWidth="0.35"
+                            scheme="forest">
+      </ngx-charts-pie-chart>
+      <ngx-charts-pie-chart *ngIf="activeItem.type === 'quiz'"
+                            class="chart" [view]="[700, 400]"
+                            [results]="chartData"
+                            legend="true"
+                            doughnut="true"
+                            arcWidth="0.35"
+                            scheme="forest">
+      </ngx-charts-pie-chart>
+      <button class="next-button" nz-button nzType="primary" (click)="next()">Next question</button>
+    </div>
+
+    <!-- Start screen -->
+    <nz-result
+      *ngIf="!pollOver && !poll?.currentItem"
+      nzStatus="404"
+      nzTitle="Start poll"
+      nzSubTitle="Start the poll when you're ready">
+      <div nz-result-extra>
+        <button nz-button (click)="backToDashboard()">
+          <i nz-icon nzType="left"></i>
+          Back to Dashboard
+        </button>
+        <button nz-button nzType="primary" (click)="next()">Start poll</button>
+      </div>
+    </nz-result>
+
+    <!-- End screen -->
+    <nz-result
+      *ngIf="pollOver"
+      nzStatus="success"
+      nzTitle="Poll finished"
+      nzSubTitle="Congrats! You completed the poll. Click below to get back to your dashboard.">
+      <div nz-result-extra>
+        <button nz-button (click)="backToDashboard()">
+          <i nz-icon nzType="left"></i>
+          Back to Dashboard
+        </button>
+      </div>
+    </nz-result>
+  </nz-content>
+  <nz-footer class="participants-footer">Provided with ❤ by <a href="https://www.live-poll.de" target="_blank">Live-Poll</a></nz-footer>
+</nz-layout>

@@ -5,11 +5,11 @@
 import {PollItem} from './poll-item';
 
 /**
- * OpenTextItem class.
+ * OpenTextItemCreate class.
  * Represents an open text question.
  */
-export class OpenTextItem extends PollItem {
-  public constructor(init?: Partial<OpenTextItem>) {
+export class OpenTextItemCreate extends PollItem {
+  public constructor(init?: Partial<OpenTextItemCreate>) {
     super();
     Object.assign(this, init);
   }

@@ -98,6 +98,7 @@ export class PollComponent {
     // Commit changes to the server
     this.pollService.update(this.poll).subscribe((_) => {}, (_) => {
       this.poll.slug = oldSlug;
+      this.tools.showErrorMessage('Could not change the slug. Maybe the slug is already in use by another poll');
     });
   }
 
@@ -129,7 +130,7 @@ export class PollComponent {
     this.changingState = true;
     if (open) {
       this.poll.startDate = this.currentDate;
-      if (this.poll.endDate > 0) this.poll.endDate = 0;
+      if (this.poll.endDate) this.poll.endDate = null;
     } else {
       this.poll.endDate = this.currentDate;
     }
@@ -141,6 +142,13 @@ export class PollComponent {
       this.changingState = false;
       this.pollStatus = this.tools.getPollStatus(this.poll);
     });
+  }
+
+  /**
+   * Opens a separate page for the presenter
+   */
+  openPresenterView(): void {
+    this.router.navigateByUrl('/r/' + this.poll.id);
   }
 
   /**
@@ -209,9 +217,7 @@ export class PollComponent {
    * @param id Id of the poll item
    */
   deletePollItem(id: number): void {
-    this.pollItemService.delete(id).subscribe((_) => {
-      this.loadPoll();
-    });
+    this.pollItemService.delete(id).subscribe((_) => this.loadPoll(), (_) => this.loadPoll());
   }
 
   /**
@@ -255,13 +261,13 @@ export class PollComponent {
 
     switch (this.pollStatus) {
       case 1: { // Pending
-        if (startDate === 0 && endDate === 0) return 'Manual opening, manual closing';
-        if (startDate === 0) return 'Manual opening, auto closing at' + endDateString;
-        if (endDate === 0) return 'Auto opening at ' + startDateString + ', manual closing';
+        if (!startDate && !endDate) return 'Manual opening, manual closing';
+        if (!startDate) return 'Manual opening, auto closing at' + endDateString;
+        if (!endDate) return 'Auto opening at ' + startDateString + ', manual closing';
         return 'Auto opening at ' + startDateString + ', auto closing at ' + endDateString;
       }
       case 2: { // Running
-        if (endDate === 0) return 'Running since ' + startDateString + ', manual closing';
+        if (!endDate) return 'Running since ' + startDateString + ', manual closing';
         return 'Running since ' + startDateString + ', auto closing at ' + endDateString;
       }
       case 3: { // Finished

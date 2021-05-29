@@ -4,15 +4,15 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Poll} from '../../model/poll';
-import {MultipleChoiceItem} from '../../model/multiple-choice-item';
 import {WebsocketService} from '../../service/websocket.service';
-import {QuizItem} from '../../model/quiz-item';
-import {OpenTextItem} from '../../model/open-text-item';
 import {CommonToolsService} from '../../service/common-tools.service';
 import {PollService} from '../../service/poll.service';
-import {MultipleChoiceItemAnswerParticipant} from '../../model/multiple-choice-item-answer-participant';
-import {OpenTextItemAnswerParticipant} from '../../model/open-text-item-answer-participant';
-import {QuizItemAnswerParticipant} from '../../model/quiz-item-answer-participant';
+import {MultipleChoiceItemAnswerParticipant} from '../../model/poll-item-answer-participant/multiple-choice-item-answer-participant';
+import {OpenTextItemAnswerParticipant} from '../../model/poll-item-answer-participant/open-text-item-answer-participant';
+import {QuizItemAnswerParticipant} from '../../model/poll-item-answer-participant/quiz-item-answer-participant';
+import {MultipleChoiceItemParticipant} from '../../model/poll-item-participant/multiple-choice-item-participant';
+import {QuizItemParticipant} from '../../model/poll-item-participant/quiz-item-participant';
+import {OpenTextItemParticipant} from '../../model/poll-item-participant/open-text-item-participant';
 
 @Component({
   selector: 'app-poll-participants',
@@ -24,11 +24,12 @@ export class PollParticipantsComponent implements OnInit, OnDestroy {
   // Variables
   slug = '';
   poll: Poll;
-  activeItem: MultipleChoiceItem|QuizItem|OpenTextItem;
+  activeItem: MultipleChoiceItemParticipant|QuizItemParticipant|OpenTextItemParticipant;
   activeItemType = '';
   answer = null;
   sent = false;
   loading = true;
+  pollOver = false;
 
   /**
    * Initialize component
@@ -52,17 +53,22 @@ export class PollParticipantsComponent implements OnInit, OnDestroy {
     this.route.params.subscribe(params => {
       this.slug = params.slug;
       // Connect to WebSocket
-      const subscription = this.websocketService.establishConnection(this.slug);
+      const subscription = this.websocketService.establishConnectionParticipant(this.slug);
       subscription.subscribe(pollItem => {
         if (Object.keys(pollItem).length > 1) {
           // Load poll
           if (!this.poll) {
-            this.pollService.get(pollItem.pollId).subscribe(poll => this.poll = poll);
+            this.pollService.get(pollItem.pollId).subscribe(poll => {
+              this.poll = poll;
+              this.loading = false;
+            }, (_) => {
+              this.loading = false;
+            });
           } else {
             this.poll.currentItem = pollItem.itemId;
           }
           // Randomize selection options if it is a quiz item
-          if (pollItem instanceof QuizItem) {
+          if (pollItem instanceof QuizItemParticipant) {
             pollItem.answers = this.toolsService.shuffleList(pollItem.answers);
           }
           // Update UI
@@ -72,16 +78,21 @@ export class PollParticipantsComponent implements OnInit, OnDestroy {
         } else {
           // Load poll
           if (!this.poll) {
-            this.pollService.get(pollItem.pollId).subscribe(poll => this.poll = poll);
+            this.pollService.get(pollItem.pollId).subscribe(poll => {
+              this.poll = poll;
+              this.loading = false;
+            }, (_) => {
+              this.loading = false;
+            });
           } else {
             this.poll.currentItem = null;
           }
+          if (this.activeItemType !== '') this.pollOver = true;
           this.activeItem = null;
           this.activeItemType = '';
         }
         // Check if already answered
         this.sent = localStorage.getItem('answered_' + this.activeItem?.itemId) !== null;
-        this.loading = false;
         this.answer = null;
       });
     });
@@ -91,14 +102,14 @@ export class PollParticipantsComponent implements OnInit, OnDestroy {
     let answerItem;
     switch (this.activeItemType) {
       case 'multiple-choice': {
-        const activeItem = this.activeItem as MultipleChoiceItem;
+        const activeItem = this.activeItem as MultipleChoiceItemParticipant;
         answerItem = new MultipleChoiceItemAnswerParticipant();
         answerItem.id = activeItem.answers[this.answer].id;
         answerItem.selectionOption = activeItem.answers[this.answer].selectionOption;
         break;
       }
       case 'quiz': {
-        const activeItem = this.activeItem as QuizItem;
+        const activeItem = this.activeItem as QuizItemParticipant;
         answerItem = new QuizItemAnswerParticipant();
         answerItem.id = activeItem.answers[this.answer].id;
         answerItem.selectionOption = activeItem.answers[this.answer].selectionOption;
