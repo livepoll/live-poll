@@ -10,8 +10,8 @@ export class PollItem {
   itemId: number;
   pollId: number;
   question: string;
-  position: number;
   type: ItemType;
+  result: string; // Represents a result flag
 }
 
 /**

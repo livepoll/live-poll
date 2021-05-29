@@ -33,6 +33,7 @@ import {NzCollapseModule} from 'ng-zorro-antd/collapse';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {NgxChartsModule} from '@swimlane/ngx-charts';
 import {NzStatisticModule} from 'ng-zorro-antd/statistic';
+import {NzSwitchModule} from 'ng-zorro-antd/switch';
 
 @NgModule({
   declarations: [PollComponent],
@@ -65,7 +66,8 @@ import {NzStatisticModule} from 'ng-zorro-antd/statistic';
         NzCollapseModule,
         DragDropModule,
         NgxChartsModule,
-        NzStatisticModule
+        NzStatisticModule,
+        NzSwitchModule
     ]
 })
 export class PollModule { }

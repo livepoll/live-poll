@@ -104,7 +104,7 @@ export class AppComponent implements OnInit {
     this.userService.get().subscribe((response) => {
       this.user = response.body;
       // Redirect to dashboard if necessary, otherwise apply userData to dashboard
-      if (location.href.includes('dashboard') || location.href.includes('/p/')) {
+      if (location.href.includes('dashboard') || location.href.includes('/p/') || location.href.includes('/r/')) {
         if (this.onUserDataChanged) this.onUserDataChanged.emit(this.user);
       } else {
         this.router.navigateByUrl('/dashboard');

@@ -3,10 +3,10 @@
  */
 
 /**
- * MultipleChoiceItemAnswer class.
+ * OpenTextItemAnswerParticipant class.
  * Represents one possible answer for a multiple choice question.
  */
-export class MultipleChoiceItemAnswer {
-  selectionOption: string;
-  answerCount: number;
+export class OpenTextItemAnswerParticipant {
+  type = 'open-text';
+  answer: string;
 }

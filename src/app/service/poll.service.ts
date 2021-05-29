@@ -7,7 +7,7 @@ import {environment as env} from '../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {Poll} from '../model/poll';
 import {Observable} from 'rxjs';
-import {PollItem} from '../model/poll-item';
+import {PollItem} from '../model/poll-item-create/poll-item';
 
 const ENDPOINT_URL = env.apiBaseUrl + '/polls';
 
@@ -72,5 +72,14 @@ export class PollService {
    */
   delete(id: number): Observable<void> {
     return this.http.delete<void>(ENDPOINT_URL + `/${id}`, { withCredentials: true });
+  }
+
+  /**
+   * Moves the presentation to the next poll item
+   *
+   * @param id Id of the affected poll
+   */
+  nextItem(id: number): Observable<PollItem> {
+    return this.http.get<PollItem>(ENDPOINT_URL + `/${id}/next-item`, { withCredentials: true });
   }
 }

@@ -52,6 +52,9 @@
       <button nz-button nzType="primary" [nzLoading]="changingState" (click)="changePollState(pollStatus !== 2)">
         {{pollStatus === 1 ? 'Open' : (pollStatus === 2 ? 'Close' : 'Re-open')}}
       </button>
+      <button nz-button nzType="primary" (click)="openPresenterView()">
+        Open presenter view<i nz-icon nzType="right"></i>
+      </button>
     </nz-page-header-extra>
 
     <!--content-->
@@ -61,7 +64,7 @@
         <span class="text-primary">
           {{host}}/p/
           <span nz-typography nzCopyable nzEditable [nzContent]="poll.slug" (nzContentChange)="onSlugChange($event)"
-                [nzCopyText]="host + '/' + poll.slug" class="slug text-primary"></span>
+                [nzCopyText]="host + '/p/' + poll.slug" class="slug text-primary"></span>
         </span>
         <nz-tabset class="full-width">
           <nz-tab [nzTitle]="titleQuestions" class="tab">
@@ -99,10 +102,6 @@
                       </ngx-charts-bar-horizontal>
                     </div>
                   </div>
-                  <button nz-button nzType="default" class="preview-button"
-                          [routerLink]="'/p/' + poll.slug + '/' + pollItem.position">
-                    Preview Question<i nz-icon nzType="right"></i>
-                  </button>
 
                   <!-- Header -->
                   <ng-template #header>
@@ -110,7 +109,14 @@
                   </ng-template>
                   <!-- Header options -->
                   <ng-template #options>
+                    <nz-tag *ngIf="poll.currentItem === pollItem.itemId" nzColor="green">
+                      <i nz-icon nzType="loading"></i>
+                      <span>Running</span>
+                    </nz-tag>
                     <nz-tag nzColor="default">{{pollItem.type}}</nz-tag>
+                    <nz-switch class="run-item-switch" nzSize="small" [ngModel]="poll.currentItem === pollItem.itemId"
+                               (click)="onRunPollItem($event, pollItem.itemId)" [nzLoading]="loadingRunPollItemId === pollItem.itemId">
+                    </nz-switch>
                     <button nz-button nzType="primary" [nzSize]="p.nzActive ? 'default' : 'small'"
                             (click)="openEditPollItemDialog($event)">
                       <i nz-icon nzType="edit"></i>Edit

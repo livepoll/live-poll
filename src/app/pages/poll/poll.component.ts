@@ -32,6 +32,7 @@ export class PollComponent {
   poll: Poll;
   pollId: number;
   changingState = false;
+  loadingRunPollItemId = 0;
   showNewPollItemDialog = false;
   error = false;
   results = [];
@@ -97,6 +98,26 @@ export class PollComponent {
     // Commit changes to the server
     this.pollService.update(this.poll).subscribe((_) => {}, (_) => {
       this.poll.slug = oldSlug;
+      this.tools.showErrorMessage('Could not change the slug. Maybe the slug is already in use by another poll');
+    });
+  }
+
+  /**
+   * Update the current poll item for this poll on the server
+   *
+   * @param event Click event
+   * @param pollItemId Id of the poll item
+   */
+  onRunPollItem(event: MouseEvent, pollItemId: number): void {
+    event.stopPropagation();
+    const oldPollItem = this.poll.currentItem;
+    this.poll.currentItem = this.loadingRunPollItemId = pollItemId === this.poll.currentItem ? null : pollItemId;
+    this.pollService.update(this.poll).subscribe((_) => {
+      this.loadingRunPollItemId = -1;
+    }, (_) => {
+      this.poll.currentItem = oldPollItem;
+      this.loadingRunPollItemId = -1;
+      this.tools.showErrorMessage('Something went wrong. Please try again');
     });
   }
 
@@ -109,7 +130,7 @@ export class PollComponent {
     this.changingState = true;
     if (open) {
       this.poll.startDate = this.currentDate;
-      if (this.poll.endDate > 0) this.poll.endDate = 0;
+      if (this.poll.endDate) this.poll.endDate = null;
     } else {
       this.poll.endDate = this.currentDate;
     }
@@ -121,6 +142,13 @@ export class PollComponent {
       this.changingState = false;
       this.pollStatus = this.tools.getPollStatus(this.poll);
     });
+  }
+
+  /**
+   * Opens a separate page for the presenter
+   */
+  openPresenterView(): void {
+    this.router.navigateByUrl('/r/' + this.poll.id);
   }
 
   /**
@@ -159,39 +187,6 @@ export class PollComponent {
       this.error = true;
       this.tools.showErrorMessage('Something went wrong, loading the poll.');
     });
-
-    /*// Build header, body and options
-    const header = new HttpHeaders().set('Content-Type', 'application/json');
-    const options: any = { header, responseType: 'application/json', observe: 'response', withCredentials: true };
-    // Send request
-    this.http.get<string>(env.apiBaseUrl + '/users/' + this.userData.id + '/polls/' + this.pollId, options)
-      .subscribe((response: HttpResponse<string>) => {
-        if (response.ok) {
-          // Parse data
-          const json = JSON.parse(response.body);
-          const poll = new Poll();
-          poll.id = json.id;
-          poll.name = json.name;
-          poll.startDate = json.startDate;
-          poll.endDate = json.endDate;
-          poll.slug = json.slug;
-          poll.pollItems = [];
-          json.pollItems.forEach(item => {
-            const pollItem = new PollItem();
-            pollItem.id = item.itemId;
-            pollItem.question = item.question;
-            pollItem.pos = item.position;
-            pollItem.type = item.type;
-            poll.pollItems.push(pollItem);
-          });
-          this.poll = poll;
-          // Setup result observer
-          this.setupResultObserver();
-        }
-      }, (_) => {
-        this.error = true;
-        this.tools.showErrorMessage('Something went wrong, loading the poll.');
-      });*/
   }
 
   /**
@@ -199,20 +194,10 @@ export class PollComponent {
    */
   updatePoll(callback: () => void, error?: () => void): void {
     error = error ?? function(): void {
-      this.tools.showErrorMessage('The change could not be committed on the server. Please try again later.');
+      this.tools.showErrorMessage('The change could not be committed onto the server. Please try again later.');
     };
 
     this.pollService.update(this.poll).subscribe(callback, error);
-
-    /*// Build header, body and options
-    const header = new HttpHeaders().set('Content-Type', 'application/json');
-    const options: any = { header, observe: 'response', withCredentials: true };
-    const body = {  };
-    // Send request
-    this.http.put<string>(env.apiBaseUrl + '/users/' + this.userData.id + '/polls/' + this.pollId, body, options)
-      .subscribe((response: HttpResponse<string>) => {
-        if (response.ok) callback();
-      }, (_) => error());*/
   }
 
   /**
@@ -232,9 +217,7 @@ export class PollComponent {
    * @param id Id of the poll item
    */
   deletePollItem(id: number): void {
-    this.pollItemService.delete(id).subscribe((_) => {
-      this.loadPoll();
-    });
+    this.pollItemService.delete(id).subscribe((_) => this.loadPoll(), (_) => this.loadPoll());
   }
 
   /**
@@ -244,6 +227,8 @@ export class PollComponent {
    */
   drop(event: CdkDragDrop<string[]>): void {
     moveItemInArray(this.poll.pollItems, event.previousIndex, event.currentIndex);
+    // Update position on server
+    // TODO: Ask team what to do when dropping item, because I would have to do a API request for every position update
   }
 
   /**
@@ -276,13 +261,13 @@ export class PollComponent {
 
     switch (this.pollStatus) {
       case 1: { // Pending
-        if (startDate === 0 && endDate === 0) return 'Manual opening, manual closing';
-        if (startDate === 0) return 'Manual opening, auto closing at' + endDateString;
-        if (endDate === 0) return 'Auto opening at ' + startDateString + ', manual closing';
+        if (!startDate && !endDate) return 'Manual opening, manual closing';
+        if (!startDate) return 'Manual opening, auto closing at' + endDateString;
+        if (!endDate) return 'Auto opening at ' + startDateString + ', manual closing';
         return 'Auto opening at ' + startDateString + ', auto closing at ' + endDateString;
       }
       case 2: { // Running
-        if (endDate === 0) return 'Running since ' + startDateString + ', manual closing';
+        if (!endDate) return 'Running since ' + startDateString + ', manual closing';
         return 'Running since ' + startDateString + ', auto closing at ' + endDateString;
       }
       case 3: { // Finished
@@ -303,7 +288,7 @@ export class PollComponent {
   /**
    * Shows the dialog a specific poll item
    */
-  openEditPollItemDialog(event: any): void {
+  openEditPollItemDialog(event: MouseEvent): void {
     event.stopPropagation();
     // Open edit dialog
     this.showEditPollItemDialog = true;

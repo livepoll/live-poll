@@ -7,9 +7,9 @@ import {OPTIONS_DATA, OptionType} from '../../shared/poll-item-options';
 import {Poll} from '../../model/poll';
 import {CommonToolsService} from '../../service/common-tools.service';
 import {PollItemService} from '../../service/poll-item.service';
-import {OpenTextItem} from '../../model/open-text-item';
-import {MultipleChoiceItem} from '../../model/multiple-choice-item';
-import {QuizItem} from '../../model/quiz-item';
+import {OpenTextItemCreate} from '../../model/poll-item-create/open-text-item-create';
+import {MultipleChoiceItemCreate} from '../../model/poll-item-create/multiple-choice-item-create';
+import {QuizItemCreate} from '../../model/poll-item-create/quiz-item-create';
 
 // Constants
 const STEP_LABELS = [
@@ -21,27 +21,32 @@ const ITEM_TYPES = [
   {
     id: 1,
     name: 'Open Text Question',
-    description: 'Enables the user to fill in a text as answer'
+    description: 'Enables the user to fill in a text as answer.',
+    available: true
   },
   {
     id: 2,
     name: 'Multiple Choice Question',
-    description: 'Lets the user choose between several, pre-defined answers'
+    description: 'Lets the user choose between several, pre-defined answers.',
+    available: true
   },
   {
     id: 3,
     name: 'Quiz Question',
-    description: 'Multiple choice question, which displays the right answer afterwards'
+    description: 'Multiple choice question which displays the right answer afterwards.',
+    available: true
   },
   {
     id: 4,
     name: 'Word Cloud Question',
-    description: 'Single word can be entered. The words will be arranged in form of clouds'
+    description: 'Single word can be entered. The words will be arranged in form of clouds.',
+    available: false
   },
   {
     id: 5,
     name: 'Rating Question',
-    description: 'Star rating.'
+    description: 'Star rating.',
+    available: false
   }
 ];
 
@@ -94,7 +99,7 @@ export class NewPollItemDialogComponent {
   handleNext(): void {
     if (this.step === STEP_LABELS.length) {
       this.step++;
-      this.createPollItem(this.poll.id, this.question, 0, this.answers);
+      this.createPollItem(this.poll.id, this.question, this.answers);
     } else {
       // Validity check
       switch (this.step) {
@@ -163,19 +168,19 @@ export class NewPollItemDialogComponent {
     return index;
   }
 
-  createPollItem(pollId: number, question: string, position: number, answers): void {
+  createPollItem(pollId: number, question: string, answers): void {
     this.loading = true;
 
     let pollItem;
     switch (this.itemType) {
       case 1: // Open text item
-        pollItem = new OpenTextItem({ pollId, position, question });
+        pollItem = new OpenTextItemCreate({ pollId, question });
         break;
       case 2: // Multiple choice item
-        pollItem = new MultipleChoiceItem({ pollId, position, question, answers });
+        pollItem = new MultipleChoiceItemCreate({ pollId, question, selectionOptions: answers });
         break;
       case 3: // Quiz item
-        pollItem = new QuizItem({ pollId, position, question, answers });
+        pollItem = new QuizItemCreate({ pollId, question, selectionOptions: answers });
         break;
     }
 
@@ -193,30 +198,5 @@ export class NewPollItemDialogComponent {
       this.loading = false;
       this.step--;
     });
-
-    /*// Build header, body and options
-    const header = new HttpHeaders().set('Content-Type', 'application/json');
-    const options: any = { header, observe: 'response', withCredentials: true };
-    const body = { pollId, question, position, answers };
-    // Send request
-    const endpointFraction = ITEM_TYPES.find(item => item.id === this.itemType).endpointFraction;
-    this.http.post<string>(env.apiBaseUrl + '/polls/' + pollId + '/' + endpointFraction, body, options)
-      .subscribe((response: HttpResponse<string>) => {
-        if (response.ok) {
-          // Request was successful, continue
-          this.onClose.emit(true);
-          // Reset dialog
-          this.step = 1;
-          this.itemType = 0;
-          this.question = '';
-          this.answers = ['', ''];
-          this.options = [];
-          this.loading = false;
-        }
-      }, (_) => {
-        this.tools.showErrorMessage('An unknown error occurred. Please try again.');
-        this.loading = false;
-        this.step--;
-      });*/
   }
 }

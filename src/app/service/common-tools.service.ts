@@ -28,14 +28,14 @@ export class CommonToolsService {
     const currentDate = new Date().getTime();
 
     if (
-      (startDate === 0 && endDate === 0) || // Manual opening, manual closing
+      (!startDate && !endDate) || // Manual opening, manual closing
       (startDate > currentDate) // Start date not reached
     ) {
       // Poll is pending
       return 1;
     } else if (
       (startDate <= currentDate && endDate > currentDate) || // We're in between of the two dates
-      (startDate <= currentDate && endDate === 0) // Started, manual closing
+      (startDate <= currentDate && !endDate) // Started, manual closing
     ) {
       // Poll is running
       return 2;
@@ -77,5 +77,27 @@ export class CommonToolsService {
     return name.replace(/([a-z0-9])([A-Z])/g, '$1-$2')
       .replace(/([A-Z])([A-Z])(?=[a-z])/g, '$1-$2')
       .toLowerCase();
+  }
+
+  // Fisher-Yates Shuffle
+  // https://bost.ocks.org/mike/shuffle/
+  shuffleList(array: any[]): any[] {
+    let currentIndex = array.length;
+    let temp: number;
+    let randomIndex: number;
+
+    // While there remain elements to shuffle
+    while (currentIndex !== 0) {
+      // Pick a remaining element
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+
+      // And swap it with the current element
+      temp = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temp;
+    }
+
+    return array;
   }
 }
