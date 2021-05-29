@@ -1,6 +1,6 @@
 {
   "name": "live-poll",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Platform for providing surveys with live display features",
   "main": "src/electron/main.js",
   "keywords": [
