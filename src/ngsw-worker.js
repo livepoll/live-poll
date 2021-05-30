@@ -33,8 +33,6 @@ self.addEventListener('push', function (event) {
         tag: 'push-notification',
         icon: 'assets/icons/manifest-icon-512.png'
       });
-    } else {
-      console.log('Push notification data parsing failed.');
     }
   }
 });
@@ -42,15 +40,15 @@ self.addEventListener('push', function (event) {
 self.addEventListener('notificationclick', function (event) {
   const notification = event.notification;
   notification.close();
-  if (clients.openWindow) {
-    clients.openWindow('https://www.live-poll.de/login');
+  if (self.clients.openWindow) {
+    self.clients.openWindow('https://www.live-poll.de/login');
   }
 });
 
-self.addEventListener('install', event => event.waitUntil(
+self.addEventListener('install', (event) => event.waitUntil(
   caches.open(CACHE_NAME).then(cache => cache.addAll(URLS_TO_CACHE))
 ));
 
-self.addEventListener('fetch', event => event.respondWith(
+self.addEventListener('fetch', (event) => event.respondWith(
   fetch(event.request).catch(() => caches.match(event.request))
 ));
