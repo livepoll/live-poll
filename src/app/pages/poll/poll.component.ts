@@ -11,6 +11,7 @@ import {formatDate} from '@angular/common';
 import {CommonToolsService} from '../../service/common-tools.service';
 import {PollService} from '../../service/poll.service';
 import {PollItemService} from '../../service/poll-item.service';
+import {PollItem} from '../../model/poll-item-create/poll-item';
 
 @Component({
   selector: 'app-poll',
@@ -39,6 +40,7 @@ export class PollComponent {
   pollStatus = 1; // 1 = Planned; 2 = Running; 3 = Finished
   showEditPollDialog = false;
   showEditPollItemDialog = false;
+  selectedPollItem: PollItem;
 
   /**
    * Initialize component
@@ -159,8 +161,8 @@ export class PollComponent {
    */
   handleDialogClose(success: boolean): void {
     if (success) this.loadPoll();
-    this.showNewPollItemDialog = false;
     this.showEditPollDialog = false;
+    this.showNewPollItemDialog = false;
     this.showEditPollItemDialog = false;
   }
 
@@ -288,8 +290,9 @@ export class PollComponent {
   /**
    * Shows the dialog a specific poll item
    */
-  openEditPollItemDialog(event: MouseEvent): void {
+  openEditPollItemDialog(event: MouseEvent, pollItem): void {
     event.stopPropagation();
+    this.selectedPollItem = pollItem;
     // Open edit dialog
     this.showEditPollItemDialog = true;
   }

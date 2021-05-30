@@ -10,6 +10,7 @@ import {PollItemService} from '../../service/poll-item.service';
 import {OpenTextItemCreate} from '../../model/poll-item-create/open-text-item-create';
 import {MultipleChoiceItemCreate} from '../../model/poll-item-create/multiple-choice-item-create';
 import {QuizItemCreate} from '../../model/poll-item-create/quiz-item-create';
+import {PollItem} from '../../model/poll-item-create/poll-item';
 
 // Constants
 const STEP_LABELS = [
@@ -69,6 +70,7 @@ export class NewPollItemDialogComponent {
   // Event Emitters
   @Input() isVisible: boolean;
   @Input() poll: Poll;
+  @Input() pollItem: PollItem;
   @Output() finish = new EventEmitter<boolean>(); // true = success; false = cancel
 
   // Variables
