@@ -90,7 +90,9 @@
                                    [nzExtra]="options" [nzExpandedIcon]="expandedIcon" cdkDrag cdkDragLockAxis="y">
                   <!-- Item content -->
                   <div nz-row>
-                    <div nz-col nzSpan="9" class="stats-column">
+                    <em class="stats-column">Soon you can see the poll item results here ...</em>&nbsp;
+                    <nz-tag class="available-soon" nzColor="processing">available soon!</nz-tag>
+                    <!--<div nz-col nzSpan="9" class="stats-column">
                       <nz-statistic [nzValue]="(getAnswersCount(pollItem.itemId) | number)!" nzTitle="Total answers">
                       </nz-statistic>
                     </div>
@@ -100,7 +102,7 @@
                                                  showXAxisLabel="true" showYAxisLabel="true" animations="true"
                                                  xAxisLabel="Participants" yAxisLabel="Answers">
                       </ngx-charts-bar-horizontal>
-                    </div>
+                    </div>-->
                   </div>
 
                   <!-- Header -->
