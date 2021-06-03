@@ -10,65 +10,33 @@ import {PollItemService} from '../../service/poll-item.service';
 import {OpenTextItemCreate} from '../../model/poll-item-create/open-text-item-create';
 import {MultipleChoiceItemCreate} from '../../model/poll-item-create/multiple-choice-item-create';
 import {QuizItemCreate} from '../../model/poll-item-create/quiz-item-create';
+import {PollItem} from '../../model/poll-item-create/poll-item';
 
 // Constants
 const STEP_LABELS = [
-  'Select item type',
-  'Enter question / answers',
-  'Options'
-];
-const ITEM_TYPES = [
-  {
-    id: 1,
-    name: 'Open Text Question',
-    description: 'Enables the user to fill in a text as answer.',
-    available: true
-  },
-  {
-    id: 2,
-    name: 'Multiple Choice Question',
-    description: 'Lets the user choose between several, pre-defined answers.',
-    available: true
-  },
-  {
-    id: 3,
-    name: 'Quiz Question',
-    description: 'Multiple choice question which displays the right answer afterwards.',
-    available: true
-  },
-  {
-    id: 4,
-    name: 'Word Cloud Question',
-    description: 'Single word can be entered. The words will be arranged in form of clouds.',
-    available: false
-  },
-  {
-    id: 5,
-    name: 'Rating Question',
-    description: 'Star rating.',
-    available: false
-  }
+  'Update question / answers',
+  'Update options'
 ];
 
 /**
- * Wizard dialog, which lets the user create a new poll item.
- * The dialog consists of three pages, whose appearance differ based on the selected item type.
+ * Wizard dialog, which lets the user edit an existing poll item.
+ * The dialog consists of two pages, whose appearance differ based on the selected item type.
  */
 @Component({
-  selector: 'app-new-poll-item-dialog',
-  templateUrl: './new-poll-item-dialog.component.html',
-  styleUrls: ['./new-poll-item-dialog.component.sass']
+  selector: 'app-edit-poll-item-dialog',
+  templateUrl: './edit-poll-item-dialog.component.html',
+  styleUrls: ['./edit-poll-item-dialog.component.sass']
 })
-export class NewPollItemDialogComponent {
+export class EditPollItemDialogComponent {
 
   // Constant associations
   stepLabels = STEP_LABELS;
-  itemTypes = ITEM_TYPES;
   optionTypes = OptionType;
 
   // Event Emitters
   @Input() isVisible: boolean;
   @Input() poll: Poll;
+  @Input() pollItem: PollItem;
   @Output() finish = new EventEmitter<boolean>(); // true = success; false = cancel
 
   // Variables
@@ -99,7 +67,7 @@ export class NewPollItemDialogComponent {
   handleNext(): void {
     if (this.step === STEP_LABELS.length) {
       this.step++;
-      this.createPollItem(this.poll.id, this.question, this.answers);
+      this.editPollItem(this.poll.id, this.question, this.answers);
     } else {
       // Validity check
       switch (this.step) {
@@ -168,7 +136,7 @@ export class NewPollItemDialogComponent {
     return index;
   }
 
-  createPollItem(pollId: number, question: string, answers): void {
+  editPollItem(pollId: number, question: string, answers): void {
     this.loading = true;
 
     let pollItem;

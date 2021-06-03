@@ -1,0 +1,117 @@
+<!--
+  ~ Copyright © Live-Poll 2020-2021. All rights reserved
+  -->
+
+<nz-modal [(nzVisible)]="isVisible" (nzOnCancel)="handleCancel()" nzWidth="800px" [nzTitle]="dialogTitle"
+          [nzContent]="dialogContent" [nzFooter]="dialogFooter" (close)="handleCancel()">
+  <!-- Header -->
+  <ng-template #dialogTitle>
+    Edit Poll Item - {{step > stepLabels.length ? 'Updating ...' : stepLabels[step -1]}}
+  </ng-template>
+
+  <!-- Content -->
+  <ng-template #dialogContent>
+    <nz-layout class="dialog-content">
+      <!-- Side bar with timeline -->
+      <nz-sider class="dialog-sidebar" nzWidth="250px">
+        <nz-steps [nzCurrent]="step -1" nzDirection="vertical" nzSize="small">
+          <nz-step *ngFor="let name of stepLabels" nzTitle="{{name}}"></nz-step>
+          <nz-step *ngIf="step === 4" nzTitle="Creating ..." nzStatus="process" nzIcon="loading"></nz-step>
+        </nz-steps>
+      </nz-sider>
+
+      <!-- Main content -->
+      <nz-content>
+        <!-- Step 1 - Enter question / answers -->
+        <div *ngIf="step === 1">
+          <label>
+            <span class="input-label">Question:</span>
+            <input nz-input placeholder="Enter your question ..." [(ngModel)]="question" />
+          </label>
+          <nz-divider></nz-divider>
+
+          <!-- Open Text question / Word cloud question / Rating question -->
+          <div *ngIf="pollItem.type == 'open-text'">
+            <em>Open text questions do not have pre-defined answers.</em>
+          </div>
+
+          <!-- Multiple choice question -->
+          <div *ngIf="pollItem.type == 'multiple-choice'">
+            <!-- Answers -->
+            <label *ngFor="let answer of answers; let i = index; trackBy:trackByFn">
+              <span class="input-label">Answer {{i +1}}:</span>
+              <nz-input-group [nzSuffix]="i < 2 ? null : suffixTemplate">
+                <input nz-input [(ngModel)]="answers[i]" />
+              </nz-input-group>
+              <ng-template #suffixTemplate>
+                <i nz-icon [nzType]="'delete'" class="cursor-pointer" (click)="answers.splice(i, 1)"></i>
+              </ng-template>
+            </label>
+            <!-- Add answer button -->
+            <div class="add-answer-button-container">
+              <button [disabled]="answers.length >= 10" nz-button nzType="default" (click)="answers.push('')">
+                <i nz-icon nzType="plus-circle" nzTheme="outline"></i> Answer
+              </button>
+            </div>
+            <br><br>
+          </div>
+
+          <!-- Quiz question -->
+          <div *ngIf="pollItem.type == 'quiz'">
+            <!-- Answers -->
+            <label *ngFor="let answer of answers; let i = index; trackBy:trackByFn">
+              <span class="input-label" [class]="i === 0 ? 'right-answer' : 'wrong-answer'">
+                {{i === 0 ? 'Right answer' : 'Wrong answer ' + i}}:
+              </span>
+              <nz-input-group [nzSuffix]="i < 2 ? null : suffixTemplate">
+                <input nz-input [(ngModel)]="answers[i]" [placeholder]="i === 0 ? 'Enter right answer ...' : 'Enter wrong answer ...'"/>
+              </nz-input-group>
+              <ng-template #suffixTemplate>
+                <i nz-icon [nzType]="'delete'" class="cursor-pointer" (click)="answers.splice(i, 1)"></i>
+              </ng-template>
+            </label>
+            <!-- Add answer button -->
+            <div class="add-answer-button-container">
+              <em class="add-answer-button-label">The answers are going to be randomized for each user.</em>
+              <button [disabled]="answers.length >= 5" nz-button nzType="default" (click)="answers.push('')">
+                <i nz-icon nzType="plus-circle" nzTheme="outline"></i> Answer
+              </button>
+            </div>
+            <br><br>
+          </div>
+        </div>
+
+        <!-- Step 2 - Options -->
+        <div *ngIf="step >= 2">
+          <div *ngFor="let option of options">
+            <!-- Type boolean -->
+            <span *ngIf="option.type === optionTypes.BOOLEAN">
+              <nz-switch [(ngModel)]="option.value"></nz-switch>
+              <span class="switch-label">{{option.name}}</span>
+              <br><br>
+            </span>
+            <!-- Type int -->
+            <label *ngIf="option.type === optionTypes.INT">
+              <span class="input-label">{{option.name}}:</span><br>
+              <input nz-input type="number" [min]="option.min" [max]="option.max" class="full-width" [(ngModel)]="option.value"/>
+            </label>
+            <!-- Type string -->
+            <label *ngIf="option.type === optionTypes.STRING">
+              <span class="input-label">{{option.name}}:</span><br>
+              <input nz-input width="200px" [(ngModel)]="option.value"/>
+            </label>
+          </div>
+        </div>
+
+        <nz-alert *ngIf="errorMessage?.length > 0" nzType="error" nzMessage={{errorMessage}} nzCloseText="Okay" (nzOnClose)="errorMessage = ''"></nz-alert>
+      </nz-content>
+    </nz-layout>
+  </ng-template>
+
+  <!-- Footer -->
+  <ng-template #dialogFooter>
+    <button nz-button nzType="default" (click)="handleCancel()" [disabled]="loading">Cancel</button>
+    <button nz-button nzType="default" (click)="handleBack()" [disabled]="loading || step === 1">Back</button>
+    <button nz-button nzType="primary" (click)="handleNext()" [nzLoading]="loading">{{step === 3 ? 'Finish' : 'Next'}}</button>
+  </ng-template>
+</nz-modal>

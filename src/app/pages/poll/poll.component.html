@@ -170,8 +170,8 @@
                                 [poll]="poll" [pollItem]="null"></app-new-poll-item-dialog>
 
       <!-- Edit PollItem Dialog -->
-      <app-new-poll-item-dialog [isVisible]="showEditPollItemDialog" (finish)="handleDialogClose($event)"
-                                [poll]="poll" [pollItem]="selectedPollItem"></app-new-poll-item-dialog>
+      <app-edit-poll-item-dialog [isVisible]="showEditPollItemDialog" (finish)="handleDialogClose($event)"
+                                [poll]="poll" [pollItem]="selectedPollItem"></app-edit-poll-item-dialog>
 
       <!-- Edit Poll Dialog -->
       <app-edit-poll-dialog [isVisible]="showEditPollDialog" (onClose)="handleDialogClose($event)"
