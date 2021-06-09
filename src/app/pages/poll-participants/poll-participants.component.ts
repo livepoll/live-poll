@@ -30,6 +30,7 @@ export class PollParticipantsComponent implements OnInit, OnDestroy {
   sent = false;
   loading = true;
   pollOver = false;
+  darkTheme: boolean;
 
   /**
    * Initialize component

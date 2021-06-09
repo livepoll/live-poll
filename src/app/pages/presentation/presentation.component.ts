@@ -29,6 +29,7 @@ export class PresentationComponent implements OnInit {
   activeItem: MultipleChoiceItemCreate|QuizItemCreate|OpenTextItemCreate;
   pollOver = false;
   chartData: ChartDataItem[] = [];
+  darkTheme: boolean;
 
   /**
    * Initialize component

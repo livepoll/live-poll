@@ -6,7 +6,8 @@
   <nz-header class="header">
     <div class="header-logo">
       <a href="/" target="_blank" rel="noopener noreferrer">
-        <img src="assets/images/logo.svg" alt="logo">
+        <img *ngIf="!darkTheme" src="assets/images/logo-light.svg" alt="logo">
+        <img *ngIf="darkTheme" src="assets/images/logo-dark.svg" alt="logo">
       </a>
     </div>
     <h1 class="poll-name">{{poll?.name}}</h1>
