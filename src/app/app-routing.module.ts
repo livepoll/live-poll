@@ -7,7 +7,8 @@ import {RouterModule, Routes} from '@angular/router';
 import {DashboardComponent} from './pages/dashboard/dashboard.component';
 
 const routes: Routes = [
-  { path: '', loadChildren: () => import('./pages/main/main.module').then(m => m.MainModule) },
+  /*{ path: '', loadChildren: () => import('./pages/main/main.module').then(m => m.MainModule) },*/
+  {path: '', pathMatch: 'full', redirectTo: '/login' },
   { path: 'login', loadChildren: () => import('./pages/login/login.module').then(m => m.LoginModule) },
   { path: 'signup', loadChildren: () => import('./pages/sign-up/sign-up.module').then(m => m.SignUpModule) },
   { path: 'p/:slug', loadChildren: () => import('./pages/poll-participants/poll-participants.module').then(m => m.PollParticipantsModule) },
