@@ -53,8 +53,8 @@ export class EditPollDialogComponent implements OnInit {
     this.loading = true;
 
     this.poll.name = this.validateForm.controls.name.value;
-    this.poll.startDate = this.validateForm.controls.date?.value ? this.validateForm.controls.date.value[0] : null;
-    this.poll.endDate = this.validateForm.controls.date?.value ? this.validateForm.controls.date.value[1] : null;
+    this.poll.startDate = this.validateForm.controls.date?.value[0];
+    this.poll.endDate = this.validateForm.controls.date?.value[1];
 
     // Commit to server
     this.pollService.update(this.poll).subscribe((_) => {

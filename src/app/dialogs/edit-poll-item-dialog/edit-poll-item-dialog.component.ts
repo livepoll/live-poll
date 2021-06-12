@@ -150,7 +150,7 @@ export class EditPollItemDialogComponent implements OnInit {
     return trimmed;
   }
 
-  trackByFn(index: any, _: any): number {
+  trackByIndex(index: any, _: any): number {
     return index;
   }
 

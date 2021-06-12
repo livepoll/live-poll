@@ -39,7 +39,7 @@
             <!-- Multiple choice question -->
             <div *ngSwitchCase="'multiple-choice'">
               <!-- Answers -->
-              <label *ngFor="let answer of answers; let i = index; trackBy:trackByFn">
+              <label *ngFor="let answer of answers; let i = index; trackBy:trackByIndex">
                 <span class="input-label">Answer {{i +1}}:</span>
                 <nz-input-group [nzSuffix]="i < 2 ? null : suffixTemplate">
                   <input nz-input [(ngModel)]="answers[i]" />
@@ -60,7 +60,7 @@
             <!-- Quiz question -->
             <div *ngSwitchCase="'quiz'">
               <!-- Answers -->
-              <label *ngFor="let answer of answers; let i = index; trackBy:trackByFn">
+              <label *ngFor="let answer of answers; let i = index; trackBy:trackByIndex">
               <span class="input-label" [class]="i === 0 ? 'right-answer' : 'wrong-answer'">
                 {{i === 0 ? 'Right answer' : 'Wrong answer ' + i}}:
               </span>
