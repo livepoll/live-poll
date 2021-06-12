@@ -16,12 +16,13 @@ import {NzTypographyModule} from 'ng-zorro-antd/typography';
   exports: [
     ResultErrorComponent
   ],
-    imports: [
-        CommonModule,
-        NzResultModule,
-        NzButtonModule,
-        NzIconModule,
-        NzTypographyModule
-    ]
+  imports: [
+    CommonModule,
+    NzResultModule,
+    NzButtonModule,
+    NzIconModule,
+    NzTypographyModule
+  ]
 })
-export class ResultErrorModule { }
+export class ResultErrorModule {
+}

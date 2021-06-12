@@ -39,7 +39,8 @@ export class LoginComponent implements OnInit {
     private formBuilder: FormBuilder,
     private tools: CommonToolsService,
     private accountService: AccountService
-  ) {}
+  ) {
+  }
 
   /**
    * Initialize form validation

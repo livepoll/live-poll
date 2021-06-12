@@ -6,7 +6,17 @@
   "display": "standalone",
   "scope": "./",
   "start_url": "./",
-  "categories": ["live", "poll", "survey", "question", "answer", "quiz", "multiple-choice", "open-text", "rating"],
+  "categories": [
+    "live",
+    "poll",
+    "survey",
+    "question",
+    "answer",
+    "quiz",
+    "multiple-choice",
+    "open-text",
+    "rating"
+  ],
   "icons": [
     {
       "src": "assets/icons/manifest-icon-192.png",

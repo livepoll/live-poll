@@ -36,7 +36,8 @@ export class NewPollDialogComponent {
   constructor(
     private pollService: PollService,
     private tools: CommonToolsService
-  ) {}
+  ) {
+  }
 
   /**
    * User clicked on the 'Create poll' button.

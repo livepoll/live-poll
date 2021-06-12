@@ -14,17 +14,18 @@ import {CommonModule} from '@angular/common';
 import {ResultEmptyModule} from '../../components/result-empty/result-empty.module';
 
 @NgModule({
-    imports: [
-        HomeRoutingModule,
-        NzButtonModule,
-        NzEmptyModule,
-        CommonModule,
-        NzBreadCrumbModule,
-        NzLayoutModule,
-        NzIconModule,
-        ResultEmptyModule
-    ],
+  imports: [
+    HomeRoutingModule,
+    NzButtonModule,
+    NzEmptyModule,
+    CommonModule,
+    NzBreadCrumbModule,
+    NzLayoutModule,
+    NzIconModule,
+    ResultEmptyModule
+  ],
   declarations: [HomeComponent],
   exports: [HomeComponent]
 })
-export class HomeModule { }
+export class HomeModule {
+}

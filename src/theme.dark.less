@@ -3,6 +3,7 @@
  */
 
 @import "../node_modules/ng-zorro-antd/ng-zorro-antd.dark.less";
+
 @theme: dark;
 
 // The prefix to use on all css classes from ant.
@@ -28,9 +29,11 @@
 .sidebar-logo {
   background: @dark-mode-background;
   box-shadow: 0 2px 5px 0 @dark-mode-background;
+
   h1 {
     color: @white;
   }
+
   img {
     background: transparent;
     width: 45px !important;
@@ -43,7 +46,8 @@
   background: @transparent;
 }
 
-.app-header, .main-menu {
+.app-header,
+.main-menu {
   background: transparent;
 }
 
@@ -51,7 +55,8 @@
   background: @dark-mode-background;
 }
 
-body, nz-content {
+body,
+nz-content {
   background: #151515;
 }
 
@@ -70,6 +75,6 @@ body::-webkit-scrollbar-track {
 }
 
 body::-webkit-scrollbar-thumb {
-  background: #38C6BC;
+  background: #38c6bc;
   border-radius: 3px;
 }

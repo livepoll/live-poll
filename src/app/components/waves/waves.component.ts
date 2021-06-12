@@ -9,8 +9,9 @@ import {Component, Input, OnInit} from '@angular/core';
   templateUrl: './waves.component.html',
   styleUrls: ['./waves.component.sass']
 })
-export class WavesComponent implements OnInit{
+export class WavesComponent implements OnInit {
   @Input() darkTheme = false;
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 }

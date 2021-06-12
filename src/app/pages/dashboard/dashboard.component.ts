@@ -89,9 +89,13 @@ export class DashboardComponent {
   loadPolls(): void {
     this.pollService.getAll().subscribe((polls) => {
       this.polls = polls;
-      if (this.onPollsChanged) this.onPollsChanged.emit(polls);
+      if (this.onPollsChanged) {
+        this.onPollsChanged.emit(polls);
+      }
     }, (_) => {
-      if (this.onPollsChanged) this.onPollsChanged.emit(null); // Error == null
+      if (this.onPollsChanged) {
+        this.onPollsChanged.emit(null);
+      } // Error == null
     });
 
     /*// Build header, body and options
@@ -131,5 +135,15 @@ export class DashboardComponent {
    */
   markAsRead(notificationId: number): void {
     this.notifications.find(notification => notification.id = notificationId).alreadyRead = true;
+  }
+
+  /**
+   * Changes the theme from light to dark or vice versa
+   *
+   * @param $event Click event
+   */
+  changeTheme($event): void {
+    this.darkTheme = !$event;
+    this.onChangeTheme.emit(!$event);
   }
 }

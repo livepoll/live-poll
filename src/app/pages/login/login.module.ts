@@ -31,4 +31,5 @@ import {NzIconModule} from 'ng-zorro-antd/icon';
   declarations: [LoginComponent],
   exports: [LoginComponent]
 })
-export class LoginModule { }
+export class LoginModule {
+}

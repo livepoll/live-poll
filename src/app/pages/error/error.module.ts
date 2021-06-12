@@ -13,4 +13,5 @@ import {ErrorRoutingModule} from './error-routing.module';
   declarations: [ErrorComponent],
   exports: [ErrorComponent]
 })
-export class ErrorModule { }
+export class ErrorModule {
+}

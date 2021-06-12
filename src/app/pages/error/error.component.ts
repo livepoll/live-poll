@@ -11,6 +11,7 @@ import {Component, OnInit} from '@angular/core';
 })
 export class ErrorComponent implements OnInit {
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
 }

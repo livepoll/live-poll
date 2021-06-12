@@ -4,21 +4,21 @@
 
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {ResultEmptyComponent} from './result-empty.component';
+import {EditPollItemDialogComponent} from './edit-poll-item-dialog.component';
 
-describe('ResultEmptyComponent', () => {
-  let component: ResultEmptyComponent;
-  let fixture: ComponentFixture<ResultEmptyComponent>;
+describe('NewPollItemDialogComponent', () => {
+  let component: EditPollItemDialogComponent;
+  let fixture: ComponentFixture<EditPollItemDialogComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ResultEmptyComponent]
+      declarations: [EditPollItemDialogComponent]
     })
       .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ResultEmptyComponent);
+    fixture = TestBed.createComponent(EditPollItemDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

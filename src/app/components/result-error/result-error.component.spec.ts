@@ -12,9 +12,9 @@ describe('ResultErrorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ResultErrorComponent ]
+      declarations: [ResultErrorComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

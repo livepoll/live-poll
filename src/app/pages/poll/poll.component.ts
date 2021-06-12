@@ -11,6 +11,10 @@ import {formatDate} from '@angular/common';
 import {CommonToolsService} from '../../service/common-tools.service';
 import {PollService} from '../../service/poll.service';
 import {PollItemService} from '../../service/poll-item.service';
+import {MultipleChoiceItemParticipant} from '../../model/poll-item-participant/multiple-choice-item-participant';
+import {QuizItemParticipant} from '../../model/poll-item-participant/quiz-item-participant';
+import {OpenTextItemParticipant} from '../../model/poll-item-participant/open-text-item-participant';
+import {PollStatus} from '../../model/poll-status';
 
 @Component({
   selector: 'app-poll',
@@ -36,9 +40,10 @@ export class PollComponent {
   showNewPollItemDialog = false;
   error = false;
   results = [];
-  pollStatus = 1; // 1 = Planned; 2 = Running; 3 = Finished
+  pollStatus: PollStatus = PollStatus.Pending;
   showEditPollDialog = false;
   showEditPollItemDialog = false;
+  selectedPollItem: MultipleChoiceItemParticipant | QuizItemParticipant | OpenTextItemParticipant;
 
   /**
    * Initialize component
@@ -62,13 +67,17 @@ export class PollComponent {
     this.onUserDataChanged.subscribe(user => {
       this.userData = user;
       // Check if pollId is already available
-      if (this.pollId) this.loadPoll();
+      if (this.pollId) {
+        this.loadPoll();
+      }
     });
     // Subscribe to active route
-    this.activeRoute.params.subscribe( params => {
+    this.activeRoute.params.subscribe(params => {
       this.pollId = params.id;
       // Check if userData is already available
-      if (this.userData) this.loadPoll();
+      if (this.userData) {
+        this.loadPoll();
+      }
     });
 
     // Keep the current time in sync
@@ -91,12 +100,15 @@ export class PollComponent {
    * @param url Customized input url
    */
   onSlugChange(url: string): void {
-    if (!url || url.length === 0) return;
+    if (!url) {
+      return;
+    }
     const oldSlug = this.poll.slug;
     this.poll.slug = encodeURI(url.toLocaleLowerCase().split(' ').join('-'));
 
     // Commit changes to the server
-    this.pollService.update(this.poll).subscribe((_) => {}, (_) => {
+    this.pollService.update(this.poll).subscribe((_) => {
+    }, (_) => {
       this.poll.slug = oldSlug;
       this.tools.showErrorMessage('Could not change the slug. Maybe the slug is already in use by another poll');
     });
@@ -130,7 +142,9 @@ export class PollComponent {
     this.changingState = true;
     if (open) {
       this.poll.startDate = this.currentDate;
-      if (this.poll.endDate) this.poll.endDate = null;
+      if (this.poll.endDate) {
+        this.poll.endDate = null;
+      }
     } else {
       this.poll.endDate = this.currentDate;
     }
@@ -158,10 +172,13 @@ export class PollComponent {
    * @param success Item successfully created / edited
    */
   handleDialogClose(success: boolean): void {
-    if (success) this.loadPoll();
-    this.showNewPollItemDialog = false;
+    if (success) {
+      this.loadPoll();
+    }
     this.showEditPollDialog = false;
+    this.showNewPollItemDialog = false;
     this.showEditPollItemDialog = false;
+    this.selectedPollItem = undefined;
   }
 
   /**
@@ -260,20 +277,27 @@ export class PollComponent {
     const endDateString = '<strong>' + formatDate(endDate, 'yyyy-MM-dd hh:mm a', this.locale) + '</strong>';
 
     switch (this.pollStatus) {
-      case 1: { // Pending
-        if (!startDate && !endDate) return 'Manual opening, manual closing';
-        if (!startDate) return 'Manual opening, auto closing at' + endDateString;
-        if (!endDate) return 'Auto opening at ' + startDateString + ', manual closing';
+      case PollStatus.Pending: {
+        if (!startDate && !endDate) {
+          return 'Manual opening, manual closing';
+        }
+        if (!startDate) {
+          return 'Manual opening, auto closing at' + endDateString;
+        }
+        if (!endDate) {
+          return 'Auto opening at ' + startDateString + ', manual closing';
+        }
         return 'Auto opening at ' + startDateString + ', auto closing at ' + endDateString;
       }
-      case 2: { // Running
-        if (!endDate) return 'Running since ' + startDateString + ', manual closing';
+      case PollStatus.Running: {
+        if (!endDate) {
+          return 'Running since ' + startDateString + ', manual closing';
+        }
         return 'Running since ' + startDateString + ', auto closing at ' + endDateString;
       }
-      case 3: { // Finished
+      case PollStatus.Finished: { // Finished
         return 'Ran from ' + startDateString + ' to ' + endDateString;
       }
-      default: return ''; // Unknown state, return empty string
     }
   }
 
@@ -288,8 +312,9 @@ export class PollComponent {
   /**
    * Shows the dialog a specific poll item
    */
-  openEditPollItemDialog(event: MouseEvent): void {
+  openEditPollItemDialog(event: MouseEvent, pollItem): void {
     event.stopPropagation();
+    this.selectedPollItem = pollItem;
     // Open edit dialog
     this.showEditPollItemDialog = true;
   }

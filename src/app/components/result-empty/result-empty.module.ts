@@ -11,10 +11,10 @@ import {RouterModule} from '@angular/router';
 
 
 @NgModule({
-    declarations: [ResultEmptyComponent],
-    exports: [
-        ResultEmptyComponent
-    ],
+  declarations: [ResultEmptyComponent],
+  exports: [
+    ResultEmptyComponent
+  ],
   imports: [
     CommonModule,
     NzEmptyModule,
@@ -22,4 +22,5 @@ import {RouterModule} from '@angular/router';
     RouterModule
   ]
 })
-export class ResultEmptyModule { }
+export class ResultEmptyModule {
+}
