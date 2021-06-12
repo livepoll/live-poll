@@ -57,7 +57,7 @@ export class PollService {
    * Retrieves all poll items of a specific poll from the server
    */
   getAllItems(pollId: number): Observable<PollItem[]> {
-    return new Observable(subscriber => {
+    return new Observable((subscriber) => {
       this.http.get<object[]>(ENDPOINT_URL + `/${pollId}/poll-items`, {withCredentials: true}).subscribe((pollItems) => {
           const result: PollItem[] = [];
           for (const pollItem of pollItems) {
