@@ -95,7 +95,7 @@ export class EditPollItemDialogComponent implements OnInit {
       switch (this.step) {
         case 1:
           // Inputs are valid, set options data of selected item type
-          this.options = OPTIONS_DATA[this.itemType - 1].filter(option => option.visibleAtCreation);
+          this.options = OPTIONS_DATA[this.itemType - 1].filter((option) => option.visibleAtCreation);
           break;
         case 2:
           if (this.pollItem.question === '') {
