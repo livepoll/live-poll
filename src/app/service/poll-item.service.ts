@@ -27,7 +27,8 @@ export class PollItemService {
   constructor(
     private http: HttpClient,
     private tools: CommonToolsService
-  ) {}
+  ) {
+  }
 
   /**
    * Creates a poll item on the server
@@ -46,7 +47,7 @@ export class PollItemService {
       case ItemType.OpenText:
         endpointFraction = 'open-text';
     }
-    return this.http.post<T>(ENDPOINT_URL + `/${endpointFraction}`, pollItem, { withCredentials: true });
+    return this.http.post<T>(ENDPOINT_URL + `/${endpointFraction}`, pollItem, {withCredentials: true});
   }
 
   /**
@@ -55,7 +56,7 @@ export class PollItemService {
    * @param id Id of the affected poll item
    */
   get(id: number): Observable<PollItem> {
-    return this.http.get<PollItem>(ENDPOINT_URL + `/${id}`, { withCredentials: true });
+    return this.http.get<PollItem>(ENDPOINT_URL + `/${id}`, {withCredentials: true});
   }
 
   /**
@@ -75,7 +76,7 @@ export class PollItemService {
       case OpenTextItemCreate:
         endpointFraction = 'open-text';
     }
-    return this.http.put<void>(ENDPOINT_URL + `/${endpointFraction}/${pollItem.itemId}`, pollItem, { withCredentials: true });
+    return this.http.put<void>(ENDPOINT_URL + `/${endpointFraction}/${pollItem.itemId}`, pollItem, {withCredentials: true});
   }
 
   /**
@@ -84,6 +85,6 @@ export class PollItemService {
    * @param id Id of the affected poll item
    */
   delete(id: number): Observable<void> {
-    return this.http.delete<void>(ENDPOINT_URL + `/${id}`, { withCredentials: true });
+    return this.http.delete<void>(ENDPOINT_URL + `/${id}`, {withCredentials: true});
   }
 }

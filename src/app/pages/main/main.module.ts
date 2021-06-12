@@ -13,4 +13,5 @@ import {MainRoutingModule} from './main-routing.module';
   declarations: [MainComponent],
   exports: [MainComponent]
 })
-export class MainModule { }
+export class MainModule {
+}

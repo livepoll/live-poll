@@ -12,9 +12,9 @@ describe('ResultEmptyComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ResultEmptyComponent ]
+      declarations: [ResultEmptyComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

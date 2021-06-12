@@ -33,29 +33,29 @@ export class WebsocketService {
   /**
    * Tries to connect via the handshake endpoint of the websocket server
    */
-  establishConnectionParticipant(slug: string): Observable<MultipleChoiceItemParticipant|QuizItemParticipant|OpenTextItemParticipant> {
+  establishConnectionParticipant(slug: string): Observable<MultipleChoiceItemParticipant | QuizItemParticipant | OpenTextItemParticipant> {
     this.stompClient = new RxStomp();
     this.stompClient.configure(this.stompConfig);
     this.stompClient.activate();
 
     return this.subscription = this.stompClient.watch(ENDPOINT_MESSAGING_PARTICIPANT_READ_URL + '/' + slug)
       .pipe(rxMap((msg: HttpResponse<any>) => {
-      return JSON.parse(msg.body);
-    }));
+        return JSON.parse(msg.body);
+      }));
   }
 
   /**
    * Tries to connect via the handshake endpoint of the websocket server
    */
-  establishConnectionPresentation(pollId: number): Observable<MultipleChoiceItemParticipant|QuizItemParticipant|OpenTextItemParticipant> {
+  establishConnectionPresentation(pollId: number): Observable<MultipleChoiceItemParticipant | QuizItemParticipant | OpenTextItemParticipant> {
     this.stompClient = new RxStomp();
     this.stompClient.configure(this.stompConfig);
     this.stompClient.activate();
 
     return this.subscription = this.stompClient.watch(ENDPOINT_MESSAGING_PRESENTATION_READ_URL + '/' + pollId)
       .pipe(rxMap((msg: HttpResponse<any>) => {
-      return JSON.parse(msg.body);
-    }));
+        return JSON.parse(msg.body);
+      }));
   }
 
   /**

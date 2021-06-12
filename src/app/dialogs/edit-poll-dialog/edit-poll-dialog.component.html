@@ -2,7 +2,8 @@
   ~ Copyright © Live-Poll 2020-2021. All rights reserved
   -->
 
-<nz-modal [(nzVisible)]="isVisible" nzTitle="Edit Poll" (nzOnCancel)="onClose.emit(false)" (nzOnOk)="form.ngSubmit.emit()"
+<nz-modal [(nzVisible)]="isVisible" nzTitle="Edit Poll" (nzOnCancel)="onClose.emit(false)"
+          (nzOnOk)="form.ngSubmit.emit()"
           [nzOkLoading]="loading" nzAutofocus="ok" [nzOkDisabled]="!validateForm.valid"
           [nzCancelDisabled]="loading" nzOkText="Save changes" (close)="onClose.emit(false)">
   <form nz-form #form="ngForm" [formGroup]="validateForm" (ngSubmit)="updatePoll()">
@@ -10,7 +11,7 @@
       <nz-form-control nzErrorTip="The poll name is mandatory!">
         <label>
           <span class="input-label">Name of the poll:</span>
-          <input nz-input placeholder="Name of your new poll" formControlName="name" required />
+          <input nz-input placeholder="Name of your new poll" formControlName="name" required/>
         </label>
       </nz-form-control>
     </nz-form-item>

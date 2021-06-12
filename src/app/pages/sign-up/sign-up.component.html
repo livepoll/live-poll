@@ -15,7 +15,8 @@
               <label>
                 <span class="input-label">Username: <span class="required-field">*</span></span>
                 <nz-input-group nzPrefixIcon="user">
-                  <input nz-input id="username" formControlName="username" autocomplete="username" tabindex="1" placeholder="Username" />
+                  <input nz-input id="username" formControlName="username" autocomplete="username" tabindex="1"
+                         placeholder="Username"/>
                 </nz-input-group>
               </label>
             </nz-form-control>
@@ -28,10 +29,11 @@
                 <nz-input-group nzPrefixIcon="lock" [nzSuffix]="suffixTemplate">
                   <input nz-input [type]="passwordVisible ? 'text' : 'password'" id="password"
                          formControlName="password" autocomplete="new-password" placeholder="Password" tabindex="3"
-                         (ngModelChange)="updateConfirmValidator()" />
+                         (ngModelChange)="updateConfirmValidator()"/>
                 </nz-input-group>
                 <ng-template #suffixTemplate>
-                  <i nz-icon [nzType]="passwordVisible ? 'eye-invisible' : 'eye'" (click)="passwordVisible = !passwordVisible"></i>
+                  <i nz-icon [nzType]="passwordVisible ? 'eye-invisible' : 'eye'"
+                     (click)="passwordVisible = !passwordVisible"></i>
                 </ng-template>
               </label>
             </nz-form-control>
@@ -42,7 +44,8 @@
               <label nz-checkbox formControlName="agb">
                 <span class="agb-label">I have read the</span>
               </label>
-              <a href="https://www.chillibits.com/en/legal-notice/" target="_blank" rel="noopener noreferrer">license agreement</a>
+              <a href="https://www.chillibits.com/en/legal-notice/" target="_blank" rel="noopener noreferrer">license
+                agreement</a>
               <span class="required-field"> *</span>
             </nz-form-control>
           </nz-form-item>
@@ -55,7 +58,7 @@
                 <span class="input-label">E-Mail: <span class="required-field">*</span></span>
                 <nz-input-group nzPrefixIcon="mail">
                   <input nz-input id="email" formControlName="email" autocomplete="email" tabindex="2"
-                         placeholder="Email" />
+                         placeholder="Email"/>
                 </nz-input-group>
               </label>
             </nz-form-control>
@@ -68,7 +71,7 @@
                 <nz-input-group nzPrefixIcon="lock">
                   <input nz-input [type]="passwordVisible ? 'text' : 'password'" id="confirmPassword"
                          formControlName="confirmPassword" autocomplete="new-password" tabindex="4"
-                         placeholder="Confirm password" />
+                         placeholder="Confirm password"/>
                 </nz-input-group>
               </label>
             </nz-form-control>
@@ -82,11 +85,13 @@
             </nz-form-control>
           </nz-form-item>
           <!-- Sign up button (order of buttons is important, due to the button focus) -->
-          <button nz-button class="sign-up-form-button login-form-margin" nzType="primary" autofocus [nzLoading]="loading">
+          <button nz-button class="sign-up-form-button login-form-margin" nzType="primary" autofocus
+                  [nzLoading]="loading">
             {{loading ? 'Creating ...' : 'Create account'}}
           </button>
           <!-- Back button -->
-          <button nz-button class="back-form-button login-form-margin" nzType="default" [disabled]="loading" routerLink="/login">
+          <button nz-button class="back-form-button login-form-margin" nzType="default" [disabled]="loading"
+                  routerLink="/login">
             Back to login
           </button>
         </div>

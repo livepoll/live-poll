@@ -23,4 +23,5 @@ import {ResultEmptyModule} from '../../components/result-empty/result-empty.modu
   declarations: [AnalyticsComponent],
   exports: [AnalyticsComponent]
 })
-export class AnalyticsModule { }
+export class AnalyticsModule {
+}

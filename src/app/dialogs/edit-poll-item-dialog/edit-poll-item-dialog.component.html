@@ -6,7 +6,7 @@
           [nzContent]="dialogContent" [nzFooter]="dialogFooter" (close)="handleCancel()">
   <!-- Header -->
   <ng-template #dialogTitle>
-    Edit Poll Item - {{step > stepLabels.length ? 'Updating ...' : stepLabels[step -1]}}
+    Edit Poll Item - {{step > stepLabels.length ? 'Updating ...' : stepLabels[step - 1]}}
   </ng-template>
 
   <!-- Content -->
@@ -26,7 +26,7 @@
         <div *ngIf="step === 1">
           <label>
             <span class="input-label">Question:</span>
-            <input nz-input placeholder="Enter your question ..." [(ngModel)]="question" />
+            <input nz-input placeholder="Enter your question ..." [(ngModel)]="question"/>
           </label>
           <nz-divider></nz-divider>
 
@@ -40,9 +40,9 @@
             <div *ngSwitchCase="'multiple-choice'">
               <!-- Answers -->
               <label *ngFor="let answer of answers; let i = index; trackBy:trackByIndex">
-                <span class="input-label">Answer {{i +1}}:</span>
+                <span class="input-label">Answer {{i + 1}}:</span>
                 <nz-input-group [nzSuffix]="i < 2 ? null : suffixTemplate">
-                  <input nz-input [(ngModel)]="answers[i]" />
+                  <input nz-input [(ngModel)]="answers[i]"/>
                 </nz-input-group>
                 <ng-template #suffixTemplate>
                   <i nz-icon [nzType]="'delete'" class="cursor-pointer" (click)="answers.splice(i, 1)"></i>
@@ -65,7 +65,8 @@
                 {{i === 0 ? 'Right answer' : 'Wrong answer ' + i}}:
               </span>
                 <nz-input-group [nzSuffix]="i < 2 ? null : suffixTemplate">
-                  <input nz-input [(ngModel)]="answers[i]" [placeholder]="i === 0 ? 'Enter right answer ...' : 'Enter wrong answer ...'"/>
+                  <input nz-input [(ngModel)]="answers[i]"
+                         [placeholder]="i === 0 ? 'Enter right answer ...' : 'Enter wrong answer ...'"/>
                 </nz-input-group>
                 <ng-template #suffixTemplate>
                   <i nz-icon [nzType]="'delete'" class="cursor-pointer" (click)="answers.splice(i, 1)"></i>
@@ -95,7 +96,8 @@
             <!-- Type int -->
             <label *ngIf="option.type === optionTypes.INT">
               <span class="input-label">{{option.name}}:</span><br>
-              <input nz-input type="number" [min]="option.min" [max]="option.max" class="full-width" [(ngModel)]="option.value"/>
+              <input nz-input type="number" [min]="option.min" [max]="option.max" class="full-width"
+                     [(ngModel)]="option.value"/>
             </label>
             <!-- Type string -->
             <label *ngIf="option.type === optionTypes.STRING">
@@ -105,7 +107,8 @@
           </div>
         </div>
 
-        <nz-alert *ngIf="errorMessage?.length > 0" nzType="error" nzMessage={{errorMessage}} nzCloseText="Okay" (nzOnClose)="errorMessage = ''"></nz-alert>
+        <nz-alert *ngIf="errorMessage?.length > 0" nzType="error" nzMessage={{errorMessage}} nzCloseText="Okay"
+                  (nzOnClose)="errorMessage = ''"></nz-alert>
       </nz-content>
     </nz-layout>
   </ng-template>
@@ -114,6 +117,7 @@
   <ng-template #dialogFooter>
     <button nz-button nzType="default" (click)="handleCancel()" [disabled]="loading">Cancel</button>
     <button nz-button nzType="default" (click)="handleBack()" [disabled]="loading || step === 1">Back</button>
-    <button nz-button nzType="primary" (click)="handleNext()" [nzLoading]="loading">{{step === 3 ? 'Finish' : 'Next'}}</button>
+    <button nz-button nzType="primary" (click)="handleNext()"
+            [nzLoading]="loading">{{step === 3 ? 'Finish' : 'Next'}}</button>
   </ng-template>
 </nz-modal>

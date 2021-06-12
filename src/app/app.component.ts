@@ -48,7 +48,8 @@ export class AppComponent implements OnInit {
     private accountService: AccountService,
     private userService: UserService,
     private _: NgcCookieConsentService
-  ) {}
+  ) {
+  }
 
   /**
    * Initialize application:
@@ -68,11 +69,15 @@ export class AppComponent implements OnInit {
   onActivate(child): void {
     this.currentPage = child;
     // Wire up Attributes
-    if (child.darkTheme !== null) child.darkTheme = this.darkTheme;
+    if (child.darkTheme !== null) {
+      child.darkTheme = this.darkTheme;
+    }
     // Wire up Event Emitters
     if (child.onUserDataChanged) {
       this.onUserDataChanged = child.onUserDataChanged;
-      if (this.user) this.onUserDataChanged.emit(this.user);
+      if (this.user) {
+        this.onUserDataChanged.emit(this.user);
+      }
     }
     if (child.onLoginResultChanged) {
       this.onLoginResultChanged = child.onLoginResultChanged;
@@ -93,7 +98,9 @@ export class AppComponent implements OnInit {
    */
   applyPersistedTheme(): void {
     this.darkTheme = this.cookieService.get(COOKIE_NAME_THEME) === 'dark';
-    if (this.darkTheme) this.changeTheme(true);
+    if (this.darkTheme) {
+      this.changeTheme(true);
+    }
   }
 
   /**
@@ -105,7 +112,9 @@ export class AppComponent implements OnInit {
       this.user = response.body;
       // Redirect to dashboard if necessary, otherwise apply userData to dashboard
       if (location.href.includes('dashboard') || location.href.includes('/p/') || location.href.includes('/r/')) {
-        if (this.onUserDataChanged) this.onUserDataChanged.emit(this.user);
+        if (this.onUserDataChanged) {
+          this.onUserDataChanged.emit(this.user);
+        }
       } else {
         this.router.navigateByUrl('/dashboard');
       }
@@ -114,7 +123,9 @@ export class AppComponent implements OnInit {
       if (showErrorExplicitly) {
         this.tools.showErrorMessage('Loading user data failed.');
       } else {
-        if (location.href.includes('dashboard')) this.router.navigateByUrl('/login');
+        if (location.href.includes('dashboard')) {
+          this.router.navigateByUrl('/login');
+        }
       }
     });
   }
@@ -158,19 +169,23 @@ export class AppComponent implements OnInit {
   changeTheme(darkTheme: boolean): void {
     // Set cookie
     this.cookieService.set(COOKIE_NAME_THEME, darkTheme ? 'dark' : 'light',
-      { secure: env.useSecureCookies, path: '/', sameSite: 'Strict' });
+      {secure: env.useSecureCookies, path: '/', sameSite: 'Strict'});
     // Change theme
     this.darkTheme = darkTheme;
     if (darkTheme) {
       // Remove light theme
       const dom = document.getElementById('dark-theme');
-      if (dom) dom.remove();
+      if (dom) {
+        dom.remove();
+      }
       // Apply dark theme
       this.applyTheme('dark');
     } else {
       // Remove dark theme
       const dom = document.getElementById('light-theme');
-      if (dom) dom.remove();
+      if (dom) {
+        dom.remove();
+      }
       // Apply light theme
       this.applyTheme('light');
     }

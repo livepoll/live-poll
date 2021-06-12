@@ -9,4 +9,5 @@ import {Component} from '@angular/core';
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.sass']
 })
-export class MainComponent {}
+export class MainComponent {
+}

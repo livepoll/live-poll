@@ -15,15 +15,16 @@ import {NzIconModule} from 'ng-zorro-antd/icon';
 
 @NgModule({
   declarations: [PresentationComponent],
-    imports: [
-        PresentationRoutingModule,
-        CommonModule,
-        NzLayoutModule,
-        NzSpinModule,
-        NzResultModule,
-        NzButtonModule,
-        PieChartModule,
-        NzIconModule
-    ]
+  imports: [
+    PresentationRoutingModule,
+    CommonModule,
+    NzLayoutModule,
+    NzSpinModule,
+    NzResultModule,
+    NzButtonModule,
+    PieChartModule,
+    NzIconModule
+  ]
 })
-export class PresentationModule {}
+export class PresentationModule {
+}

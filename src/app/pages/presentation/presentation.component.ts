@@ -26,7 +26,7 @@ export class PresentationComponent implements OnInit {
   // Variables
   pollId = 0;
   poll: Poll;
-  activeItem: MultipleChoiceItemCreate|QuizItemCreate|OpenTextItemCreate;
+  activeItem: MultipleChoiceItemCreate | QuizItemCreate | OpenTextItemCreate;
   pollOver = false;
   chartData: ChartDataItem[] = [];
   darkTheme: boolean;
@@ -46,7 +46,8 @@ export class PresentationComponent implements OnInit {
     private pollService: PollService,
     private websocketService: WebsocketService,
     private toolsService: CommonToolsService
-  ) {}
+  ) {
+  }
 
   /**
    * Initialize the presenter view

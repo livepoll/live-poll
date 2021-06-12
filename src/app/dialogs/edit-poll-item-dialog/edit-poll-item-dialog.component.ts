@@ -38,7 +38,7 @@ export class EditPollItemDialogComponent implements OnInit {
   // Event Emitters
   @Input() isVisible: boolean;
   @Input() poll: Poll;
-  @Input() pollItem: MultipleChoiceItemParticipant|OpenTextItemParticipant|QuizItemParticipant;
+  @Input() pollItem: MultipleChoiceItemParticipant | OpenTextItemParticipant | QuizItemParticipant;
   @Output() finish = new EventEmitter<boolean>(); // true = success; false = cancel
 
   // Variables
@@ -59,7 +59,8 @@ export class EditPollItemDialogComponent implements OnInit {
   constructor(
     private pollItemService: PollItemService,
     private tools: CommonToolsService
-  ) {}
+  ) {
+  }
 
   /**
    * Initialize dialog
@@ -134,7 +135,9 @@ export class EditPollItemDialogComponent implements OnInit {
    * Method closes the dialog to cancel the creation operation.
    */
   handleCancel(): void {
-    if (!this.loading) this.finish.emit(false);
+    if (!this.loading) {
+      this.finish.emit(false);
+    }
   }
 
   /**
@@ -146,7 +149,9 @@ export class EditPollItemDialogComponent implements OnInit {
       .map((v) => v.trim()) // Remove blanks or tabs from the end of each answer
       .filter((v, i, a) => a.indexOf(v) === i) // Filter out dupes
       .filter((v) => v !== ''); // Filter out blank items
-    while (trimmed.length < 2) { trimmed.push(''); } // Fill up with blank items
+    while (trimmed.length < 2) {
+      trimmed.push('');
+    } // Fill up with blank items
     return trimmed;
   }
 
@@ -160,13 +165,13 @@ export class EditPollItemDialogComponent implements OnInit {
     let pollItem;
     switch (this.itemType) {
       case 1: // Open text item
-        pollItem = new OpenTextItemCreate({ ...this.pollItem, question });
+        pollItem = new OpenTextItemCreate({...this.pollItem, question});
         break;
       case 2: // Multiple choice item
-        pollItem = new MultipleChoiceItemCreate({ ...this.pollItem, question: this.question, selectionOptions: answers });
+        pollItem = new MultipleChoiceItemCreate({...this.pollItem, question: this.question, selectionOptions: answers});
         break;
       case 3: // Quiz item
-        pollItem = new QuizItemCreate({ ...this.pollItem, question, selectionOptions: answers });
+        pollItem = new QuizItemCreate({...this.pollItem, question, selectionOptions: answers});
         break;
     }
 

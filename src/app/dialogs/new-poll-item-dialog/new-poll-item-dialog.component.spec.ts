@@ -12,9 +12,9 @@ describe('NewPollItemDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ NewPollItemDialogComponent ]
+      declarations: [NewPollItemDialogComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

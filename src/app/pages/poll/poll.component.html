@@ -117,7 +117,8 @@
                     </nz-tag>
                     <nz-tag nzColor="default">{{pollItem.type}}</nz-tag>
                     <nz-switch class="run-item-switch" nzSize="small" [ngModel]="poll.currentItem === pollItem.itemId"
-                               (click)="onRunPollItem($event, pollItem.itemId)" [nzLoading]="loadingRunPollItemId === pollItem.itemId">
+                               (click)="onRunPollItem($event, pollItem.itemId)"
+                               [nzLoading]="loadingRunPollItemId === pollItem.itemId">
                     </nz-switch>
                     <button nz-button nzType="primary" [nzSize]="p.nzActive ? 'default' : 'small'"
                             (click)="openEditPollItemDialog($event, pollItem)">
@@ -170,8 +171,9 @@
                                 [poll]="poll"></app-new-poll-item-dialog>
 
       <!-- Edit PollItem Dialog -->
-      <app-edit-poll-item-dialog *ngIf="selectedPollItem" [isVisible]="showEditPollItemDialog" (finish)="handleDialogClose($event)"
-                                [poll]="poll" [pollItem]="selectedPollItem"></app-edit-poll-item-dialog>
+      <app-edit-poll-item-dialog *ngIf="selectedPollItem" [isVisible]="showEditPollItemDialog"
+                                 (finish)="handleDialogClose($event)"
+                                 [poll]="poll" [pollItem]="selectedPollItem"></app-edit-poll-item-dialog>
 
       <!-- Edit Poll Dialog -->
       <app-edit-poll-dialog [isVisible]="showEditPollDialog" (onClose)="handleDialogClose($event)"

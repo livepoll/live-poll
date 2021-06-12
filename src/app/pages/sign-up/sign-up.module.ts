@@ -33,4 +33,5 @@ import {NzIconModule} from 'ng-zorro-antd/icon';
   declarations: [SignUpComponent],
   exports: [SignUpComponent]
 })
-export class SignUpModule { }
+export class SignUpModule {
+}

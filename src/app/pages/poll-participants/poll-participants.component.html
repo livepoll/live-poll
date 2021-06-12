@@ -22,24 +22,27 @@
       <!-- Multiple Choice Question -->
       <div class="poll-item-selection-options" *ngSwitchCase="'multiple-choice'">
         <nz-radio-group [(ngModel)]="answer">
-          <label *ngFor="let answer of activeItem.answers; let i = index" nz-radio nzValue="{{i}}">{{answer.selectionOption}}</label>
+          <label *ngFor="let answer of activeItem.answers; let i = index" nz-radio
+                 nzValue="{{i}}">{{answer.selectionOption}}</label>
           <input *ngIf="activeItem.options?.canSelectMultiple" type="text" nz-input [(ngModel)]="answer"/>
         </nz-radio-group>
       </div>
 
       <!-- Open Text Question -->
       <div class="poll-item-selection-options" *ngSwitchCase="'open-text'">
-        <input type="text" nz-input [(ngModel)]="answer" nzSize="large" />
+        <input type="text" nz-input [(ngModel)]="answer" nzSize="large"/>
       </div>
 
       <!-- Quiz Question -->
       <div class="poll-item-selection-options" *ngSwitchCase="'quiz'">
         <nz-radio-group [(ngModel)]="answer">
-          <label *ngFor="let answer of activeItem.answers; let i = index" nz-radio nzValue="{{i}}">{{answer.selectionOption}}</label>
+          <label *ngFor="let answer of activeItem.answers; let i = index" nz-radio
+                 nzValue="{{i}}">{{answer.selectionOption}}</label>
         </nz-radio-group>
       </div>
 
-      <button *ngIf="activeItemType !== ''" nz-button nzType="primary" nzSize="large" (click)="sendAnswer()" [disabled]="!(answer?.length > 0)" nzBlock>
+      <button *ngIf="activeItemType !== ''" nz-button nzType="primary" nzSize="large" (click)="sendAnswer()"
+              [disabled]="!(answer?.length > 0)" nzBlock>
         Submit Answer
         <i nz-icon nzType="right"></i>
       </button>
@@ -76,5 +79,6 @@
       nzSubTitle="No poll found for this slug. Please make sure, that you have the right link.">
     </nz-result>
   </nz-content>
-  <nz-footer class="participants-footer">Provided with ❤ by <a href="https://www.live-poll.de" target="_blank">Live-Poll</a></nz-footer>
+  <nz-footer class="participants-footer">Provided with ❤ by <a href="https://www.live-poll.de"
+                                                               target="_blank">Live-Poll</a></nz-footer>
 </nz-layout>

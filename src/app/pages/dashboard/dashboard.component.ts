@@ -89,9 +89,13 @@ export class DashboardComponent {
   loadPolls(): void {
     this.pollService.getAll().subscribe((polls) => {
       this.polls = polls;
-      if (this.onPollsChanged) this.onPollsChanged.emit(polls);
+      if (this.onPollsChanged) {
+        this.onPollsChanged.emit(polls);
+      }
     }, (_) => {
-      if (this.onPollsChanged) this.onPollsChanged.emit(null); // Error == null
+      if (this.onPollsChanged) {
+        this.onPollsChanged.emit(null);
+      } // Error == null
     });
 
     /*// Build header, body and options

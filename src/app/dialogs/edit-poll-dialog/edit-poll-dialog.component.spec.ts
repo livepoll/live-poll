@@ -2,9 +2,9 @@
  * Copyright © Live-Poll 2020-2021. All rights reserved
  */
 
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { EditPollDialogComponent } from './edit-poll-dialog.component';
+import {EditPollDialogComponent} from './edit-poll-dialog.component';
 
 describe('EditPollDialogComponent', () => {
   let component: EditPollDialogComponent;
@@ -12,9 +12,9 @@ describe('EditPollDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EditPollDialogComponent ]
+      declarations: [EditPollDialogComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

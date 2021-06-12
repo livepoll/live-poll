@@ -102,7 +102,7 @@ export class SignUpComponent implements OnInit {
    */
   signUp(username: string, email: string, password: string, newsletter: boolean): void {
     // Build user object
-    const body = { username, email, password };
+    const body = {username, email, password};
     // Send request
     this.accountService.register(body).subscribe((_) => {
       // Request was successful, continue

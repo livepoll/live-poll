@@ -20,7 +20,8 @@ export class CommonToolsService {
    */
   constructor(
     private notificationService: NzNotificationService
-  ) {}
+  ) {
+  }
 
   /**
    * Calculates the status of the poll, based on the startDate and endDate
@@ -59,7 +60,7 @@ export class CommonToolsService {
    * @param message Custom error message
    */
   showErrorMessage(message: string): void {
-    this.notificationService.error('An error occurred', message, { nzPlacement: 'topRight' });
+    this.notificationService.error('An error occurred', message, {nzPlacement: 'topRight'});
   }
 
   /**
@@ -68,7 +69,7 @@ export class CommonToolsService {
    * @param message Custom success message
    */
   showSuccessMessage(message: string): void {
-    this.notificationService.success('Action successful', message, { nzPlacement: 'topRight' });
+    this.notificationService.success('Action successful', message, {nzPlacement: 'topRight'});
   }
 
   /**
@@ -104,7 +105,7 @@ export class CommonToolsService {
     return array;
   }
 
-  parsePollItemObject(pollItem: any): MultipleChoiceItemParticipant|OpenTextItemParticipant|QuizItemParticipant {
+  parsePollItemObject(pollItem: any): MultipleChoiceItemParticipant | OpenTextItemParticipant | QuizItemParticipant {
     if (!('type' in pollItem)) {
       this.showErrorMessage('Could not parse poll item.');
     }

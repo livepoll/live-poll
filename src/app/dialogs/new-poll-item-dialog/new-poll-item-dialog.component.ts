@@ -89,7 +89,8 @@ export class NewPollItemDialogComponent {
   constructor(
     private pollItemService: PollItemService,
     private tools: CommonToolsService
-  ) {}
+  ) {
+  }
 
   /**
    * User clicked on 'Next' button.
@@ -148,7 +149,9 @@ export class NewPollItemDialogComponent {
    * Method closes the dialog to cancel the creation operation.
    */
   handleCancel(): void {
-    if (!this.loading) this.finish.emit(false);
+    if (!this.loading) {
+      this.finish.emit(false);
+    }
   }
 
   /**
@@ -160,7 +163,9 @@ export class NewPollItemDialogComponent {
       .map(v => v.trim()) // Remove blanks or tabs from the end of each answer
       .filter((v, i, a) => a.indexOf(v) === i) // Filter out dupes
       .filter(v => v !== ''); // Filter out blank items
-    while (trimmed.length < 2) { trimmed.push(''); } // Fill up with blank items
+    while (trimmed.length < 2) {
+      trimmed.push('');
+    } // Fill up with blank items
     return trimmed;
   }
 
@@ -174,13 +179,13 @@ export class NewPollItemDialogComponent {
     let pollItem;
     switch (this.itemType) {
       case 1: // Open text item
-        pollItem = new OpenTextItemCreate({ pollId, question });
+        pollItem = new OpenTextItemCreate({pollId, question});
         break;
       case 2: // Multiple choice item
-        pollItem = new MultipleChoiceItemCreate({ pollId, question, selectionOptions: answers });
+        pollItem = new MultipleChoiceItemCreate({pollId, question, selectionOptions: answers});
         break;
       case 3: // Quiz item
-        pollItem = new QuizItemCreate({ pollId, question, selectionOptions: answers });
+        pollItem = new QuizItemCreate({pollId, question, selectionOptions: answers});
         break;
     }
 

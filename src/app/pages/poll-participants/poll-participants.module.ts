@@ -32,4 +32,5 @@ import {NzResultModule} from 'ng-zorro-antd/result';
     NzResultModule
   ]
 })
-export class PollParticipantsModule {}
+export class PollParticipantsModule {
+}

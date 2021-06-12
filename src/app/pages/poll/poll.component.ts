@@ -43,7 +43,7 @@ export class PollComponent {
   pollStatus: PollStatus = PollStatus.Pending;
   showEditPollDialog = false;
   showEditPollItemDialog = false;
-  selectedPollItem: MultipleChoiceItemParticipant|QuizItemParticipant|OpenTextItemParticipant;
+  selectedPollItem: MultipleChoiceItemParticipant | QuizItemParticipant | OpenTextItemParticipant;
 
   /**
    * Initialize component
@@ -100,12 +100,15 @@ export class PollComponent {
    * @param url Customized input url
    */
   onSlugChange(url: string): void {
-    if (!url) return;
+    if (!url) {
+      return;
+    }
     const oldSlug = this.poll.slug;
     this.poll.slug = encodeURI(url.toLocaleLowerCase().split(' ').join('-'));
 
     // Commit changes to the server
-    this.pollService.update(this.poll).subscribe((_) => {}, (_) => {
+    this.pollService.update(this.poll).subscribe((_) => {
+    }, (_) => {
       this.poll.slug = oldSlug;
       this.tools.showErrorMessage('Could not change the slug. Maybe the slug is already in use by another poll');
     });
@@ -275,13 +278,21 @@ export class PollComponent {
 
     switch (this.pollStatus) {
       case PollStatus.Pending: {
-        if (!startDate && !endDate) return 'Manual opening, manual closing';
-        if (!startDate) return 'Manual opening, auto closing at' + endDateString;
-        if (!endDate) return 'Auto opening at ' + startDateString + ', manual closing';
+        if (!startDate && !endDate) {
+          return 'Manual opening, manual closing';
+        }
+        if (!startDate) {
+          return 'Manual opening, auto closing at' + endDateString;
+        }
+        if (!endDate) {
+          return 'Auto opening at ' + startDateString + ', manual closing';
+        }
         return 'Auto opening at ' + startDateString + ', auto closing at ' + endDateString;
       }
       case PollStatus.Running: {
-        if (!endDate) return 'Running since ' + startDateString + ', manual closing';
+        if (!endDate) {
+          return 'Running since ' + startDateString + ', manual closing';
+        }
         return 'Running since ' + startDateString + ', auto closing at ' + endDateString;
       }
       case PollStatus.Finished: { // Finished

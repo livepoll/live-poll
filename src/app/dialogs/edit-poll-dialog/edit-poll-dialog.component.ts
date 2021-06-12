@@ -37,7 +37,8 @@ export class EditPollDialogComponent implements OnInit {
     private formBuilder: FormBuilder,
     private pollService: PollService,
     private tools: CommonToolsService
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     const startDate = this.poll.startDate ? new Date(this.poll.startDate) : null;

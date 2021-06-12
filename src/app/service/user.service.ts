@@ -21,12 +21,13 @@ export class UserService {
    */
   constructor(
     private http: HttpClient
-  ) {}
+  ) {
+  }
 
   /**
    * Retrieves the current user from the server
    */
   get(): Observable<HttpResponse<User>> {
-    return this.http.get<User>(ENDPOINT_URL, { observe: 'response', responseType: 'json', withCredentials: true });
+    return this.http.get<User>(ENDPOINT_URL, {observe: 'response', responseType: 'json', withCredentials: true});
   }
 }
