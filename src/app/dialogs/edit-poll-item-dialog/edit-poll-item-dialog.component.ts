@@ -65,20 +65,19 @@ export class EditPollItemDialogComponent implements OnInit {
    * Initialize dialog
    */
   ngOnInit(): void {
-    console.log(this.pollItem);
     if (this.pollItem instanceof MultipleChoiceItemParticipant) {
-      this.question = this.pollItem.question;
-      this.answers = this.pollItem.answers.map((answer) => answer.selectionOption);
-      this.itemType = 1;
-    }
-    if (this.pollItem instanceof QuizItemParticipant) {
       this.question = this.pollItem.question;
       this.answers = this.pollItem.answers.map((answer) => answer.selectionOption);
       this.itemType = 2;
     }
+    if (this.pollItem instanceof QuizItemParticipant) {
+      this.question = this.pollItem.question;
+      this.answers = this.pollItem.answers.map((answer) => answer.selectionOption);
+      this.itemType = 3;
+    }
     if (this.pollItem instanceof OpenTextItemParticipant) {
       this.question = this.pollItem.question;
-      this.itemType = 0;
+      this.itemType = 1;
     }
   }
 
@@ -90,7 +89,7 @@ export class EditPollItemDialogComponent implements OnInit {
   handleNext(): void {
     if (this.step === STEP_LABELS.length) {
       this.step++;
-      this.editPollItem(this.poll.id, this.pollItem.question, this.answers);
+      this.editPollItem(this.poll.id, this.question, this.answers);
     } else {
       // Validity check
       switch (this.step) {
@@ -161,17 +160,17 @@ export class EditPollItemDialogComponent implements OnInit {
     let pollItem;
     switch (this.itemType) {
       case 1: // Open text item
-        pollItem = new OpenTextItemCreate({ pollId, question });
+        pollItem = new OpenTextItemCreate({ ...this.pollItem, question });
         break;
       case 2: // Multiple choice item
-        pollItem = new MultipleChoiceItemCreate({ pollId, question, selectionOptions: answers });
+        pollItem = new MultipleChoiceItemCreate({ ...this.pollItem, question: this.question, selectionOptions: answers });
         break;
       case 3: // Quiz item
-        pollItem = new QuizItemCreate({ pollId, question, selectionOptions: answers });
+        pollItem = new QuizItemCreate({ ...this.pollItem, question, selectionOptions: answers });
         break;
     }
 
-    /*this.pollItemService.update(pollItem).subscribe((_) => {
+    this.pollItemService.update(pollItem).subscribe((_) => {
       this.finish.emit(true);
       // Reset dialog
       this.step = 1;
@@ -184,6 +183,6 @@ export class EditPollItemDialogComponent implements OnInit {
       this.tools.showErrorMessage('An unknown error occurred. Please try again.');
       this.loading = false;
       this.step--;
-    });*/
+    });
   }
 }

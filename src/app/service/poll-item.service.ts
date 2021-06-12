@@ -63,8 +63,19 @@ export class PollItemService {
    *
    * @param pollItem Affected poll item
    */
-  update(pollItem: PollItem): Observable<void> {
-    return this.http.put<void>(ENDPOINT_URL, pollItem, { withCredentials: true });
+  update(pollItem: MultipleChoiceItemCreate | QuizItemCreate | OpenTextItemCreate): Observable<void> {
+    let endpointFraction = '';
+    switch (pollItem.constructor) {
+      case MultipleChoiceItemCreate:
+        endpointFraction = 'multiple-choice';
+        break;
+      case QuizItemCreate:
+        endpointFraction = 'quiz';
+        break;
+      case OpenTextItemCreate:
+        endpointFraction = 'open-text';
+    }
+    return this.http.put<void>(ENDPOINT_URL + `/${endpointFraction}/${pollItem.itemId}`, pollItem, { withCredentials: true });
   }
 
   /**
