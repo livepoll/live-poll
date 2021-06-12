@@ -30,55 +30,57 @@
           </label>
           <nz-divider></nz-divider>
 
-          <!-- Open Text question / Word cloud question / Rating question -->
-          <div *ngIf="pollItem.type == 'open-text'">
-            <em>Open text questions do not have pre-defined answers.</em>
-          </div>
-
-          <!-- Multiple choice question -->
-          <div *ngIf="pollItem.type == 'multiple-choice'">
-            <!-- Answers -->
-            <label *ngFor="let answer of answers; let i = index; trackBy:trackByFn">
-              <span class="input-label">Answer {{i +1}}:</span>
-              <nz-input-group [nzSuffix]="i < 2 ? null : suffixTemplate">
-                <input nz-input [(ngModel)]="answers[i]" />
-              </nz-input-group>
-              <ng-template #suffixTemplate>
-                <i nz-icon [nzType]="'delete'" class="cursor-pointer" (click)="answers.splice(i, 1)"></i>
-              </ng-template>
-            </label>
-            <!-- Add answer button -->
-            <div class="add-answer-button-container">
-              <button [disabled]="answers.length >= 10" nz-button nzType="default" (click)="answers.push('')">
-                <i nz-icon nzType="plus-circle" nzTheme="outline"></i> Answer
-              </button>
+          <ng-container [ngSwitch]="pollItem.type">
+            <!-- Open Text question / Word cloud question / Rating question -->
+            <div *ngSwitchCase="'open-text'">
+              <em>Open text questions do not have pre-defined answers.</em>
             </div>
-            <br><br>
-          </div>
 
-          <!-- Quiz question -->
-          <div *ngIf="pollItem.type == 'quiz'">
-            <!-- Answers -->
-            <label *ngFor="let answer of answers; let i = index; trackBy:trackByFn">
+            <!-- Multiple choice question -->
+            <div *ngSwitchCase="'multiple-choice'">
+              <!-- Answers -->
+              <label *ngFor="let answer of answers; let i = index; trackBy:trackByFn">
+                <span class="input-label">Answer {{i +1}}:</span>
+                <nz-input-group [nzSuffix]="i < 2 ? null : suffixTemplate">
+                  <input nz-input [(ngModel)]="answers[i]" />
+                </nz-input-group>
+                <ng-template #suffixTemplate>
+                  <i nz-icon [nzType]="'delete'" class="cursor-pointer" (click)="answers.splice(i, 1)"></i>
+                </ng-template>
+              </label>
+              <!-- Add answer button -->
+              <div class="add-answer-button-container">
+                <button [disabled]="answers.length >= 10" nz-button nzType="default" (click)="answers.push('')">
+                  <i nz-icon nzType="plus-circle" nzTheme="outline"></i> Answer
+                </button>
+              </div>
+              <br><br>
+            </div>
+
+            <!-- Quiz question -->
+            <div *ngSwitchCase="'quiz'">
+              <!-- Answers -->
+              <label *ngFor="let answer of answers; let i = index; trackBy:trackByFn">
               <span class="input-label" [class]="i === 0 ? 'right-answer' : 'wrong-answer'">
                 {{i === 0 ? 'Right answer' : 'Wrong answer ' + i}}:
               </span>
-              <nz-input-group [nzSuffix]="i < 2 ? null : suffixTemplate">
-                <input nz-input [(ngModel)]="answers[i]" [placeholder]="i === 0 ? 'Enter right answer ...' : 'Enter wrong answer ...'"/>
-              </nz-input-group>
-              <ng-template #suffixTemplate>
-                <i nz-icon [nzType]="'delete'" class="cursor-pointer" (click)="answers.splice(i, 1)"></i>
-              </ng-template>
-            </label>
-            <!-- Add answer button -->
-            <div class="add-answer-button-container">
-              <em class="add-answer-button-label">The answers are going to be randomized for each user.</em>
-              <button [disabled]="answers.length >= 5" nz-button nzType="default" (click)="answers.push('')">
-                <i nz-icon nzType="plus-circle" nzTheme="outline"></i> Answer
-              </button>
+                <nz-input-group [nzSuffix]="i < 2 ? null : suffixTemplate">
+                  <input nz-input [(ngModel)]="answers[i]" [placeholder]="i === 0 ? 'Enter right answer ...' : 'Enter wrong answer ...'"/>
+                </nz-input-group>
+                <ng-template #suffixTemplate>
+                  <i nz-icon [nzType]="'delete'" class="cursor-pointer" (click)="answers.splice(i, 1)"></i>
+                </ng-template>
+              </label>
+              <!-- Add answer button -->
+              <div class="add-answer-button-container">
+                <em class="add-answer-button-label">The answers are going to be randomized for each user.</em>
+                <button [disabled]="answers.length >= 5" nz-button nzType="default" (click)="answers.push('')">
+                  <i nz-icon nzType="plus-circle" nzTheme="outline"></i> Answer
+                </button>
+              </div>
+              <br><br>
             </div>
-            <br><br>
-          </div>
+          </ng-container>
         </div>
 
         <!-- Step 2 - Options -->

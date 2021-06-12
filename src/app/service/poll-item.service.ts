@@ -6,7 +6,7 @@ import {Injectable} from '@angular/core';
 import {environment as env} from '../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {PollItem} from '../model/poll-item-create/poll-item';
+import {ItemType, PollItem} from '../model/poll-item-create/poll-item';
 import {MultipleChoiceItemCreate} from '../model/poll-item-create/multiple-choice-item-create';
 import {QuizItemCreate} from '../model/poll-item-create/quiz-item-create';
 import {OpenTextItemCreate} from '../model/poll-item-create/open-text-item-create';
@@ -36,14 +36,14 @@ export class PollItemService {
    */
   create<T extends MultipleChoiceItemCreate | QuizItemCreate | OpenTextItemCreate>(pollItem: T): Observable<T> {
     let endpointFraction = '';
-    switch (pollItem.constructor) {
-      case MultipleChoiceItemCreate:
+    switch (pollItem.type) {
+      case ItemType.MultipleChoice:
         endpointFraction = 'multiple-choice';
         break;
-      case QuizItemCreate:
+      case ItemType.Quiz:
         endpointFraction = 'quiz';
         break;
-      case OpenTextItemCreate:
+      case ItemType.OpenText:
         endpointFraction = 'open-text';
     }
     return this.http.post<T>(ENDPOINT_URL + `/${endpointFraction}`, pollItem, { withCredentials: true });

@@ -58,17 +58,14 @@ export class PollService {
    */
   getAllItems(pollId: number): Observable<PollItem[]> {
     return new Observable(subscriber => {
-      this.http.get<object[]>(ENDPOINT_URL + `/${pollId}/poll-items`, {withCredentials: true}).subscribe(
-        (pollItems) => {
+      this.http.get<object[]>(ENDPOINT_URL + `/${pollId}/poll-items`, {withCredentials: true}).subscribe(pollItems => {
           const result: PollItem[] = [];
           for (const pollItem of pollItems) {
             const parsedPollItem = this.tools.parsePollItemObject(pollItem);
             result.push(parsedPollItem);
           }
           subscriber.next(result);
-        },
-
-        (error) => {
+        }, error => {
           subscriber.error(error);
         });
     });

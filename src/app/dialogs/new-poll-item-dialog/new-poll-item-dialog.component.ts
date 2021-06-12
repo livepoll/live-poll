@@ -94,7 +94,7 @@ export class NewPollItemDialogComponent {
   /**
    * User clicked on 'Next' button.
    * It handles the validity check of the entries on the current page and throws an
-   * error message or redirects the use to the next page if the user input is valid
+   * error message or redirects the user to the next page if the user input is valid
    */
   handleNext(): void {
     if (this.step === STEP_LABELS.length) {
@@ -164,7 +164,7 @@ export class NewPollItemDialogComponent {
     return trimmed;
   }
 
-  trackByFn(index: any, _: any): number {
+  trackByIndex(index: any, _: any): number {
     return index;
   }
 

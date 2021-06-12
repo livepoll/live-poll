@@ -1,13 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 608.57 613.79">
   <defs>
     <style>.cls-1 {
-      fill: url(#Blauegrün);
+      fill: url(#blue-green);
     }
 
     .cls-2 {
       fill: #fff;
     }</style>
-    <linearGradient id="Blauegrün" x1="458.69" y1="555.54" x2="192.06" y2="93.72" gradientUnits="userSpaceOnUse">
+    <linearGradient id="blue-green" x1="458.69" y1="555.54" x2="192.06" y2="93.72" gradientUnits="userSpaceOnUse">
       <stop offset="0" stop-color="#31d36c"/>
       <stop offset="0.18" stop-color="#31d16f"/>
       <stop offset="0.3" stop-color="#31cb77"/>
