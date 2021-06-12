@@ -143,7 +143,7 @@ export class EditPollItemDialogComponent implements OnInit {
    */
   trimAnswers(): string[] {
     const trimmed = this.answers
-      .map(v => v.trim()) // Remove blanks or tabs from the end of each answer
+      .map((v) => v.trim()) // Remove blanks or tabs from the end of each answer
       .filter((v, i, a) => a.indexOf(v) === i) // Filter out dupes
       .filter((v) => v !== ''); // Filter out blank items
     while (trimmed.length < 2) { trimmed.push(''); } // Fill up with blank items
