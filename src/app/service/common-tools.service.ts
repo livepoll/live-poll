@@ -5,6 +5,9 @@
 import {Injectable} from '@angular/core';
 import {Poll} from '../model/poll';
 import {NzNotificationService} from 'ng-zorro-antd/notification';
+import {MultipleChoiceItemParticipant} from '../model/poll-item-participant/multiple-choice-item-participant';
+import {QuizItemParticipant} from '../model/poll-item-participant/quiz-item-participant';
+import {OpenTextItemParticipant} from '../model/poll-item-participant/open-text-item-participant';
 
 @Injectable({
   providedIn: 'root'
@@ -99,5 +102,34 @@ export class CommonToolsService {
     }
 
     return array;
+  }
+
+  parsePollItemObject(pollItem: any): MultipleChoiceItemParticipant|OpenTextItemParticipant|QuizItemParticipant {
+    if (!('type' in pollItem)) {
+      this.showErrorMessage('Could not parse poll item.');
+    }
+
+    switch (pollItem.type) {
+      case 'multiple-choice': {
+        return new MultipleChoiceItemParticipant({
+          ...pollItem,
+          position: pollItem.position,
+          answers: pollItem.answers
+        });
+      }
+      case 'quiz': {
+        return new QuizItemParticipant({
+          ...pollItem,
+          position: pollItem.position,
+          answers: pollItem.answers
+        });
+      }
+      case 'open-text': {
+        return new OpenTextItemParticipant({
+          ...pollItem,
+          position: pollItem.position,
+        });
+      }
+    }
   }
 }

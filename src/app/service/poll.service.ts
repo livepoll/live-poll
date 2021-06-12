@@ -8,6 +8,7 @@ import {HttpClient} from '@angular/common/http';
 import {Poll} from '../model/poll';
 import {Observable} from 'rxjs';
 import {PollItem} from '../model/poll-item-create/poll-item';
+import {CommonToolsService} from './common-tools.service';
 
 const ENDPOINT_URL = env.apiBaseUrl + '/polls';
 
@@ -19,10 +20,13 @@ export class PollService {
   /**
    * Initialize the service
    * @param http Injected http client
+   * @param tools Injected CommonToolsService
    */
   constructor(
-    private http: HttpClient
-  ) {}
+    private http: HttpClient,
+    private tools: CommonToolsService
+  ) {
+  }
 
   /**
    * Creates a poll on the server
@@ -30,7 +34,7 @@ export class PollService {
    * @param poll Affected poll
    */
   create(poll: Poll): Observable<Poll> {
-    return this.http.post<Poll>(ENDPOINT_URL, poll, { withCredentials: true });
+    return this.http.post<Poll>(ENDPOINT_URL, poll, {withCredentials: true});
   }
 
   /**
@@ -39,21 +43,35 @@ export class PollService {
    * @param id Id of the affected poll
    */
   get(id: number): Observable<Poll> {
-    return this.http.get<Poll>(ENDPOINT_URL + `/${id}`, { withCredentials: true });
+    return this.http.get<Poll>(ENDPOINT_URL + `/${id}`, {withCredentials: true});
   }
 
   /**
    * Retrieves all polls of a specific user from the server
    */
   getAll(): Observable<Poll[]> {
-    return this.http.get<Poll[]>(ENDPOINT_URL, { withCredentials: true });
+    return this.http.get<Poll[]>(ENDPOINT_URL, {withCredentials: true});
   }
 
   /**
    * Retrieves all poll items of a specific poll from the server
    */
   getAllItems(pollId: number): Observable<PollItem[]> {
-    return this.http.get<PollItem[]>(ENDPOINT_URL + `/${pollId}/poll-items`, { withCredentials: true });
+    return new Observable(subscriber => {
+      this.http.get<object[]>(ENDPOINT_URL + `/${pollId}/poll-items`, {withCredentials: true}).subscribe(
+        (pollItems) => {
+          const result: PollItem[] = [];
+          for (const pollItem of pollItems) {
+            const parsedPollItem = this.tools.parsePollItemObject(pollItem);
+            result.push(parsedPollItem);
+          }
+          subscriber.next(result);
+        },
+
+        (error) => {
+          subscriber.error(error);
+        });
+    });
   }
 
   /**
@@ -62,7 +80,7 @@ export class PollService {
    * @param poll Affected poll
    */
   update(poll: Poll): Observable<void> {
-    return this.http.put<void>(ENDPOINT_URL + `/${poll.id}`, poll, { withCredentials: true });
+    return this.http.put<void>(ENDPOINT_URL + `/${poll.id}`, poll, {withCredentials: true});
   }
 
   /**
@@ -71,7 +89,7 @@ export class PollService {
    * @param id Id of the affected poll
    */
   delete(id: number): Observable<void> {
-    return this.http.delete<void>(ENDPOINT_URL + `/${id}`, { withCredentials: true });
+    return this.http.delete<void>(ENDPOINT_URL + `/${id}`, {withCredentials: true});
   }
 
   /**
@@ -80,6 +98,6 @@ export class PollService {
    * @param id Id of the affected poll
    */
   nextItem(id: number): Observable<PollItem> {
-    return this.http.get<PollItem>(ENDPOINT_URL + `/${id}/next-item`, { withCredentials: true });
+    return this.http.get<PollItem>(ENDPOINT_URL + `/${id}/next-item`, {withCredentials: true});
   }
 }

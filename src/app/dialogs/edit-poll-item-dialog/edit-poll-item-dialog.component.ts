@@ -2,7 +2,7 @@
  * Copyright © Live-Poll 2020-2021. All rights reserved
  */
 
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {OPTIONS_DATA, OptionType} from '../../shared/poll-item-options';
 import {Poll} from '../../model/poll';
 import {CommonToolsService} from '../../service/common-tools.service';
@@ -10,7 +10,9 @@ import {PollItemService} from '../../service/poll-item.service';
 import {OpenTextItemCreate} from '../../model/poll-item-create/open-text-item-create';
 import {MultipleChoiceItemCreate} from '../../model/poll-item-create/multiple-choice-item-create';
 import {QuizItemCreate} from '../../model/poll-item-create/quiz-item-create';
-import {PollItem} from '../../model/poll-item-create/poll-item';
+import {MultipleChoiceItemParticipant} from '../../model/poll-item-participant/multiple-choice-item-participant';
+import {OpenTextItemParticipant} from '../../model/poll-item-participant/open-text-item-participant';
+import {QuizItemParticipant} from '../../model/poll-item-participant/quiz-item-participant';
 
 // Constants
 const STEP_LABELS = [
@@ -27,7 +29,7 @@ const STEP_LABELS = [
   templateUrl: './edit-poll-item-dialog.component.html',
   styleUrls: ['./edit-poll-item-dialog.component.sass']
 })
-export class EditPollItemDialogComponent {
+export class EditPollItemDialogComponent implements OnInit {
 
   // Constant associations
   stepLabels = STEP_LABELS;
@@ -36,7 +38,7 @@ export class EditPollItemDialogComponent {
   // Event Emitters
   @Input() isVisible: boolean;
   @Input() poll: Poll;
-  @Input() pollItem: PollItem;
+  @Input() pollItem: MultipleChoiceItemParticipant|OpenTextItemParticipant|QuizItemParticipant;
   @Output() finish = new EventEmitter<boolean>(); // true = success; false = cancel
 
   // Variables
@@ -60,6 +62,27 @@ export class EditPollItemDialogComponent {
   ) {}
 
   /**
+   * Initialize dialog
+   */
+  ngOnInit(): void {
+    console.log(this.pollItem);
+    if (this.pollItem instanceof MultipleChoiceItemParticipant) {
+      this.question = this.pollItem.question;
+      this.answers = this.pollItem.answers.map((answer) => answer.selectionOption);
+      this.itemType = 1;
+    }
+    if (this.pollItem instanceof QuizItemParticipant) {
+      this.question = this.pollItem.question;
+      this.answers = this.pollItem.answers.map((answer) => answer.selectionOption);
+      this.itemType = 2;
+    }
+    if (this.pollItem instanceof OpenTextItemParticipant) {
+      this.question = this.pollItem.question;
+      this.itemType = 0;
+    }
+  }
+
+  /**
    * User clicked on 'Next' button.
    * It handles the validity check of the entries on the current page and throws an
    * error message or redirects the use to the next page if the user input is valid
@@ -67,23 +90,19 @@ export class EditPollItemDialogComponent {
   handleNext(): void {
     if (this.step === STEP_LABELS.length) {
       this.step++;
-      this.editPollItem(this.poll.id, this.question, this.answers);
+      this.editPollItem(this.poll.id, this.pollItem.question, this.answers);
     } else {
       // Validity check
       switch (this.step) {
         case 1:
-          if (this.itemType === 0) {
-            this.errorMessage = 'Please select an item type.';
-            return;
-          }
           // Inputs are valid, set options data of selected item type
           this.options = OPTIONS_DATA[this.itemType - 1].filter(option => option.visibleAtCreation);
           break;
         case 2:
-          if (this.question === '') {
+          if (this.pollItem.question === '') {
             this.errorMessage = 'Please enter a question.';
             return;
-          } else if (this.itemType === 2 || this.itemType === 3) {
+          } else if (this.pollItem instanceof MultipleChoiceItemParticipant || this.pollItem instanceof QuizItemParticipant) {
             // Multiple choice or quiz question
             this.answers = this.trimAnswers();
             if (this.answers[0] === '' || this.answers[1] === '') {
@@ -152,7 +171,7 @@ export class EditPollItemDialogComponent {
         break;
     }
 
-    this.pollItemService.create(pollItem).subscribe((_) => {
+    /*this.pollItemService.update(pollItem).subscribe((_) => {
       this.finish.emit(true);
       // Reset dialog
       this.step = 1;
@@ -165,6 +184,6 @@ export class EditPollItemDialogComponent {
       this.tools.showErrorMessage('An unknown error occurred. Please try again.');
       this.loading = false;
       this.step--;
-    });
+    });*/
   }
 }

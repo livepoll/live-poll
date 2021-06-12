@@ -167,10 +167,10 @@
 
       <!-- New PollItem Dialog -->
       <app-new-poll-item-dialog [isVisible]="showNewPollItemDialog" (finish)="handleDialogClose($event)"
-                                [poll]="poll" [pollItem]="null"></app-new-poll-item-dialog>
+                                [poll]="poll"></app-new-poll-item-dialog>
 
       <!-- Edit PollItem Dialog -->
-      <app-edit-poll-item-dialog [isVisible]="showEditPollItemDialog" (finish)="handleDialogClose($event)"
+      <app-edit-poll-item-dialog *ngIf="selectedPollItem" [isVisible]="showEditPollItemDialog" (finish)="handleDialogClose($event)"
                                 [poll]="poll" [pollItem]="selectedPollItem"></app-edit-poll-item-dialog>
 
       <!-- Edit Poll Dialog -->
