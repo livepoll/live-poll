@@ -65,7 +65,7 @@ export class PollService {
             result.push(parsedPollItem);
           }
           subscriber.next(result);
-        }, error => {
+        }, (error) => {
           subscriber.error(error);
         });
     });
