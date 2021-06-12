@@ -30,7 +30,7 @@
 
       <!-- Open Text Question -->
       <div class="poll-item-selection-options" *ngSwitchCase="'open-text'">
-        <input type="text" nz-input [(ngModel)]="answer" nzSize="large"/>
+        <input type="text" nz-input [(ngModel)]="answer" nzSize="large" maxLength="250"/>
       </div>
 
       <!-- Quiz Question -->
