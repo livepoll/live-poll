@@ -4,8 +4,8 @@ name: Angular Deploy
 
 on:
   push:
-    branches: [ develop, feature/prebuilt-localhost-image ]
-    #paths-ignore: [ 'README.md', 'SECURITY.md', '.git**' ]
+    branches: [ develop ]
+    paths-ignore: [ 'README.md', 'SECURITY.md', '.git**' ]
 
 jobs:
   build:

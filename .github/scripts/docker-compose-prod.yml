@@ -1,0 +1,56 @@
+version: '3.9'
+
+services:
+  # Frontend
+  frontend:
+    image: ghcr.io/livepoll/live-poll:localhost
+    restart: always
+    ports:
+      - 80:80
+    depends_on:
+      - backend
+
+  # Backend
+  backend:
+    image: ghcr.io/livepoll/api:latest
+    restart: always
+    networks:
+      - live-poll
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+    environment:
+      LIVE_POLL_SERVER_URL: http://localhost:8080
+      LIVE_POLL_MYSQL_URL: jdbc:mysql://db:3306/livepoll
+      LIVE_POLL_MYSQL_USER: livepoll
+      LIVE_POLL_MYSQL_PASSWORD: K6HKa4Ksy9cL7YtEn9tty336d7EvKL # please change
+      LIVE_POLL_JWT_SECRET: sJbd2aQMTeb8LMk46pb7C9UJdWUGyr # please change
+      LIVE_POLL_MAIL_HOST: smtp.strato.de
+      LIVE_POLL_MAIL_PORT: 587
+      LIVE_POLL_MAIL_USERNAME: noreply@live-poll.de # set username to SMTP server here
+      LIVE_POLL_MAIL_PASSWORD: f5c72z3U5wvU59JyQZef2HgBCpxrJc # set password to SMTP server here
+      LIVE_POLL_JWT_AUTH_COOKIE_NAME: SESSION_ID
+      LIVE_POLL_JWT_COOKIE_KEY_VALUE: sQyLLcuqJz9VbSg6 # please change
+      LIVE_POLL_HTTPS_ENABLED: "false"
+      LIVE_POLL_FRONTEND_URL: http://localhost
+      LIVE_POLL_DEV_URL: http://localhost:80
+      LIVE_POLL_POSTMAN: "false"
+      server.error.include-message: "never"
+
+  # MySQL Database for API
+  db:
+    image: mysql:8.0.25
+    restart: always
+    volumes:
+      - ./volumes/api-mysql:/var/lib/mysql
+    networks:
+      - live-poll
+    environment:
+      MYSQL_ROOT_PASSWORD: aQ9PhADnm5Y6qexVfYpVdUDzCwwgdF # please change
+      MYSQL_DATABASE: livepoll
+      MYSQL_USER: livepoll
+      MYSQL_PASSWORD: K6HKa4Ksy9cL7YtEn9tty336d7EvKL # please change
+
+networks:
+  live-poll: {}

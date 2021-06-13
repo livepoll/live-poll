@@ -194,7 +194,6 @@ export class PollComponent {
     this.pollService.get(this.pollId).subscribe((poll) => {
       this.poll = poll;
       this.pollService.getAllItems(poll.id).subscribe(items => {
-        console.log(items);
         this.poll.pollItems = items;
         this.setupResultObserver();
       }, (_) => {
