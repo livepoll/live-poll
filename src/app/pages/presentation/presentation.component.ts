@@ -14,6 +14,7 @@ import {CommonToolsService} from '../../service/common-tools.service';
 import {ChartDataItem} from '../../model/chart-data-item';
 import {MultipleChoiceItemParticipant} from '../../model/poll-item-participant/multiple-choice-item-participant';
 import {QuizItemParticipant} from '../../model/poll-item-participant/quiz-item-participant';
+import {ItemType} from '../../model/poll-item-create/poll-item';
 import {OpenTextItemParticipant} from '../../model/poll-item-participant/open-text-item-participant';
 
 @Component({
@@ -100,7 +101,7 @@ export class PresentationComponent implements OnInit {
   getChartData(): ChartDataItem[] {
     const items: ChartDataItem[] = [];
     switch (this.activeItem.type) {
-      case 'multiple-choice': {
+      case ItemType.MultipleChoice: {
         const activeItem = this.activeItem as MultipleChoiceItemParticipant;
         activeItem.answers.forEach((answer) => {
           const item = new ChartDataItem();
@@ -110,7 +111,7 @@ export class PresentationComponent implements OnInit {
         });
         break;
       }
-      case 'quiz': {
+      case ItemType.Quiz: {
         const activeItem = this.activeItem as QuizItemParticipant;
         activeItem.answers.forEach((answer) => {
           const item = new ChartDataItem();
@@ -120,12 +121,15 @@ export class PresentationComponent implements OnInit {
         });
         break;
       }
-      case 'open-text': {
+      case ItemType.OpenText: {
         const activeItem = this.activeItem as OpenTextItemParticipant;
-        break;
+        activeItem.answers.forEach((answer) => {
+          const item = new ChartDataItem();
+          item.name = answer.answer;
+          items.push(item);
+        });
       }
     }
-    JSON.stringify(items);
     return items;
   }
 }

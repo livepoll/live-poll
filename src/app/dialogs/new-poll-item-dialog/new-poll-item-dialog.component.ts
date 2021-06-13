@@ -10,6 +10,7 @@ import {PollItemService} from '../../service/poll-item.service';
 import {OpenTextItemCreate} from '../../model/poll-item-create/open-text-item-create';
 import {MultipleChoiceItemCreate} from '../../model/poll-item-create/multiple-choice-item-create';
 import {QuizItemCreate} from '../../model/poll-item-create/quiz-item-create';
+import {ItemType} from '../../model/poll-item-create/poll-item';
 
 // Constants
 const STEP_LABELS = [
@@ -179,13 +180,13 @@ export class NewPollItemDialogComponent {
     let pollItem;
     switch (this.itemType) {
       case 1: // Open text item
-        pollItem = new OpenTextItemCreate({pollId, question});
+        pollItem = new OpenTextItemCreate({pollId, type: ItemType.OpenText, question});
         break;
       case 2: // Multiple choice item
-        pollItem = new MultipleChoiceItemCreate({pollId, question, selectionOptions: answers});
+        pollItem = new MultipleChoiceItemCreate({pollId, type: ItemType.MultipleChoice, question, selectionOptions: answers});
         break;
       case 3: // Quiz item
-        pollItem = new QuizItemCreate({pollId, question, selectionOptions: answers});
+        pollItem = new QuizItemCreate({pollId, type: ItemType.Quiz, question, selectionOptions: answers});
         break;
     }
 
