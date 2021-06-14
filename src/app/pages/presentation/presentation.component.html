@@ -17,22 +17,22 @@
     <div *ngIf="!pollOver && poll?.currentItem" class="poll-container">
       <h2 class="question">{{activeItem?.question}}</h2>
       <ng-container [ngSwitch]="activeItem.type">
-        <ngx-charts-pie-chart *ngSwitchCase="'multiple-choice'"
-                              class="chart" [view]="[700, 400]"
-                              [results]="chartData"
-                              legend="true"
-                              doughnut="true"
-                              arcWidth="0.35"
-                              scheme="forest">
-        </ngx-charts-pie-chart>
-        <ngx-charts-pie-chart *ngSwitchCase="'quiz'"
-                              class="chart" [view]="[700, 400]"
-                              [results]="chartData"
-                              legend="true"
-                              doughnut="true"
-                              arcWidth="0.35"
-                              scheme="forest">
-        </ngx-charts-pie-chart>
+        <div *ngSwitchCase="'multiple-choice'">
+          <ngx-charts-pie-chart *ngIf="answerCount > 0" class="chart" [view]="[700, 400]" [results]="chartData"
+                                legend="true" doughnut="true" arcWidth="0.35" scheme="forest">
+          </ngx-charts-pie-chart>
+          <div class="no-answers" *ngIf="answerCount == 0">
+            <h3>No answers yet</h3>
+          </div>
+        </div>
+        <div *ngSwitchCase="'quiz'">
+          <ngx-charts-pie-chart *ngIf="answerCount > 0" class="chart" [view]="[700, 400]" [results]="chartData"
+                                legend="true" doughnut="true" arcWidth="0.35" scheme="forest">
+          </ngx-charts-pie-chart>
+          <div class="no-answers" *ngIf="answerCount == 0">
+            <h3>No answers yet</h3>
+          </div>
+        </div>
         <nz-timeline *ngSwitchCase="'open-text'" nzPending="Waiting for answers ...">
           <nz-timeline-item *ngFor="let selectionOption of chartData">
             {{selectionOption.name}}

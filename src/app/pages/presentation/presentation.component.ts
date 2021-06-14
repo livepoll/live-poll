@@ -30,6 +30,7 @@ export class PresentationComponent implements OnInit {
   activeItem: MultipleChoiceItemCreate | QuizItemCreate | OpenTextItemCreate;
   pollOver = false;
   chartData: ChartDataItem[] = [];
+  answerCount = 0;
   darkTheme: boolean;
 
   /**
@@ -99,6 +100,7 @@ export class PresentationComponent implements OnInit {
    * Returns data for the chart of answers
    */
   getChartData(): ChartDataItem[] {
+    this.answerCount = 0;
     const items: ChartDataItem[] = [];
     switch (this.activeItem.type) {
       case ItemType.MultipleChoice: {
@@ -107,6 +109,7 @@ export class PresentationComponent implements OnInit {
           const item = new ChartDataItem();
           item.name = answer.selectionOption;
           item.value = answer.answerCount;
+          this.answerCount += answer.answerCount;
           items.push(item);
         });
         break;
@@ -117,6 +120,7 @@ export class PresentationComponent implements OnInit {
           const item = new ChartDataItem();
           item.name = answer.selectionOption;
           item.value = answer.answerCount;
+          this.answerCount += answer.answerCount;
           items.push(item);
         });
         break;
@@ -126,6 +130,7 @@ export class PresentationComponent implements OnInit {
         activeItem.answers.forEach((answer) => {
           const item = new ChartDataItem();
           item.name = answer.answer;
+          this.answerCount++;
           items.push(item);
         });
       }

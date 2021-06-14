@@ -77,6 +77,7 @@ export class PollParticipantsComponent implements OnInit, OnDestroy {
           this.activeItemType = pollItem.type;
           delete pollItem.type;
           this.activeItem = pollItem;
+          this.pollOver = false;
         } else {
           // Load poll
           if (!this.poll) {
