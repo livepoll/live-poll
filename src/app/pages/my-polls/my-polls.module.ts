@@ -20,6 +20,7 @@ import {NzDividerModule} from 'ng-zorro-antd/divider';
 import {NzRadioModule} from 'ng-zorro-antd/radio';
 import {NzSwitchModule} from 'ng-zorro-antd/switch';
 import {NewPollItemDialogComponent} from '../../dialogs/new-poll-item-dialog/new-poll-item-dialog.component';
+import {EditPollItemDialogComponent} from '../../dialogs/edit-poll-item-dialog/edit-poll-item-dialog.component';
 import {CommonModule} from '@angular/common';
 import {NzLayoutModule} from 'ng-zorro-antd/layout';
 import {NzBreadCrumbModule} from 'ng-zorro-antd/breadcrumb';
@@ -38,38 +39,45 @@ import {NzToolTipModule} from 'ng-zorro-antd/tooltip';
 import {NzListModule} from 'ng-zorro-antd/list';
 
 @NgModule({
-  declarations: [MyPollsComponent, NewPollDialogComponent, NewPollItemDialogComponent, EditPollDialogComponent],
-    imports: [
-        MyPollsRoutingModule,
-        NzModalModule,
-        NzInputModule,
-        NzAlertModule,
-        NzStepsModule,
-        NzDividerModule,
-        NzSwitchModule,
-        FormsModule,
-        CommonModule,
-        NzLayoutModule,
-        NzRadioModule,
-        NzButtonModule,
-        NzIconModule,
-        NzBreadCrumbModule,
-        NzCollapseModule,
-        ResultErrorModule,
-        ResultEmptyModule,
-        NzSpinModule,
-        NzPageHeaderModule,
-        NzTagModule,
-        NzGridModule,
-        NzCardModule,
-        NzStatisticModule,
-        NzFormModule,
-        NzDatePickerModule,
-        NzToolTipModule,
-        ReactiveFormsModule,
-        NzListModule
-    ],
+  declarations: [
+    MyPollsComponent,
+    NewPollDialogComponent,
+    EditPollItemDialogComponent,
+    NewPollItemDialogComponent,
+    EditPollDialogComponent
+  ],
+  imports: [
+    MyPollsRoutingModule,
+    NzModalModule,
+    NzInputModule,
+    NzAlertModule,
+    NzStepsModule,
+    NzDividerModule,
+    NzSwitchModule,
+    FormsModule,
+    CommonModule,
+    NzLayoutModule,
+    NzRadioModule,
+    NzButtonModule,
+    NzIconModule,
+    NzBreadCrumbModule,
+    NzCollapseModule,
+    ResultErrorModule,
+    ResultEmptyModule,
+    NzSpinModule,
+    NzPageHeaderModule,
+    NzTagModule,
+    NzGridModule,
+    NzCardModule,
+    NzStatisticModule,
+    NzFormModule,
+    NzDatePickerModule,
+    NzToolTipModule,
+    ReactiveFormsModule,
+    NzListModule
+  ],
   providers: [],
-  exports: [MyPollsComponent, NewPollItemDialogComponent, EditPollDialogComponent]
+  exports: [MyPollsComponent, NewPollItemDialogComponent, EditPollDialogComponent, EditPollItemDialogComponent]
 })
-export class MyPollsModule { }
+export class MyPollsModule {
+}

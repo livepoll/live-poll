@@ -12,18 +12,21 @@ import {NzResultModule} from 'ng-zorro-antd/result';
 import {NzButtonModule} from 'ng-zorro-antd/button';
 import {PieChartModule} from '@swimlane/ngx-charts';
 import {NzIconModule} from 'ng-zorro-antd/icon';
+import {NzTimelineModule} from 'ng-zorro-antd/timeline';
 
 @NgModule({
   declarations: [PresentationComponent],
-    imports: [
-        PresentationRoutingModule,
-        CommonModule,
-        NzLayoutModule,
-        NzSpinModule,
-        NzResultModule,
-        NzButtonModule,
-        PieChartModule,
-        NzIconModule
-    ]
+  imports: [
+    PresentationRoutingModule,
+    CommonModule,
+    NzLayoutModule,
+    NzSpinModule,
+    NzResultModule,
+    NzButtonModule,
+    PieChartModule,
+    NzIconModule,
+    NzTimelineModule
+  ]
 })
-export class PresentationModule {}
+export class PresentationModule {
+}

@@ -21,7 +21,8 @@ export class AccountService {
    */
   constructor(
     private http: HttpClient
-  ) {}
+  ) {
+  }
 
   /**
    * Confirms a user email using a registration token
@@ -38,7 +39,7 @@ export class AccountService {
    * @param user Affected user
    */
   login(user: object): Observable<User> {
-    return this.http.post<User>(ENDPOINT_URL + `/login`, user, { withCredentials: true });
+    return this.http.post<User>(ENDPOINT_URL + `/login`, user, {withCredentials: true});
   }
 
   /**
@@ -47,7 +48,7 @@ export class AccountService {
    * @param user Affected user
    */
   logout(user: User): Observable<void> {
-    return this.http.put<void>(ENDPOINT_URL + `/logout`, user, { withCredentials: true });
+    return this.http.put<void>(ENDPOINT_URL + `/logout`, user, {withCredentials: true});
   }
 
   /**
@@ -65,6 +66,6 @@ export class AccountService {
    * @param user Affected user
    */
   register(user: object): Observable<string> {
-    return this.http.post<string>(ENDPOINT_URL + `/register`, user, { observe: 'body', responseType: 'text' as 'json' });
+    return this.http.post<string>(ENDPOINT_URL + `/register`, user, {observe: 'body', responseType: 'text' as 'json'});
   }
 }

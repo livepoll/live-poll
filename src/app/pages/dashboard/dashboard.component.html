@@ -8,7 +8,8 @@
             [nzTrigger]="null">
     <div class="sidebar-logo">
       <a href="/" target="_blank" rel="noopener noreferrer">
-        <img src="assets/images/logo.svg" alt="logo">
+        <img *ngIf="!darkTheme" src="assets/images/logo-light.svg" alt="logo">
+        <img *ngIf="darkTheme" src="assets/images/logo-dark.svg" alt="logo">
         <h1>Live-Poll</h1>
       </a>
     </div>
@@ -35,7 +36,7 @@
           <i class="trigger" nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></i>
         </span>
         <span class="header-menu">
-          <nz-switch [ngModel]="!darkTheme" (ngModelChange)="onChangeTheme.emit(!$event)" class="theme-switch"
+          <nz-switch [ngModel]="!darkTheme" (ngModelChange)="changeTheme($event)" class="theme-switch"
                      [nzUnCheckedChildren]="unchecked" [nzCheckedChildren]="checked"></nz-switch>
           <ng-template #unchecked><i nz-icon nzType="smile" nzTheme="outline"></i></ng-template>
           <ng-template #checked><i nz-icon nzType="bulb"></i></ng-template>

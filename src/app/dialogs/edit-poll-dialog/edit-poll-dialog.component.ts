@@ -37,7 +37,8 @@ export class EditPollDialogComponent implements OnInit {
     private formBuilder: FormBuilder,
     private pollService: PollService,
     private tools: CommonToolsService
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     const startDate = this.poll.startDate ? new Date(this.poll.startDate) : null;
@@ -53,10 +54,8 @@ export class EditPollDialogComponent implements OnInit {
     this.loading = true;
 
     this.poll.name = this.validateForm.controls.name.value;
-    this.poll.startDate = this.validateForm.controls.date.value[0];
-    this.poll.endDate = this.validateForm.controls.date.value[1];
-
-    console.log(this.poll);
+    this.poll.startDate = this.validateForm.controls.date?.value[0];
+    this.poll.endDate = this.validateForm.controls.date?.value[1];
 
     // Commit to server
     this.pollService.update(this.poll).subscribe((_) => {
@@ -68,22 +67,5 @@ export class EditPollDialogComponent implements OnInit {
       this.loading = false;
       this.tools.showErrorMessage('An error occurred while updating the poll.');
     });
-
-    /*// Build header, body and options
-    const header = new HttpHeaders().set('Content-Type', 'application/json');
-    const options: any = { header, responseType: 'text', observe: 'response', withCredentials: true };
-    const body = { name, startDate, endDate };
-    // Send request
-    this.http.put<string>(env.apiBaseUrl + '/users/' + this.userData.id + '/poll/' + this.poll.id, body, options)
-      .subscribe((_: HttpResponse<string>) => {
-        // Reset values
-        this.name = '';
-        this.loading = false;
-        // Close dialog
-        this.onClose.emit(true);
-      }, (_) => {
-        this.loading = false;
-        this.tools.showErrorMessage('An error occurred while updating the poll.');
-      });*/
   }
 }

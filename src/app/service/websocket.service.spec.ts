@@ -1,6 +1,10 @@
-import { TestBed } from '@angular/core/testing';
+/*
+ * Copyright © Live-Poll 2020-2021. All rights reserved
+ */
 
-import { WebsocketService } from './websocket.service';
+import {TestBed} from '@angular/core/testing';
+
+import {WebsocketService} from './websocket.service';
 
 describe('WebsocketService', () => {
   let service: WebsocketService;

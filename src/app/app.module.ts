@@ -42,22 +42,23 @@ const cookieConfig: NgcCookieConsentConfig = {
 
 @NgModule({
   declarations: [AppComponent],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        IconsProviderModule,
-        FormsModule,
-        HttpClientModule,
-        BrowserAnimationsModule,
-        NzNotificationModule,
-        NgcCookieConsentModule.forRoot(cookieConfig),
-        ServiceWorkerModule.register('ngsw-worker.js'/*, { enabled: environment.production }*/)
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    IconsProviderModule,
+    FormsModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
+    NzNotificationModule,
+    NgcCookieConsentModule.forRoot(cookieConfig),
+    ServiceWorkerModule.register('ngsw-worker.js'/*, { enabled: environment.production }*/)
+  ],
   providers: [
     CookieService,
-    { provide: NZ_I18N, useValue: en_US }
+    {provide: NZ_I18N, useValue: en_US}
   ],
   exports: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

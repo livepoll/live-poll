@@ -2,9 +2,7 @@
  * Copyright © Live-Poll 2020-2021. All rights reserved
  */
 
-import {Component, EventEmitter, OnInit} from '@angular/core';
-import {Poll} from '../../model/poll';
-import {User} from '../../model/user';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {AccountService} from '../../service/account.service';
 
@@ -27,7 +25,8 @@ export class ActivationComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private accountService: AccountService
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {

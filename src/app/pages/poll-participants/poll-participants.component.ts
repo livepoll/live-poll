@@ -24,12 +24,13 @@ export class PollParticipantsComponent implements OnInit, OnDestroy {
   // Variables
   slug = '';
   poll: Poll;
-  activeItem: MultipleChoiceItemParticipant|QuizItemParticipant|OpenTextItemParticipant;
+  activeItem: MultipleChoiceItemParticipant | QuizItemParticipant | OpenTextItemParticipant;
   activeItemType = '';
   answer = null;
   sent = false;
   loading = true;
   pollOver = false;
+  darkTheme: boolean;
 
   /**
    * Initialize component
@@ -44,7 +45,8 @@ export class PollParticipantsComponent implements OnInit, OnDestroy {
     private pollService: PollService,
     private websocketService: WebsocketService,
     private toolsService: CommonToolsService
-  ) {}
+  ) {
+  }
 
   /**
    * Initialize the participants page
@@ -75,6 +77,7 @@ export class PollParticipantsComponent implements OnInit, OnDestroy {
           this.activeItemType = pollItem.type;
           delete pollItem.type;
           this.activeItem = pollItem;
+          this.pollOver = false;
         } else {
           // Load poll
           if (!this.poll) {
@@ -87,7 +90,9 @@ export class PollParticipantsComponent implements OnInit, OnDestroy {
           } else {
             this.poll.currentItem = null;
           }
-          if (this.activeItemType !== '') this.pollOver = true;
+          if (this.activeItemType !== '') {
+            this.pollOver = true;
+          }
           this.activeItem = null;
           this.activeItemType = '';
         }

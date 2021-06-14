@@ -12,9 +12,9 @@ describe('MainOptionsMenuComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MainOptionsMenuComponent ]
+      declarations: [MainOptionsMenuComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

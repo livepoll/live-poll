@@ -1,50 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Generator: Adobe Illustrator 25.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 608.6 613.8" style="enable-background:new 0 0 608.6 613.8;" xml:space="preserve">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+     viewBox="0 0 608.6 613.8" style="enable-background:new 0 0 608.6 613.8;" xml:space="preserve">
 <style type="text/css">
-	.st0{clip-path:url(#SVGID_2_);}
-	.st1{fill:url(#SVGID_3_);}
-	.st2{fill:url(#SVGID_4_);}
-	.st3{fill:url(#SVGID_5_);}
-	.st4{fill:url(#SVGID_6_);}
-	.st5{clip-path:url(#SVGID_8_);}
-	.st6{fill:url(#SVGID_9_);}
-	.st7{fill:url(#SVGID_10_);}
-	.st8{fill:url(#SVGID_11_);}
-	.st9{fill:url(#SVGID_12_);}
-	.st10{fill:url(#SVGID_13_);}
-	.st11{fill:url(#SVGID_14_);}
-	.st12{fill:url(#SVGID_15_);}
-	.st13{fill:url(#SVGID_16_);}
-	.st14{fill:url(#SVGID_17_);}
-	.st15{display:none;}
-	.st16{display:inline;fill:#38C6BC;}
-	.st17{display:inline;fill:url(#SVGID_18_);}
-	.st18{fill:#333333;}
-	.st19{fill:#474747;}
-	.st20{fill:url(#SVGID_19_);stroke:#FFFFFF;stroke-miterlimit:10;}
-	.st21{fill:url(#SVGID_20_);stroke:#FFFFFF;stroke-miterlimit:10;}
-	.st22{fill:url(#SVGID_21_);stroke:#FFFFFF;stroke-miterlimit:10;}
-	.st23{display:inline;opacity:0.3;}
-	.st24{opacity:0.3;}
+	.st0 {
+    clip-path: url(#SVGID_2_);
+  }
+
+  .st1 {
+    fill: url(#SVGID_3_);
+  }
+
+  .st2 {
+    fill: url(#SVGID_4_);
+  }
+
+  .st3 {
+    fill: url(#SVGID_5_);
+  }
+
+  .st4 {
+    fill: url(#SVGID_6_);
+  }
+
+  .st5 {
+    clip-path: url(#SVGID_8_);
+  }
+
+  .st6 {
+    fill: url(#SVGID_9_);
+  }
+
+  .st7 {
+    fill: url(#SVGID_10_);
+  }
+
+  .st8 {
+    fill: url(#SVGID_11_);
+  }
+
+  .st9 {
+    fill: url(#SVGID_12_);
+  }
+
+  .st10 {
+    fill: url(#SVGID_13_);
+  }
+
+  .st11 {
+    fill: url(#SVGID_14_);
+  }
+
+  .st12 {
+    fill: url(#SVGID_15_);
+  }
+
+  .st13 {
+    fill: url(#SVGID_16_);
+  }
+
+  .st14 {
+    fill: url(#SVGID_17_);
+  }
+
+  .st15 {
+    display: none;
+  }
+
+  .st16 {
+    display: inline;
+    fill: #38C6BC;
+  }
+
+  .st17 {
+    display: inline;
+    fill: url(#SVGID_18_);
+  }
+
+  .st18 {
+    fill: #333333;
+  }
+
+  .st19 {
+    fill: #474747;
+  }
+
+  .st20 {
+    fill: url(#SVGID_19_);
+    stroke: #FFFFFF;
+    stroke-miterlimit: 10;
+  }
+
+  .st21 {
+    fill: url(#SVGID_20_);
+    stroke: #FFFFFF;
+    stroke-miterlimit: 10;
+  }
+
+  .st22 {
+    fill: url(#SVGID_21_);
+    stroke: #FFFFFF;
+    stroke-miterlimit: 10;
+  }
+
+  .st23 {
+    display: inline;
+    opacity: 0.3;
+  }
+
+  .st24 {
+    opacity: 0.3;
+  }
 </style>
-<g id="Ebene_4">
+  <g id="Ebene_4">
 	<g>
 		<linearGradient id="SVGID_2_" gradientUnits="userSpaceOnUse" x1="458.3977" y1="555.7143" x2="191.7638" y2="93.8908">
-			<stop  offset="0" style="stop-color:#31D36C"/>
-			<stop  offset="0.1848" style="stop-color:#31D16F"/>
-			<stop  offset="0.2976" style="stop-color:#31CB77"/>
-			<stop  offset="0.3911" style="stop-color:#31C085"/>
-			<stop  offset="0.474" style="stop-color:#31B29A"/>
-			<stop  offset="0.5492" style="stop-color:#319FB4"/>
-			<stop  offset="0.6173" style="stop-color:#3188D3"/>
-			<stop  offset="0.699" style="stop-color:#318CD4"/>
-			<stop  offset="0.7742" style="stop-color:#3297D6"/>
-			<stop  offset="0.8466" style="stop-color:#32A9DA"/>
-			<stop  offset="0.8966" style="stop-color:#33BBDD"/>
+			<stop offset="0" style="stop-color:#31D36C"/>
+      <stop offset="0.1848" style="stop-color:#31D16F"/>
+      <stop offset="0.2976" style="stop-color:#31CB77"/>
+      <stop offset="0.3911" style="stop-color:#31C085"/>
+      <stop offset="0.474" style="stop-color:#31B29A"/>
+      <stop offset="0.5492" style="stop-color:#319FB4"/>
+      <stop offset="0.6173" style="stop-color:#3188D3"/>
+      <stop offset="0.699" style="stop-color:#318CD4"/>
+      <stop offset="0.7742" style="stop-color:#3297D6"/>
+      <stop offset="0.8466" style="stop-color:#32A9DA"/>
+      <stop offset="0.8966" style="stop-color:#33BBDD"/>
 		</linearGradient>
-		<path style="fill:url(#SVGID_2_);" d="M546.4,484.2c0-0.1-0.2-0.3-0.3-0.5c-0.1-0.2-0.3-0.3-0.5-0.5c-0.4-0.3-0.7-0.7-1.1-1
+    <path style="fill:url(#SVGID_2_);" d="M546.4,484.2c0-0.1-0.2-0.3-0.3-0.5c-0.1-0.2-0.3-0.3-0.5-0.5c-0.4-0.3-0.7-0.7-1.1-1
 			c-0.8-0.6-1.5-1.3-2.3-1.9l-4.8-3.7l-9.6-7.4c-6.3-5-12.8-10-18.5-15.7c-2.9-2.9-5.6-6-7.7-9.6c-2.2-3.5-4.1-7.1-5.7-10.9
 			c-1.6-3.8-2.9-7.6-4.2-11.5c-0.6-2-1.2-3.9-1.7-5.9c-0.6-2-1-4-1.4-6.1c-1.5-8.2-1.7-16.5-0.9-24.7c0.8-8.2,2.5-16.3,4.7-24.2
 			c2.3-7.9,5.1-15.6,8.4-23.2c3.2-7.5,7-14.9,11.1-22c4.1-7.1,8.4-14,12.4-20.9c3.8-6.6,6.7-13.7,8.4-21.1c0.9-3.7,1.5-7.5,1.9-11.2
@@ -82,34 +165,34 @@
 			c0.2,0.2,0.4,0.4,0.6,0.6C546.9,483.4,547.1,483.5,547.3,483.9z"/>
 	</g>
 </g>
-<g id="Ebene_3">
+  <g id="Ebene_3">
 	<g id="Sprechblase">
 		<g>
 			<path class="st19" d="M347.6,219.7h6.4v43.9h21v5.3h-27.4V219.7z"/>
-			<path class="st19" d="M389,223.7c0.1,2.2-1.5,3.9-4.1,3.9c-2.3,0-3.9-1.8-3.9-3.9c0-2.3,1.7-4,4-4
+      <path class="st19" d="M389,223.7c0.1,2.2-1.5,3.9-4.1,3.9c-2.3,0-3.9-1.8-3.9-3.9c0-2.3,1.7-4,4-4
 				C387.5,219.6,389,221.4,389,223.7z M381.9,268.9v-35.3h6.4v35.3H381.9z"/>
-			<path class="st19" d="M401.4,233.6l6.9,19.9c1.2,3.2,2.1,6.1,2.8,9.1h0.2c0.8-2.9,1.8-5.8,3-9.1l6.9-19.9h6.7l-13.9,35.3H408
+      <path class="st19" d="M401.4,233.6l6.9,19.9c1.2,3.2,2.1,6.1,2.8,9.1h0.2c0.8-2.9,1.8-5.8,3-9.1l6.9-19.9h6.7l-13.9,35.3H408
 				l-13.4-35.3H401.4z"/>
-			<path class="st19" d="M436.9,252.4c0.1,8.7,5.7,12.3,12.1,12.3c4.6,0,7.4-0.8,9.8-1.8l1.1,4.6c-2.3,1-6.1,2.2-11.8,2.2
+      <path class="st19" d="M436.9,252.4c0.1,8.7,5.7,12.3,12.1,12.3c4.6,0,7.4-0.8,9.8-1.8l1.1,4.6c-2.3,1-6.1,2.2-11.8,2.2
 				c-10.9,0-17.4-7.2-17.4-17.8c0-10.7,6.3-19.1,16.6-19.1c11.5,0,14.6,10.1,14.6,16.6c0,1.3-0.1,2.3-0.2,3H436.9z M455.8,247.8
 				c0.1-4.1-1.7-10.4-8.9-10.4c-6.5,0-9.3,6-9.9,10.4H455.8z"/>
 		</g>
-		<g>
+    <g>
 			<path class="st19" d="M273.1,287.4c5.8-1,13.3-1.8,23-1.8c11.7,0,20.4,2.7,25.9,7.7c5,4.4,8.1,11.1,8.1,19.4
 				c0,8.4-2.5,15-7.2,19.8c-6.4,6.8-16.6,10.1-28.3,10.1c-3.6,0-6.9-0.1-9.7-0.9v37.1h-11.9V287.4z M285,332c2.7,0.8,6,1,9.9,1
 				c14.5,0,23.2-7.1,23.2-19.8c0-12.2-8.7-18.2-21.9-18.2c-5.3,0-9.2,0.5-11.3,0.9V332z"/>
-			<path class="st19" d="M402.4,345c0,24.6-17.1,35.3-33,35.3c-18,0-31.9-13.1-31.9-34.2c0-22.2,14.6-35.2,33-35.2
+      <path class="st19" d="M402.4,345c0,24.6-17.1,35.3-33,35.3c-18,0-31.9-13.1-31.9-34.2c0-22.2,14.6-35.2,33-35.2
 				C389.5,310.9,402.4,324.8,402.4,345z M349.8,345.8c0,14.6,8.3,25.5,20.1,25.5c11.6,0,20.2-10.8,20.2-25.9
 				c0-11.2-5.7-25.4-20-25.4C355.9,320,349.8,333.2,349.8,345.8z"/>
-			<path class="st19" d="M417.7,281.4h12v97.5h-12V281.4z"/>
-			<path class="st19" d="M450.1,281.4h12v97.5h-12V281.4z"/>
+      <path class="st19" d="M417.7,281.4h12v97.5h-12V281.4z"/>
+      <path class="st19" d="M450.1,281.4h12v97.5h-12V281.4z"/>
 		</g>
 	</g>
-	<polygon class="st19" points="210.5,112.9 306.7,207.2 333.2,180.8 254.4,108.9 210.3,112.5 209.8,113 	"/>
-	<polygon class="st19" points="188.7,115.7 319.6,239.2 295.8,268.9 147.4,126.3 146.6,126.6 146.9,125 	"/>
-	<polygon class="st19" points="124,134.3 218.8,223.7 192.9,247.6 92.9,153.8 91.9,154.6 92.4,153.2 	"/>
-	<polygon class="st19" points="73.6,170.2 145.8,232.5 124.9,253.3 54.6,195.1 53.8,196.4 54.3,194.8 	"/>
+    <polygon class="st19" points="210.5,112.9 306.7,207.2 333.2,180.8 254.4,108.9 210.3,112.5 209.8,113 	"/>
+    <polygon class="st19" points="188.7,115.7 319.6,239.2 295.8,268.9 147.4,126.3 146.6,126.6 146.9,125 	"/>
+    <polygon class="st19" points="124,134.3 218.8,223.7 192.9,247.6 92.9,153.8 91.9,154.6 92.4,153.2 	"/>
+    <polygon class="st19" points="73.6,170.2 145.8,232.5 124.9,253.3 54.6,195.1 53.8,196.4 54.3,194.8 	"/>
 </g>
-<g id="Ebene_2" class="st15">
+  <g id="Ebene_2" class="st15">
 </g>
 </svg>

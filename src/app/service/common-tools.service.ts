@@ -5,6 +5,9 @@
 import {Injectable} from '@angular/core';
 import {Poll} from '../model/poll';
 import {NzNotificationService} from 'ng-zorro-antd/notification';
+import {MultipleChoiceItemParticipant} from '../model/poll-item-participant/multiple-choice-item-participant';
+import {QuizItemParticipant} from '../model/poll-item-participant/quiz-item-participant';
+import {OpenTextItemParticipant} from '../model/poll-item-participant/open-text-item-participant';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +20,8 @@ export class CommonToolsService {
    */
   constructor(
     private notificationService: NzNotificationService
-  ) {}
+  ) {
+  }
 
   /**
    * Calculates the status of the poll, based on the startDate and endDate
@@ -56,7 +60,7 @@ export class CommonToolsService {
    * @param message Custom error message
    */
   showErrorMessage(message: string): void {
-    this.notificationService.error('An error occurred', message, { nzPlacement: 'topRight' });
+    this.notificationService.error('An error occurred', message, {nzPlacement: 'topRight'});
   }
 
   /**
@@ -65,7 +69,7 @@ export class CommonToolsService {
    * @param message Custom success message
    */
   showSuccessMessage(message: string): void {
-    this.notificationService.success('Action successful', message, { nzPlacement: 'topRight' });
+    this.notificationService.success('Action successful', message, {nzPlacement: 'topRight'});
   }
 
   /**
@@ -99,5 +103,34 @@ export class CommonToolsService {
     }
 
     return array;
+  }
+
+  parsePollItemObject(pollItem: any): MultipleChoiceItemParticipant | OpenTextItemParticipant | QuizItemParticipant {
+    if (!('type' in pollItem)) {
+      this.showErrorMessage('Could not parse poll item.');
+    }
+
+    switch (pollItem.type) {
+      case 'multiple-choice': {
+        return new MultipleChoiceItemParticipant({
+          ...pollItem,
+          position: pollItem.position,
+          answers: pollItem.answers
+        });
+      }
+      case 'quiz': {
+        return new QuizItemParticipant({
+          ...pollItem,
+          position: pollItem.position,
+          answers: pollItem.answers
+        });
+      }
+      case 'open-text': {
+        return new OpenTextItemParticipant({
+          ...pollItem,
+          position: pollItem.position,
+        });
+      }
+    }
   }
 }

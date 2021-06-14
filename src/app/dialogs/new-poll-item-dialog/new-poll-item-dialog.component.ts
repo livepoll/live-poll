@@ -10,6 +10,7 @@ import {PollItemService} from '../../service/poll-item.service';
 import {OpenTextItemCreate} from '../../model/poll-item-create/open-text-item-create';
 import {MultipleChoiceItemCreate} from '../../model/poll-item-create/multiple-choice-item-create';
 import {QuizItemCreate} from '../../model/poll-item-create/quiz-item-create';
+import {ItemType} from '../../model/poll-item-create/poll-item';
 
 // Constants
 const STEP_LABELS = [
@@ -89,12 +90,13 @@ export class NewPollItemDialogComponent {
   constructor(
     private pollItemService: PollItemService,
     private tools: CommonToolsService
-  ) {}
+  ) {
+  }
 
   /**
    * User clicked on 'Next' button.
    * It handles the validity check of the entries on the current page and throws an
-   * error message or redirects the use to the next page if the user input is valid
+   * error message or redirects the user to the next page if the user input is valid
    */
   handleNext(): void {
     if (this.step === STEP_LABELS.length) {
@@ -148,7 +150,9 @@ export class NewPollItemDialogComponent {
    * Method closes the dialog to cancel the creation operation.
    */
   handleCancel(): void {
-    if (!this.loading) this.finish.emit(false);
+    if (!this.loading) {
+      this.finish.emit(false);
+    }
   }
 
   /**
@@ -160,11 +164,13 @@ export class NewPollItemDialogComponent {
       .map(v => v.trim()) // Remove blanks or tabs from the end of each answer
       .filter((v, i, a) => a.indexOf(v) === i) // Filter out dupes
       .filter(v => v !== ''); // Filter out blank items
-    while (trimmed.length < 2) { trimmed.push(''); } // Fill up with blank items
+    while (trimmed.length < 2) {
+      trimmed.push('');
+    } // Fill up with blank items
     return trimmed;
   }
 
-  trackByFn(index: any, _: any): number {
+  trackByIndex(index: any, _: any): number {
     return index;
   }
 
@@ -174,13 +180,13 @@ export class NewPollItemDialogComponent {
     let pollItem;
     switch (this.itemType) {
       case 1: // Open text item
-        pollItem = new OpenTextItemCreate({ pollId, question });
+        pollItem = new OpenTextItemCreate({pollId, type: ItemType.OpenText, question});
         break;
       case 2: // Multiple choice item
-        pollItem = new MultipleChoiceItemCreate({ pollId, question, selectionOptions: answers });
+        pollItem = new MultipleChoiceItemCreate({pollId, type: ItemType.MultipleChoice, question, selectionOptions: answers});
         break;
       case 3: // Quiz item
-        pollItem = new QuizItemCreate({ pollId, question, selectionOptions: answers });
+        pollItem = new QuizItemCreate({pollId, type: ItemType.Quiz, question, selectionOptions: answers});
         break;
     }
 

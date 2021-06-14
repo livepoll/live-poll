@@ -1,0 +1,17 @@
+On localhost (Linux):
+	From develop branch:
+	$ curl -fsSL https://raw.githubusercontent.com/livepoll/live-poll/develop/.github/scripts/setup-staging.sh | sh
+	Open the docker-compose.yml file, insert the credentials to your SMTP server and change all passwords
+	$ docker-compose up -d
+	Wait a few minutes for Live-Poll to come up
+	Go to http://localhost
+	
+	From main branch:
+	$ curl -fsSL https://raw.githubusercontent.com/livepoll/live-poll/develop/.github/scripts/setup-prod.sh | sh
+	Open the docker-compose.yml file, insert the credentials to your SMTP server and change all passwords
+	$ docker-compose up -d
+	Wait a few minutes for Live-Poll to come up
+	Go to http://localhost
+
+On server:
+	Coming soon ...

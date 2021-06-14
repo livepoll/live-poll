@@ -7,11 +7,12 @@ import {RouterModule, Routes} from '@angular/router';
 import {PollComponent} from './poll.component';
 
 const routes: Routes = [
-  { path: '', component: PollComponent },
+  {path: '', component: PollComponent},
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class PollRoutingModule { }
+export class PollRoutingModule {
+}

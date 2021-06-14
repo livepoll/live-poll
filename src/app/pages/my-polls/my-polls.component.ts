@@ -52,7 +52,9 @@ export class MyPollsComponent {
    * @param success Successful poll creation
    */
   handleNewPollDialogClose(success: boolean): void {
-    if (success) this.onReloadPolls.emit();
+    if (success) {
+      this.onReloadPolls.emit();
+    }
     this.showNewPollDialog = false;
   }
 }

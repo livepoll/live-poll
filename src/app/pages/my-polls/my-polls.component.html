@@ -32,13 +32,13 @@
               <nz-row [nzGutter]="12">
                 <nz-col [nzSpan]="12">
                   <nz-card>
-                    <nz-statistic [nzValue]="10" nzTitle="Participants" [nzValueStyle]="{ color: '#3F8600' }">
+                    <nz-statistic [nzValue]="0" nzTitle="Participants" [nzValueStyle]="{ color: '#3F8600' }">
                     </nz-statistic>
                   </nz-card>
                 </nz-col>
                 <nz-col [nzSpan]="12">
                   <nz-card>
-                    <nz-statistic [nzValue]="5" nzTitle="Questions" [nzValueStyle]="{ color: '#CF1322' }">
+                    <nz-statistic [nzValue]="0" nzTitle="Questions" [nzValueStyle]="{ color: '#CF1322' }">
                     </nz-statistic>
                   </nz-card>
                 </nz-col>
@@ -58,7 +58,7 @@
                 <i nz-icon nzType="check"></i>
                 <span>Finished</span>
               </nz-tag>
-              <button  nz-button nzType="primary" [routerLink]="'/dashboard/my-polls/poll/' + poll.id">
+              <button nz-button nzType="primary" [routerLink]="'/dashboard/my-polls/poll/' + poll.id">
                 Details<i nz-icon nzType="right"></i>
               </button>
             </ng-template>

@@ -12,30 +12,43 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-    - name: Node 14.x
-      uses: actions/setup-node@v1
-      with:
-        node-version: 14.x
-    - uses: actions/cache@v2
-      with:
-        path: '**/node_modules'
-        key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-    - name: Install & Build
-      run: |
-        yarn install
-        yarn run build:themes
-        yarn run build:prod
-    - name: Build Docker image
-      run: |
-        docker build . --file Dockerfile -t ghcr.io/livepoll/live-poll:latest
-        echo "Build completed"
+      - name: Checkout
+        uses: actions/checkout@v2
 
-        echo ${CR_PAT} | docker login ghcr.io -u ${GITHUB_REPOSITORY_OWNER} --password-stdin
-        echo "Login successful"
+      - name: Node 14.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
 
-        docker push ghcr.io/livepoll/live-poll:latest
-        echo "Push successful"
-      env:
-        CR_PAT: ${{ secrets.CR_PAT }}
+      - name: Docker login GHCR
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.CR_PAT }}
+
+      - uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install & Build
+        run: |
+          yarn install
+          yarn run build:themes
+          yarn run build:prod
+
+      - name: Build Docker image
+        run: |
+          docker build . -t ghcr.io/livepoll/live-poll:latest
+          docker push ghcr.io/livepoll/live-poll:latest
+
+      - name: Prepare environment for localhost build
+        run: |
+          cp ./.github/files/environment.prod.ts ./src/environments/environment.prod.ts
+          yarn run build:prod
+
+      - name: Build Docker image for localhost
+        run: |
+          docker build . -t ghcr.io/livepoll/live-poll:localhost
+          docker push ghcr.io/livepoll/live-poll:localhost

@@ -48,4 +48,5 @@ import {MainOptionsMenuModule} from '../../components/main-options-menu/main-opt
   declarations: [DashboardComponent],
   exports: [DashboardComponent]
 })
-export class DashboardModule { }
+export class DashboardModule {
+}

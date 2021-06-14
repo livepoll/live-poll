@@ -14,7 +14,8 @@ const URLS_TO_CACHE = [
   '/assets/icons/manifest-icon-512.png',
   '/assets/images/drag_indicator.svg',
   '/assets/images/empty.svg',
-  '/assets/images/logo.svg',
+  '/assets/images/logo-light.svg',
+  '/assets/images/logo-dark.svg',
   '/assets/images/light/wave-bot.svg',
   '/assets/images/light/wave-mid.svg',
   '/assets/images/light/wave-top.svg',
@@ -33,8 +34,6 @@ self.addEventListener('push', function (event) {
         tag: 'push-notification',
         icon: 'assets/icons/manifest-icon-512.png'
       });
-    } else {
-      console.log('Push notification data parsing failed.');
     }
   }
 });
@@ -42,15 +41,15 @@ self.addEventListener('push', function (event) {
 self.addEventListener('notificationclick', function (event) {
   const notification = event.notification;
   notification.close();
-  if (clients.openWindow) {
-    clients.openWindow('https://www.live-poll.de/login');
+  if (self.clients.openWindow) {
+    self.clients.openWindow('https://www.live-poll.de/login');
   }
 });
 
-self.addEventListener('install', event => event.waitUntil(
+self.addEventListener('install', (event) => event.waitUntil(
   caches.open(CACHE_NAME).then(cache => cache.addAll(URLS_TO_CACHE))
 ));
 
-self.addEventListener('fetch', event => event.respondWith(
+self.addEventListener('fetch', (event) => event.respondWith(
   fetch(event.request).catch(() => caches.match(event.request))
 ));

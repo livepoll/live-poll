@@ -6,7 +6,7 @@ import {Injectable} from '@angular/core';
 import {environment as env} from '../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {PollItem} from '../model/poll-item-create/poll-item';
+import {ItemType, PollItem} from '../model/poll-item-create/poll-item';
 import {MultipleChoiceItemCreate} from '../model/poll-item-create/multiple-choice-item-create';
 import {QuizItemCreate} from '../model/poll-item-create/quiz-item-create';
 import {OpenTextItemCreate} from '../model/poll-item-create/open-text-item-create';
@@ -27,7 +27,8 @@ export class PollItemService {
   constructor(
     private http: HttpClient,
     private tools: CommonToolsService
-  ) {}
+  ) {
+  }
 
   /**
    * Creates a poll item on the server
@@ -35,6 +36,35 @@ export class PollItemService {
    * @param pollItem Poll item
    */
   create<T extends MultipleChoiceItemCreate | QuizItemCreate | OpenTextItemCreate>(pollItem: T): Observable<T> {
+    let endpointFraction = '';
+    switch (pollItem.type) {
+      case ItemType.MultipleChoice:
+        endpointFraction = 'multiple-choice';
+        break;
+      case ItemType.Quiz:
+        endpointFraction = 'quiz';
+        break;
+      case ItemType.OpenText:
+        endpointFraction = 'open-text';
+    }
+    return this.http.post<T>(ENDPOINT_URL + `/${endpointFraction}`, pollItem, {withCredentials: true});
+  }
+
+  /**
+   * Retrieves a poll item from the server
+   *
+   * @param id Id of the affected poll item
+   */
+  get(id: number): Observable<PollItem> {
+    return this.http.get<PollItem>(ENDPOINT_URL + `/${id}`, {withCredentials: true});
+  }
+
+  /**
+   * Updates a poll item on the server
+   *
+   * @param pollItem Affected poll item
+   */
+  update(pollItem: MultipleChoiceItemCreate | QuizItemCreate | OpenTextItemCreate): Observable<void> {
     let endpointFraction = '';
     switch (pollItem.constructor) {
       case MultipleChoiceItemCreate:
@@ -46,25 +76,7 @@ export class PollItemService {
       case OpenTextItemCreate:
         endpointFraction = 'open-text';
     }
-    return this.http.post<T>(ENDPOINT_URL + `/${endpointFraction}`, pollItem, { withCredentials: true });
-  }
-
-  /**
-   * Retrieves a poll item from the server
-   *
-   * @param id Id of the affected poll item
-   */
-  get(id: number): Observable<PollItem> {
-    return this.http.get<PollItem>(ENDPOINT_URL + `/${id}`, { withCredentials: true });
-  }
-
-  /**
-   * Updates a poll item on the server
-   *
-   * @param pollItem Affected poll item
-   */
-  update(pollItem: PollItem): Observable<void> {
-    return this.http.put<void>(ENDPOINT_URL, pollItem, { withCredentials: true });
+    return this.http.put<void>(ENDPOINT_URL + `/${endpointFraction}/${pollItem.itemId}`, pollItem, {withCredentials: true});
   }
 
   /**
@@ -73,6 +85,6 @@ export class PollItemService {
    * @param id Id of the affected poll item
    */
   delete(id: number): Observable<void> {
-    return this.http.delete<void>(ENDPOINT_URL + `/${id}`, { withCredentials: true });
+    return this.http.delete<void>(ENDPOINT_URL + `/${id}`, {withCredentials: true});
   }
 }

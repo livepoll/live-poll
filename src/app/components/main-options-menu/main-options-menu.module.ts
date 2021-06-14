@@ -33,4 +33,5 @@ import {NzBadgeModule} from 'ng-zorro-antd/badge';
     NzBadgeModule
   ]
 })
-export class MainOptionsMenuModule { }
+export class MainOptionsMenuModule {
+}
