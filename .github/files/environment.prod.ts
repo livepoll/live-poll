@@ -5,8 +5,8 @@
 export const environment = {
   name: 'production',
   production: true,
-  apiBaseWebsocketUrl: 'ws://localhost/v1',
-  apiBaseUrl: 'http://localhost/v1',
+  apiBaseWebsocketUrl: 'ws://localhost:8080/v1',
+  apiBaseUrl: 'http://localhost:8080/v1',
   useSecureCookies: true,
   cookieConsentUrl: 'www.live-poll.de'
 };
