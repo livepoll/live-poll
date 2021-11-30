@@ -82,7 +82,7 @@
     "@angular/compiler-cli": "~12.0.2",
     "@types/jasmine": "~3.10.2",
     "@types/jasminewd2": "~2.0.10",
-    "@types/node": "^16.11.10",
+    "@types/node": "^16.11.11",
     "codelyzer": "^6.0.2",
     "electron": "^16.0.2",
     "electron-packager": "^15.4.0",
