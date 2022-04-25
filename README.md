@@ -13,6 +13,9 @@
 
 ---
 
+| :warning:   | All "Live-Poll" repos are not maintained anymore. It is a student project carried out in 2021 by us (three students) at uni. It showed us how to apply common software engineering best-practices as well as project management techniques. Our code (except for the logo) is available under the very permissive MIT-license, so feel free to continue the project on your own. |
+|---------------|:-------------------------|
+
 ## Deployed versions
 The production website is live here: [www.live-poll.de](https://www.live-poll.de)<br>
 The development version is live here: [dev.live-poll.de](https://dev.live-poll.de)
